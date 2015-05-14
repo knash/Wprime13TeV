@@ -1,0 +1,19 @@
+python ./tardir/TBrate.py -s ttbar700 -t nominal -u on -g on
+python ./tardir/TBrate.py -s ttbar1000 -t nominal -u on  -g on
+python ./tardir/TBrate.py -s data -n 1 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 2 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 3 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 4 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 5 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 6 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 7 -j 8 -g on
+python ./tardir/TBrate.py -s data -n 8 -j 8 -g on
+
+python ./tardir/TBrate.py -s signal1300 -t nominal -g on
+python ./tardir/TBrate.py -s signal1500 -t nominal -g on
+python ./tardir/TBrate.py -s signal1700 -t nominal -g on
+python ./tardir/TBrate.py -s signal1900 -t nominal -g on
+python ./tardir/TBrate.py -s signal2100 -t nominal -g on
+python ./tardir/TBrate.py -s signal2300 -t nominal -g on
+python ./tardir/TBrate.py -s signal2700 -t nominal -g on
+python ./tardir/TBrate.py -s signal3100 -t nominal -g on
