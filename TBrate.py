@@ -101,9 +101,6 @@ if jobs != 1:
 	print "This will process job " +str(num)
 else:
 	print "Running over all events"
-else :
-	
-	settype = options.set.replace('right','').replace('left','').replace('mixed','')
 
 run_b_SF = True
 #Based on what set we want to analyze, we find all Ntuple root files 
@@ -114,7 +111,7 @@ elif (options.set.find('QCD') != -1):
 	settype ='QCD'
 	run_b_SF = False
 else :
-	settype = options.set
+	settype = options.set.replace('right','').replace('left','').replace('mixed','')
 
 print 'The type of set is ' + settype
 
