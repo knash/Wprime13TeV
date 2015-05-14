@@ -101,6 +101,9 @@ if jobs != 1:
 	print "This will process job " +str(num)
 else:
 	print "Running over all events"
+else :
+	
+	settype = options.set.replace('right','').replace('left','').replace('mixed','')
 
 run_b_SF = True
 #Based on what set we want to analyze, we find all Ntuple root files 
