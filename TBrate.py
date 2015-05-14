@@ -2,7 +2,7 @@
 
 ###################################################################
 ##								 ##
-## Name: TBb11rate.py						 ##
+## Name: TBrate.py						 ##
 ## Author: Kevin Nash 						 ##
 ## Date: 6/5/2012						 ##
 ## Purpose: This program creates eta binned tags and probes 	 ##
@@ -428,9 +428,9 @@ for event in events:
 				PTW = PTW_Lookup( GenParticles )
 				weight*=PTW
 
-			weightb*=weightSFb
-			weightSFbup*=(weightSFb+errorSFb)
-			weightSFbdown*=(weightSFb-errorSFb)
+			weightb=weight*weightSFb
+			weightSFbup=weight*(weightSFb+errorSFb)
+			weightSFbdown=weight*(weightSFb-errorSFb)
 
 
 
