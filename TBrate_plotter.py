@@ -296,7 +296,7 @@ leg2.AddEntry(probeeta1data,"QCD","f")
 leg2.AddEntry(probeeta1mc,"ttbar","f")
 
 
-
+mass = [1300,1500,1700,1900,2100,2300,2700]
 for ifile in range(0,len(SigFiles)):
 	if ifile<4:
 		colorassn = ifile+1
@@ -313,10 +313,6 @@ for ifile in range(0,len(SigFiles)):
 	nseta2.Rebin(ptrebin)
 	nseta3.Rebin(ptrebin)
 
-	scalefac = (Luminosity*Sigma[ifile]*TeffScale*Kfac)/MCentries[ifile]
-	nseta1.Scale(scalefac)
-	nseta2.Scale(scalefac)
-	nseta3.Scale(scalefac)
 	c7.cd()
 	nseta1.Draw("samehist")
 	c8.cd()
@@ -360,7 +356,7 @@ treta3
 c4.cd()
 c4.SetLeftMargin(0.16)
 
-etastrings = [
+etastring = [
 '0.00 < |#eta| < 0.50',
 '0.50 < |#eta| < 1.15',
 '1.15 < |#eta| < 2.40'
@@ -375,18 +371,18 @@ for eta in range(0,3):
 		trs[eta].SetMinimum(0.008)
 		trs[eta].SetStats(0)
 		trs[eta].Draw("histe")
-		graphs[eta][ifit].Draw()
+		graphs[eta][ifit].Draw('same')
 
 		c4.RedrawAxis()
-		c4.Print('plots/tagrateeta'+str(eta)+fits[ifit]+'PSET_'+options.cuts+'.root', 'root')
-		c4.Print('plots/tagrateeta'+str(eta)+fits[ifit]+'PSET_'+options.cuts+'.pdf', 'pdf')
+		c4.Print('plots/tagrateeta'+str(eta)+fittitles[ifit]+'PSET_'+options.cuts+'.root', 'root')
+		c4.Print('plots/tagrateeta'+str(eta)+fittitles[ifit]+'PSET_'+options.cuts+'.pdf', 'pdf')
 	trs[eta].SetTitle(';p_{T} (GeV);Average b-tagging rate')
 	trs[eta].GetYaxis().SetTitleOffset(0.8)
 	trs[eta].SetMaximum(0.20)
 	trs[eta].SetMinimum(0.008)
 	trs[eta].SetStats(0)
 	trs[eta].Draw("histe")
-	mg[eta].Draw()
+	mg[eta].Draw('same')
 
 	leg1.Draw()
 	prelim = ROOT.TLatex()
@@ -395,7 +391,7 @@ for eta in range(0,3):
 
 	prelim.DrawLatex( 0.2, 0.5, "#scale[1.0]{"+etastring[eta]+"}" )
 	insertlogo( c4, 2, 11 )
-	chis.DrawLatex( 0.20, 0.6, "#scale[1.0]{#chi^{2} / dof = "+strf(chi2eta1/ndofeta1)+"}" )
+	#chis.DrawLatex( 0.20, 0.6, "#scale[1.0]{#chi^{2} / dof = "+strf(chi2eta1/ndofeta1)+"}" )
 	c4.RedrawAxis()
 	c4.Print('plots/tagrateeta'+str(eta)+'fitBP.root', 'root')
 	c4.Print('plots/tagrateeta'+str(eta)+'fitBP.pdf', 'pdf')
