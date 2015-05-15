@@ -64,15 +64,15 @@ commands.append('hadd TBratefilettbar_PSET_'+cuts+'.root temprootfiles/TBratefil
 commands.append('mv TBratefilettbar700_PSET_'+cuts+'.root TBratefilettbar1000_PSET_'+cuts+'.root temprootfiles/')
 commands.append('mv TBratefilettbar_PSET_'+cuts+'.root rootfiles/')
 for coup in ['right','left','mixed']:
-	sigfiles = sorted(glob.glob('TBratefile'+coup+'signal*_PSET_'+cuts+'.root'))
+	sigfiles = sorted(glob.glob('TBratefilesignal'+coup+'*_PSET_'+cuts+'.root'))
 	for f in sigfiles:
-		mass = f.lstrip('TBratefile'+coup+'signal').rstrip('_PSET_'+cuts+'.root')
+		mass = f.lstrip('TBratefilesignal'+coup).rstrip('_PSET_'+cuts+'.root')
 		xsec_sig = xsec_wpr[mass]
 		nev_sig = nev_wpr[mass]
-		commands.append('rm ' + f.replace('TBratefile'+coup+'signal','TBratefileweighted'+coup+'signal'))	 
-		commands.append('python HistoWeight.py -i '+f+' -o '+f.replace('TBratefile'+coup+'signal','TBratefileweighted'+coup+'signal')+' -w ' + str(lumi*xsec_sig*ttagsf/nev_sig))
+		commands.append('rm ' + f.replace('TBratefilesignal'+coup,'TBratefileweightedsignal'+coup))	 
+		commands.append('python HistoWeight.py -i '+f+' -o '+f.replace('TBratefilesignal'+coup,'TBratefileweightedsignal'+coup)+' -w ' + str(lumi*xsec_sig*ttagsf/nev_sig))
 		commands.append('mv '+f+' temprootfiles/')
-		commands.append('mv '+f.replace('TBratefile'+coup+'signal','TBratefileweighted'+coup+'signal')+' rootfiles/')
+		commands.append('mv '+f.replace('TBratefilesignal'+coup,'TBratefileweightedsignal'+coup)+' rootfiles/')
 for s in commands :
     print 'executing ' + s
     subprocess.call( [s], shell=True )

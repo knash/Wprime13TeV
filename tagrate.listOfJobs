@@ -16,4 +16,3 @@ python ./tardir/TBrate.py -s signalright1900 -t nominal -g on
 python ./tardir/TBrate.py -s signalright2100 -t nominal -g on
 python ./tardir/TBrate.py -s signalright2300 -t nominal -g on
 python ./tardir/TBrate.py -s signalright2700 -t nominal -g on
-python ./tardir/TBrate.py -s signalright3100 -t nominal -g on
