@@ -41,6 +41,8 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
 
 (options, args) = parser.parse_args()
 
+gROOT.Macro("rootlogon.C")
+
 import Wprime_Functions	
 from Wprime_Functions import *
 

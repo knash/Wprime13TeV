@@ -292,7 +292,7 @@ def BTR_Init(ST,CUT,di):
 		eta1fit = TF1("eta1fit",'pol3',0,1400)
 		eta2fit = TF1("eta2fit",'pol3',0,1400)
 		eta3fit = TF1("eta3fit",'pol3',0,1400)
-		Params = 3
+		Params = 4
 	if ST == 'FIT':
 		TRBPE1 = open(di+"fitdata/newfitinputeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
@@ -442,11 +442,6 @@ def Fit_Uncertainty(List):
 		sigma=0.0
 		sumsqdiff = 0.0
 		for ihist in range(0,len(List)):
-
-			#######################FIX
-			if List[ihist].GetName() == 'QCDbkgpol3':
-				continue 
-
 			if List[ihist].GetName() != 'QCDbkgBifpoly':
 				sumsqdiff+=(List[ihist].GetBinContent(ibin)-nominalhist.GetBinContent(ibin))*(List[ihist].GetBinContent(ibin)-nominalhist.GetBinContent(ibin))
 		mse = sumsqdiff/fits

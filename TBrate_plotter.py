@@ -134,7 +134,7 @@ BPerryh = []
 BPerryl = []
 
 
-for eta in range(0,3):
+for eta in range(1,4):
 	y.append([])
 	for fittitle in fittitles:
 		y[eta].append(array( 'd' ))
@@ -145,7 +145,7 @@ for eta in range(0,3):
 for j in range(0,1400):
 
 	x.append(j)
-	for eta in range(0,3):
+	for eta in range(1,4):
 		for ifit in range(0,len(fits)):
 			y[eta][ifit].append(fits[ifit][eta].Eval(x[j]))
 		BPy[eta].append(BTR[eta].Eval(x[j]))
@@ -159,7 +159,7 @@ graphBP = []
 graphBPerrh = []
 graphBPerrl = []
 mg = []
-for eta in range(0,3):
+for eta in range(1,4):
 	graphs.append([])
 	for ifit in range(0,len(fits)):
 		graphs[eta].append(TGraph(len(x),x,y[eta][ifit]))
@@ -362,7 +362,7 @@ etastring = [
 '1.15 < |#eta| < 2.40'
 ]
 
-for eta in range(0,3):
+for eta in range(1,4):
 	for ifit in range(0,len(fits)):
 
 		trs[eta].SetTitle(';p_{T} (GeV);Average b-tagging rate')

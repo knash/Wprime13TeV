@@ -58,6 +58,9 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
 
 
 (options, args) = parser.parse_args()
+
+gROOT.Macro("rootlogon.C")
+
 print "Options summary"
 print "=================="
 for  opt,value in options.__dict__.items():

@@ -10,7 +10,6 @@ from ROOT import *
 from array import *
 from optparse import OptionParser
 gROOT.Macro("rootlogon.C")
-gROOT.LoadMacro("insertlogo.C+")
 parser = OptionParser()
 
 parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
