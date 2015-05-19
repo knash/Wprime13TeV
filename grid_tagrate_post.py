@@ -57,6 +57,7 @@ for f in files_to_sum:
 	commands.append('rm '+f) 
 	commands.append('hadd ' + f + " " + f.replace('_PSET','_job*_PSET') )
 	commands.append('mv ' +  f.replace('_PSET','_job*_PSET') + ' temprootfiles/')
+	commands.append('mv ' +  f + ' rootfiles/')
 commands.append('rm TBratefilettbar_PSET_'+cuts+'.root')
 commands.append('python HistoWeight.py -i TBratefilettbar700_PSET_'+cuts+'.root -o temprootfiles/TBratefilettbar700_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_ttbar['700']*ttagsf/nev_ttbar['700']))
 commands.append('python HistoWeight.py -i TBratefilettbar1000_PSET_'+cuts+'.root -o temprootfiles/TBratefilettbar1000_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_ttbar['1000']*ttagsf/nev_ttbar['1000']))
