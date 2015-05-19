@@ -48,9 +48,9 @@ Mult = 1.0
 
 
 sigf = [
-ROOT.TFile("rootfiles/TBanalyzerweightedsignal1500_Trigger_nominal_none_PSET_"+options.cuts+".root"),
-ROOT.TFile("rootfiles/TBanalyzerweightedsignal1900_Trigger_nominal_none_PSET_"+options.cuts+".root"),
-ROOT.TFile("rootfiles/TBanalyzerweightedsignal2300_Trigger_nominal_none_PSET_"+options.cuts+".root")
+ROOT.TFile("rootfiles/TBanalyzerweightedsignalright1500_Trigger_nominal_none_PSET_"+options.cuts+".root"),
+ROOT.TFile("rootfiles/TBanalyzerweightedsignalright1900_Trigger_nominal_none_PSET_"+options.cuts+".root"),
+ROOT.TFile("rootfiles/TBanalyzerweightedsignalright2300_Trigger_nominal_none_PSET_"+options.cuts+".root")
 ]
 
 sigh = [
