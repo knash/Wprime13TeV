@@ -31,19 +31,20 @@ from DataFormats.FWLite import Events, Handle
 #If I wanted to access the left handed W' cross section at 1900 GeV I could do Xsecl1900 = LoadConstants()['xsec_wpl']['1900']
 def LoadConstants():
 	 return  {
-		'lumi':19757,
-		'ttagsf':1.036,
-		'xsec_wpr':{'1700': 0.12460496399999998, '2200': 0.021867502800000001, '2100': 0.030537407999999995, '1300': 0.58233251999999991, '1800': 0.086716607999999987, '1600': 0.18060609599999999, '2000': 0.042946991999999996, '2700': 0.0046708991999999993, '1500': 0.26379143999999999, '2900': 0.0027131543999999994, '3000': 0.0021096041999999998, '2400': 0.011475855599999999, '2300': 0.015779834399999998, '2600': 0.0062373959999999992, '2800': 0.0035367815999999995, '1400': 0.38991875999999992, '1900': 0.060816491999999993, '2500': 0.0084188544000000001},
+		'lumi':5000.0,
+		'ttagsf':1.0,
+		'xsec_wpr':{'1300':2.9615,'2000':0.21351,'2700':0.041294},
 		'xsec_wpl':{'1700': 0.20028183251999998, '2200': 0.12110620368, '2100': 0.12566885759999999, '1300': 0.50971714199999996, '1800': 0.1740819102, '1600': 0.25585124993999997, '2000': 0.13701113712000001, '2700': 0.11197266959999999, '1500': 0.31458947519999991, '2900': 0.11225782920000001, '3000': 0.11240040900000001, '2400': 0.11543941529999999, '2300': 0.11660361635999998, '2600': 0.11313865133999999, '2800': 0.11213426004, '1400': 0.40551726599999999, '1900': 0.14849230967999999, '2500': 0.11430079584},
 		'xsec_wplr':{'1700': 0.32403986999999995, '2200': 0.14765102615999998, '2100': 0.16013479679999998, '1300': 1.1192727479999998, '1800': 0.26698274459999999, '1600': 0.43940786999999992, '2000': 0.18624247487999995, '2700': 0.11840769599999998, '1500': 0.56915749439999985, '2900': 0.11684897399999998, '3000': 0.11516685839999997, '2400': 0.13107319631999997, '2300': 0.13539302568, '2600': 0.12258562272, '2800': 0.11761920587999998, '1400': 0.81357839639999996, '1900': 0.21316229351999999, '2500': 0.12686314211999999},
-		'xsec_ttbar':{'700':245.8*1.23*0.074,'1000':245.8*1.23*0.014},
-		'xsec_qcd':{'300':1759.6,'470':113.9,'600':27.0,'800':3.57,'1000':0.734,'1400':0.03352235},
+		'xsec_ttbar':{'MG':806.0},
+		'xsec_qcd':{'300':7823,'470':648.2,'600':186.9,'800':32.293,'1000':9.4183,'1400':0.84265,'800_BROKEN':32.293,'FLAT7000':2022100000},
+
 		'xsec_st':{'s':3.79,'sB':1.76,'t':56.4,'tB':30.7,'tW':11.1,'tWB':11.1},
-		'nev_wpr':{'1300':489658,'1500':583622,'1700':582074,'1900':579561,'2100':581051,'2300':580410,'2700':581035,'3100':486557},
-		'nev_wpl':{'1300':474565,'1500':483975,'1700':464047,'1900':447300,'2100':474159,'2300':478510,'2700':469821,'3100':476969},
-		'nev_wplr':{'1300':468663,'1500':465828,'1700':456763,'1900':476482,'2100':480806,'2300':486335,'2700':480485,'3100':462627},
-		'nev_ttbar':{'700':3058076,'1000':1233739,'700scaleup':2225727,'1000scaleup':1225662,'700scaledown':2153111,'1000scaledown':1292980},
-		'nev_qcd':{'300':5908205,'470':3919113,'600':3902030,'800':3881338,'1000':1895936,'1400':1912782},
+		'nev_wpr':{'1300':129000,'2000':119000,'2700':105000},
+		'nev_wpl':{'2000':474565,},
+		'nev_wplr':{'2000':468663,},
+		'nev_ttbar':{'MG':4992231},
+		'nev_qcd':{'300':299282,'470':143594,'600':199880,'800':199872,'1000':149952,'800_BROKEN':1987472,'FLAT7000':194165.8},
 		'nev_st':{'s':259176,'sB':139604,'t':3748155,'tB':1930185,'tW':495559,'tWB':491463},
 		}
 
@@ -52,32 +53,32 @@ def LoadConstants():
 def LoadCuts(TYPE):
 	if TYPE=='default':
  		return  {
-			'bpt':[400.0,float("inf")],
-			'tpt':[500.0,float("inf")],
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[140.0,250.0],
+			'tmass':[138.0,188.0],
 			'nsubjets':[3,10],
-			'tau32':[0.0,0.55],
+			'tau32':[0.0,0.61],
 			'minmass':[50.0,float("inf")],
-			'sjbtag':[0.679,1.0],
+			'sjbtag':[0.814,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.679,1.0],
+			'btag':[0.814,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
 			}
 	if TYPE=='rate_default':
  		return  {
-			'bpt':[400.0,float("inf")],
-			'tpt':[500.0,float("inf")],
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[140.0,250.0],
+			'tmass':[138.0,188.0],
 			'nsubjets':[1,3],
 			'tau32':[0.0,1.0],
 			'minmass':[0.0,float("inf")],
-			'sjbtag':[0.679,1.0],
+			'sjbtag':[0.814,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.679,1.0],
+			'btag':[0.814,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -85,32 +86,32 @@ def LoadCuts(TYPE):
 
 	if TYPE=='sideband1':
  		return  {
-			'bpt':[400.0,float("inf")],
-			'tpt':[500.0,float("inf")],
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[140.0,250.0],
+			'tmass':[138.0,188.0],
 			'nsubjets':[3,10],
-			'tau32':[0.55,1.0],
+			'tau32':[0.61,1.0],
 			'minmass':[0.0,50.0],
-			'sjbtag':[0.679,1.0],
+			'sjbtag':[0.814,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.679,1.0],
+			'btag':[0.814,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
 			}
 	if TYPE=='sideband2':
  		return  {
-			'bpt':[400.0,float("inf")],
-			'tpt':[500.0,float("inf")],
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[140.0,250.0],
+			'tmass':[138.0,188.0],
 			'nsubjets':[3,10],
-			'tau32':[0.0,0.55],
+			'tau32':[0.0,0.61],
 			'minmass':[50.0,float("inf")],
-			'sjbtag':[0.0,0.679],
+			'sjbtag':[0.0,0.814],
 			'bmass':[0.0,70.0],
-			'btag':[0.679,1.0],
+			'btag':[0.814,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -118,16 +119,16 @@ def LoadCuts(TYPE):
 
 	if TYPE=='sideband3':
  		return  {
-			'bpt':[400.0,float("inf")],
-			'tpt':[500.0,float("inf")],
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[140.0,250.0],
+			'tmass':[138.0,188.0],
 			'nsubjets':[3,10],
-			'tau32':[0.0,0.55],
+			'tau32':[0.0,0.61],
 			'minmass':[50.0,float("inf")],
-			'sjbtag':[0.679,1.0],
+			'sjbtag':[0.814,1.0],
 			'bmass':[70.0,float("inf")],
-			'btag':[0.679,1.0],
+			'btag':[0.814,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -135,7 +136,7 @@ def LoadCuts(TYPE):
 
 #This function loads up Ntuples based on what type of set you want to analyze.  
 #This needs to be updated whenever new Ntuples are produced (unless the file locations are the same).
-def Load_Ntuples(string):
+def Load_Ntuples(string,bx):
 	print 'running on ' + string 
 	#if string == 'data':
 	#	files = glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012A-22Jan2013/res/*.root")
@@ -145,21 +146,33 @@ def Load_Ntuples(string):
 	if string == 'ttbar':
 		files = glob.glob("/eos/uscms/store/user/srappocc/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150522_160344/0000/*.root")
 	if string == 'QCDPT300':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
 	if string == 'QCDPT470':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
 	if string == 'QCDPT600':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+	if string == 'QCDPT800':
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
 	if string == 'QCDPT1000':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
-	if string == 'QCDPT1400':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
-	if string == 'QCDPT1800':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
-	if string == 'QCDPT2400':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
-	if string == 'QCDPT3200':
-		files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+	if string == 'QCDHT1000':
+		files = glob.glob("/eos/uscms/store/user/devdatta/QCD_HT_1000ToInf_13TeV-madgraph/B2GAnaFW_PHYS14/*/*/*.root")
+	if string == 'QCDPT800_BROKEN':
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+	if string == 'QCDPT1000_BROKEN':
+		files = glob.glob("/eos/uscmpythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+
+
+	if string == 'QCDFLAT7000':
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6/QCDFLAT_7000/150603_155125/0000/*.root")
+	#if string == 'QCDPT1400':
+	#	files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+	#if string == 'QCDPT1800':
+	#	files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+	#if string == 'QCDPT2400':
+	#	files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
+	#if string == 'QCDPT3200':
+	#	files = glob.glob("/eos/uscms/store/user/srappocc/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
 
 	#if string == 'singletop_s':
 #		files = glob.glob("/uscms_data/d3/knash/WPrime8TeV/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/singletop_s/res/*.root" )
@@ -174,8 +187,12 @@ def Load_Ntuples(string):
 #	if string == 'singletop_tWB':
 #		files = glob.glob("/uscms_data/d3/knash/WPrime8TeV/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/singletop_tWB/res/*.root" )
 
+	if string == 'signalright2700':
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2700_25ns_take2/150602_194116/0000/*.root" )
 	if string == 'signalright2000':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep/WPrime13TeV_B2GAnaFW_741_M2000/150520_180835/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2000_25ns_take2/150602_193949/0000/*.root" )
+	if string == 'signalright1300':
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M1300_25ns_take2/150602_194037/0000/*.root" )
 
 	try:
 		print 'A total of ' + str(len(files)) + ' files'
@@ -193,22 +210,22 @@ def Load_Ntuples(string):
 #It works, but you should be able to just have one input
 def BTR_Init(ST,CUT,di):
 	if ST == 'Bifpoly':
-		TRBPE1 = open(di+"fitdata/bpinputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/bpinputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/bpinputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/bpinputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/bpinputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/bpinputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",BifPoly,0,1400,5)
 		eta2fit = TF1("eta2fit",BifPoly,0,1400,5)
 		eta3fit = TF1("eta3fit",BifPoly,0,1400,5)
 		Params = 5
 	if ST == 'Bifpoly_err':
-		TRBPE1 = open(di+"fitdata/bperrorinputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/bperrorinputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/bperrorinputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/bperrorinputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/bperrorinputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/bperrorinputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit=TF1("eta1fit",BifPolyErr,0,1400,10)
 		eta2fit=TF1("eta2fit",BifPolyErr,0,1400,10)
@@ -216,11 +233,11 @@ def BTR_Init(ST,CUT,di):
 		Params = 10
 
 	if ST == 'pol0':
-		TRBPE1 = open(di+"fitdata/pol0inputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol0inputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol0inputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol0inputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol0inputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol0inputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol0',0,1400)
 		eta2fit = TF1("eta2fit",'pol0',0,1400)
@@ -228,11 +245,11 @@ def BTR_Init(ST,CUT,di):
 		Params = 1
 
 	if ST == 'pol2':
-		TRBPE1 = open(di+"fitdata/pol2inputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol2inputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol2inputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol2inputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol2inputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol2inputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol2',0,1400)
 		eta2fit = TF1("eta2fit",'pol2',0,1400)
@@ -240,33 +257,33 @@ def BTR_Init(ST,CUT,di):
 		Params = 3
 
 	if ST == 'pol3':
-		TRBPE1 = open(di+"fitdata/pol3inputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol3inputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol3inputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol3inputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol3inputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol3inputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol3',0,1400)
 		eta2fit = TF1("eta2fit",'pol3',0,1400)
 		eta3fit = TF1("eta3fit",'pol3',0,1400)
 		Params = 4
 	if ST == 'FIT':
-		TRBPE1 = open(di+"fitdata/newfitinputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/newfitinputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/newfitinputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/newfitinputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/newfitinputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/newfitinputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		eta2fit = TF1("eta2fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		eta3fit = TF1("eta3fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		Params = 4
 	if ST == 'expofit':
-		TRBPE1 = open(di+"fitdata/expoconinputeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/expoconinputQCDeta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/expoconinputeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/expoconinputQCDeta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/expoconinputeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/expoconinputQCDeta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'expo(0) + pol0(2)',0,1400)
 		eta2fit = TF1("eta2fit",'expo(0) + pol0(2)',0,1400)
@@ -340,22 +357,13 @@ def PDF_Lookup( pdfs , pdfOP ):
         		iweight = iweight + pdf
         return (iweight/pdfs[0]) / (len(pdfs)-1) * 2.0
 #This looks up the b tagging scale factor or uncertainty
-def Trigger_Lookup( H , TRP , TROP ):
+def Trigger_Lookup( H , TRP):
         Weight = 1.0
+	
         if H < 1300.0:
                 bin0 = TRP.FindBin(H) 
                 jetTriggerWeight = TRP.GetBinContent(bin0)
-		deltaTriggerEff  = 0.5*(1.0-jetTriggerWeight)
-                jetTriggerWeightUp  =   jetTriggerWeight + deltaTriggerEff
-                jetTriggerWeightDown  = jetTriggerWeight - deltaTriggerEff
-                jetTriggerWeightUp  = min(1.0,jetTriggerWeightUp)
-                jetTriggerWeightDown  = max(0.0,jetTriggerWeightDown)
-                if TROP  == "nominal" :
-                	   Weight = jetTriggerWeight
-                if TROP  == "up" :
-                	   Weight = jetTriggerWeightUp
-                if TROP == "down" :
-                	   Weight = jetTriggerWeightDown
+                Weight = jetTriggerWeight
 	return Weight
 #This looks up the ttbar pt reweighting scale factor 
 def PTW_Lookup( GP ):
