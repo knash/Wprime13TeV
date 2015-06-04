@@ -35,10 +35,11 @@ parser.add_option('-u', '--ptreweight', metavar='F', type='string', action='stor
                   default	=	'none',
                   dest		=	'ptreweight',
                   help		=	'on or off')
-parser.add_option('-t', '--trigger', metavar='F', type='string', action='store',
-                  default	=	'none',
-                  dest		=	'trigger',
-                  help		=	'none, nominal, up, or down')
+parser.add_option('-t', '--tname', metavar='F', type='string', action='store',
+                  default	=	'HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1',
+                  dest		=	'tname',
+                  help		=	'trigger name')
+
 parser.add_option('-n', '--num', metavar='F', type='string', action='store',
                   default	=	'all',
                   dest		=	'num',
@@ -55,11 +56,24 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
                   default	=	'rate_default',
                   dest		=	'cuts',
                   help		=	'Cuts type (ie default, rate, etc)')
+parser.add_option('-b', '--bx', metavar='F', type='string', action='store',
+                  default	=	'25ns',
+                  dest		=	'bx',
+                  help		=	'bunch crossing 50ns or 25ns')
+
 
 
 (options, args) = parser.parse_args()
 
 gROOT.Macro("rootlogon.C")
+
+tname = options.tname.split(',')
+tnamestr = ''
+for iname in range(0,len(tname)):
+	tnamestr+=tname[iname]
+	if iname!=len(tname)-1:
+		tnamestr+='OR'
+	
 
 print "Options summary"
 print "=================="
@@ -107,7 +121,7 @@ else:
 
 run_b_SF = True
 #Based on what set we want to analyze, we find all Ntuple root files 
-files = Load_Ntuples(options.set)
+files = Load_Ntuples(options.set,options.bx)
 if (options.set.find('ttbar') != -1) or (options.set.find('singletop') != -1):
 	settype = 'ttbar'
 elif (options.set.find('QCD') != -1):
@@ -121,11 +135,12 @@ print 'The type of set is ' + settype
 if options.set != 'data':
 	#Load up scale factors (to be used for MC only)
 
-	TrigFile = TFile(di+"TRIG_EFFICWPHTdata_dijet8TeV.root")
-	TrigPlot = TrigFile.Get("r11")
+	#TrigFile = TFile(di+"Triggerweight_"+options.set+".root")
+	TrigFile = TFile(di+"Triggerweight_signalright2000.root")
+	TrigPlot = TrigFile.Get("TriggerWeight_"+tnamestr)
 
-	PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
-	PilePlot = PileFile.Get("Pileup_Ratio")
+	#PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
+	#PilePlot = PileFile.Get("Pileup_Ratio")
 
 
 
@@ -373,9 +388,10 @@ for event in events:
                 	btag_cut = btag[0]<bJetBDisc[bindexval]<=btag[1]
 
 			ht = tjet.Perp() + bjet.Perp()
-			if options.trigger != "none" :
+			if tname != [] and options.set!='data' :
+				
 				#Trigger reweighting done here
-				TRW = Trigger_Lookup( ht , TrigPlot , options.trigger )
+				TRW = Trigger_Lookup( ht , TrigPlot )
 				weight*=TRW
 
 
@@ -414,7 +430,10 @@ for event in events:
 			
 			SJ_csvvals = []
 			for icsv in range(0,int(nSubjets[tindexval])):
-				SJ_csvvals.append(subjetsCSV[int(SJ_csvs[icsv][tindexval])])
+				if int(SJ_csvs[icsv][tindexval])!=-1:
+					SJ_csvvals.append(subjetsCSV[int(SJ_csvs[icsv][tindexval])])
+				else:
+					SJ_csvvals.append(0.)
 			SJ_csvmax = max(SJ_csvvals)
 			sjbtag_cut = sjbtag[0]<SJ_csvmax<=sjbtag[1]
 			if sjbtag_cut:
