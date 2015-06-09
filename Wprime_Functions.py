@@ -43,7 +43,7 @@ def LoadConstants():
 		'nev_wpr':{'1300':129000,'2000':119000,'2700':105000},
 		'nev_wpl':{'2000':474565,},
 		'nev_wplr':{'2000':468663,},
-		'nev_ttbar':{'MG':4992231},
+		'nev_ttbar':{'MG':7533905},
 		'nev_qcd':{'300':299282,'470':143594,'600':199880,'800':199872,'1000':149952,'800_BROKEN':1987472,'FLAT7000':209851.27},
 		'nev_st':{'s':259176,'sB':139604,'t':3748155,'tB':1930185,'tW':495559,'tWB':491463},
 		}
@@ -177,7 +177,9 @@ def Load_Ntuples(string,bx):
 	#	files += glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012C-22Jan2013/res/*.root")
 	#	files += glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012D-22Jan2013/res/*.root")
 	if string == 'ttbar':
-		files = glob.glob("/eos/uscms/store/user/srappocc/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150522_160344/0000/*.root")
+		#files = glob.glob("/eos/uscms/store/user/srappocc/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150522_160344/0000/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/150608_221852/0000/*.root")
+
 	if string == 'QCDPT300':
 		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
 	if string == 'QCDPT470':
@@ -340,8 +342,13 @@ def BTR_Init(ST,CUT,di):
 def bkg_weight(blv, funcs, etabins):
 	for ibin in range(0,len(etabins)):
 		if (etabins[ibin][0] <= abs(blv.Eta()) < etabins[ibin][1]) :
-			tagratept = funcs[ibin].Eval(blv.Perp())		
-	return tagratept
+			tagratept = funcs[ibin].Eval(blv.Perp())	
+
+	try :
+		return tagratept
+	except :
+		print blv.Eta()
+		tagratept=0.0	
 
 #This is the bifurcated polynomial function and its associated uncertainty 
 def BifPoly( x, p ):
