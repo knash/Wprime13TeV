@@ -332,8 +332,8 @@ def BTR_Init(ST,CUT,di):
 	for i in range(0,Params):
 
 		eta1fit.SetParameter(i,float(TBP1.split('\n')[i]) )
-		eta2fit.SetParameter(i,float(TBP1.split('\n')[i]) )
-		eta3fit.SetParameter(i,float(TBP1.split('\n')[i]) )
+		eta2fit.SetParameter(i,float(TBP2.split('\n')[i]) )
+		eta3fit.SetParameter(i,float(TBP3.split('\n')[i]) )
 
 	return [eta1fit.Clone(),eta2fit.Clone(),eta3fit.Clone()] 
 
