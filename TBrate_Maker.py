@@ -49,8 +49,10 @@ from Wprime_Functions import *
 rootdir="rootfiles/"
 
 setstr = ""
-if options.set=='QCD':
+if options.set=='QCDFLAT7000':	#change to whatever the QCD set name is
 	setstr = 'QCD'
+else:
+	setstr = options.set
 
 #Make a bunch of txt files to store the fit parameters
 saveout = sys.stdout
@@ -121,21 +123,26 @@ p44 = 0.0
 print "Running on "+options.set
 
 #Load up data and ttbar
-fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+".root")
-fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+".root")
+if options.set == 'data':
+	fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+".root")
+	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+".root")
+#for QCD only
+else:
+	fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+"weighted.root")
+	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
+
 
 #Load up signal to look at contamination
 SigFiles = [
 TFile(rootdir+"TBratefileweightedsignalright1300_PSET_"+options.cuts+".root"),
-TFile(rootdir+"TBratefileweightedsignalright1500_PSET_"+options.cuts+".root"),
-TFile(rootdir+"TBratefileweightedsignalright1700_PSET_"+options.cuts+".root"),
-TFile(rootdir+"TBratefileweightedsignalright1900_PSET_"+options.cuts+".root"),
-TFile(rootdir+"TBratefileweightedsignalright2100_PSET_"+options.cuts+".root"),
-TFile(rootdir+"TBratefileweightedsignalright2300_PSET_"+options.cuts+".root"),
+TFile(rootdir+"TBratefileweightedsignalright2000_PSET_"+options.cuts+".root"),
 TFile(rootdir+"TBratefileweightedsignalright2700_PSET_"+options.cuts+".root"),
 ]
 
-output = TFile( "plots/TBrate_Maker_"+setstr+"_PSET_"+options.cuts+".root", "recreate" )
+if options.set == 'data':
+	output = TFile( "plots/TBrate_Maker_"+setstr+"_PSET_"+options.cuts+".root", "recreate" )
+else:
+	output = TFile( "plots/TBrate_Maker_"+setstr+"_PSET_"+options.cuts+".root", "recreate" )
 output.cd()
 
 # Get numerators and denominators for each eta region
@@ -176,7 +183,8 @@ print "tagged QCD & " +strf1(neta1.Integral()) + " ($"+ strf(100*neta1.Integral(
 print "pretag "+r"$\ttbar$ & " +strf1(ttdeta1.Integral()) + " ($"+ strf(100*ttdeta1.Integral()/dtot1) + "\%$) & " + strf1(ttdeta2.Integral()) + " ($"+ strf(100*ttdeta2.Integral()/dtot2) + "\%$) & " + strf1(ttdeta3.Integral()) + " ($"+ strf(100*ttdeta3.Integral()/dtot3) + "\%$)"
 print "tagged "+r"$\ttbar$ & " +strf1(ttneta1.Integral()) + " ($"+ strf(100*ttneta1.Integral()/ntot1) + "\%$) & " + strf1(ttneta2.Integral()) + " ($"+ strf(100*ttneta2.Integral()/ntot2) + "\%$) & " + strf1(ttneta3.Integral()) + " ($"+ strf(100*ttneta3.Integral()/ntot3) + "\%$)"
 bins=[]
-bins= [370,420,450,500,590,720,1300]
+#bins= [350,420,450,500,590,720,1300]
+bins= [300,420,550,660,1060,1250,1400]
 bins2=array('d',bins)
 
 neta1r = neta1.Rebin(len(bins2)-1,"neta1r",bins2)
@@ -210,7 +218,7 @@ if options.set=='data':
 
 outputa = TFile( "plots/B_tagging_sigcont"+setstr+".root", "recreate" )
 outputa.cd()
-mass = [1300,1500,1700,1900,2100,2300,2700]
+mass = [1300,2000,2700]
 for ifile in range(0,len(SigFiles)):
 	nseta1 = SigFiles[ifile].Get("pteta1")
 	dseta1 = SigFiles[ifile].Get("pteta1pretag")
@@ -374,7 +382,7 @@ print "------------------------------------"
 # This is the fit we use.  BIFP is the bifurcation point
 
 BIFP=500.0
-BP =TF1("BP",BifPoly,370,1400,5)
+BP =TF1("BP",BifPoly,350,1400,5)
 BP.FixParameter(4,BIFP)
 
 c4 = TCanvas('c4', 'Tagrate1', 1300, 600)
@@ -422,8 +430,8 @@ c4.Print("plots/BPTAGETA1FIT"+setstr+".root","root")
 c3 = TCanvas('c3', 'Tagrate2', 1300, 600)
 c3.cd()
 
-BIFP=500.0
-BP =TF1("BP",BifPoly,370,1400,5)
+BIFP=550.0
+BP =TF1("BP",BifPoly,350,1400,5)
 BP.FixParameter(4,BIFP)
 tagrateeta2.Fit("BP","F")
 sys.stdout = saveout
@@ -467,7 +475,7 @@ c2.cd()
 #BP.FixParameter(0,fix)
 
 BIFP=550.0
-BP =TF1("BP",BifPoly,370,1400,5)
+BP =TF1("BP",BifPoly,350,1400,5)
 BP.FixParameter(4,BIFP)
 tagrateeta3.Fit("BP","F")
 sys.stdout = saveout
@@ -871,7 +879,7 @@ print str(p33)
 output1 = ROOT.TFile( "Tagrate2D.root", "recreate" )
 output2 = ROOT.TFile( "plots/Tagrate2Ddelta.root", "recreate" )
 
-output = ROOT.TFile( "plost/TagrateSlices.root", "recreate" )
+output = ROOT.TFile( "plots/TagrateSlices.root", "recreate" )
 
 #This is one number that controls the automatic variable binning sensitivity
 bres = 0.8
@@ -894,6 +902,11 @@ neta3NOSUB = fdata.Get("MtbbptcomparepostSB1e3")
 deta3NOSUB = fdata.Get("MtbbptcomparepreSB1e3")
 
 
+#sys.stdout = saveout
+#print "testing:"
+#print neta1NOSUB.Integral()
+#print deta1NOSUB.Integral()
+
 neta1ttbar = fttbar.Get("MtbbptcomparepostSB1e1")
 deta1ttbar = fttbar.Get("MtbbptcomparepreSB1e1")
 
@@ -904,22 +917,19 @@ neta3ttbar = fttbar.Get("MtbbptcomparepostSB1e3")
 deta3ttbar = fttbar.Get("MtbbptcomparepreSB1e3")
 
 neta1 = neta1NOSUB.Clone("neta1")
-neta1.Add(neta1ttbar,-1)
-
 neta2 = neta2NOSUB.Clone("neta2")
-neta2.Add(neta2ttbar,-1)
-
 neta3 = neta3NOSUB.Clone("neta3")
-neta3.Add(neta3ttbar,-1)
-
 deta1 = deta1NOSUB.Clone("deta1")
-deta1.Add(deta1ttbar,-1)
-
 deta2 = deta2NOSUB.Clone("deta2")
-deta2.Add(deta2ttbar,-1)
-
 deta3 = deta3NOSUB.Clone("deta3")
-deta3.Add(deta3ttbar,-1)
+
+if options.set=="data":
+	neta1.Add(neta1ttbar,-1)
+	neta2.Add(neta2ttbar,-1)
+	neta3.Add(neta3ttbar,-1)
+	deta1.Add(deta1ttbar,-1)
+	deta2.Add(deta2ttbar,-1)
+	deta3.Add(deta3ttbar,-1)
 
 slopeta1 = []
 slopeta2 = []
@@ -1300,5 +1310,6 @@ c3.RedrawAxis()
 c3.Print('plots/TagrateEta3SBSUBSB1.root', 'root')
 c3.Print('plots/TagrateEta3SBSUBSB1.pdf', 'pdf')
 	
+output.Write()
 
 

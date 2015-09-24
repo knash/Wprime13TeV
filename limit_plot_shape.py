@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 
     xsec_wpr = Cons['xsec_wpr']
-    masses = [1300,1500,1700,1900,2100,2300,2700] 
+    masses = [1300,2000,2700] 
 
     x_mass = array('d')
     y_limit = array('d')
@@ -198,7 +198,7 @@ if __name__ == "__main__":
         # g_limit.SetMaximum(80.)
         g_limit.SetMaximum(0.5)#20.)
 
-    g_limit.Draw("al")
+    #g_limit.Draw("al")		#uncomm later
     
     g_mclimit = TGraph(len(x_mass), x_mass, y_mclimit)
     g_mclimit.SetTitle("")
@@ -238,22 +238,22 @@ if __name__ == "__main__":
  
 
     g_error95 = make_smooth_graph(g_mc2minus, g_mc2plus)
-    g_error95.SetFillColor(TROOT.kYellow)
+    g_error95.SetFillColor(kYellow)
     g_error95.SetLineColor(0)
     g_error95.Draw("lf")
     g_error95.Draw("lf")
     
     g_error = make_smooth_graph(g_mcminus, g_mcplus)
-    g_error.SetFillColor( TROOT.kGreen)
+    g_error.SetFillColor( kGreen)
     g_error.SetLineColor(0)
     g_error.Draw("lf")
     g_error.Draw("lf")
    
 
  
-    g_limit.Draw("l")
+    #g_limit.Draw("l")		#uncomm later
     g_mclimit.Draw("l")
-    g_limit.Draw("l")
+    #g_limit.Draw("l")		#uncomm later
     graphWP.Draw("l")
 
     legLabel = ""
@@ -263,7 +263,7 @@ if __name__ == "__main__":
 	  legend = TLegend(0.42, 0.35, 0.86, 0.75, legLabel)
     
     #legend.SetTextFont(42)
-    legend.AddEntry(g_limit, "Observed (95% CL)","l")
+    #legend.AddEntry(g_limit, "Observed (95% CL)","l")		#uncomm later
     legend.AddEntry(g_mclimit, "Expected (95% CL)","l")
     legend.AddEntry(g_error, "#pm 1 #sigma Expected", "f")
     legend.AddEntry(g_error95, "#pm 2 #sigma Expected", "f")
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     text1 = ROOT.TLatex()
     text1.SetNDC()
     text1.SetTextFont(42)
-    text1.DrawLatex(0.2,0.84, "#scale[1.0]{CMS, L = 19.7 fb^{-1} at  #sqrt{s} = 8 TeV}")
+    text1.DrawLatex(0.2,0.84, "#scale[1.0]{CMS, L = 10 fb^{-1} at  #sqrt{s} = 13 TeV}")
     
     text11 = ROOT.TLatex()
     text11.SetTextFont(42)

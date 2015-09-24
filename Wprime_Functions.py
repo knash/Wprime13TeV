@@ -22,6 +22,8 @@ import glob
 import math
 import ROOT
 import sys
+import math
+from math import sqrt
 from array import *
 from ROOT import *
 
@@ -31,7 +33,7 @@ from DataFormats.FWLite import Events, Handle
 #If I wanted to access the left handed W' cross section at 1900 GeV I could do Xsecl1900 = LoadConstants()['xsec_wpl']['1900']
 def LoadConstants():
 	 return  {
-		'lumi':5000.0,
+		'lumi':10000.0,
 		'ttagsf':1.0,
 		'xsec_wpr':{'1300':2.9615,'2000':0.21351,'2700':0.041294},
 		'xsec_wpl':{'1700': 0.20028183251999998, '2200': 0.12110620368, '2100': 0.12566885759999999, '1300': 0.50971714199999996, '1800': 0.1740819102, '1600': 0.25585124993999997, '2000': 0.13701113712000001, '2700': 0.11197266959999999, '1500': 0.31458947519999991, '2900': 0.11225782920000001, '3000': 0.11240040900000001, '2400': 0.11543941529999999, '2300': 0.11660361635999998, '2600': 0.11313865133999999, '2800': 0.11213426004, '1400': 0.40551726599999999, '1900': 0.14849230967999999, '2500': 0.11430079584},
@@ -40,11 +42,11 @@ def LoadConstants():
 		'xsec_qcd':{'300':7823,'470':648.2,'600':186.9,'800':32.293,'1000':9.4183,'1400':0.84265,'800_BROKEN':32.293,'FLAT7000':2022100000},
 
 		'xsec_st':{'s':3.79,'sB':1.76,'t':56.4,'tB':30.7,'tW':11.1,'tWB':11.1},
-		'nev_wpr':{'1300':129000,'2000':119000,'2700':105000},
+		'nev_wpr':{'1300':292000,'2000':148000,'2700':129000},
 		'nev_wpl':{'2000':474565,},
 		'nev_wplr':{'2000':468663,},
-		'nev_ttbar':{'MG':7533905},
-		'nev_qcd':{'300':299282,'470':143594,'600':199880,'800':199872,'1000':149952,'800_BROKEN':1987472,'FLAT7000':209851.27},
+		'nev_ttbar':{'MG':4986320},
+		'nev_qcd':{'300':2930578,'470':1939229,'600':1890256,'800':1911296,'1000':1461216,'1400':197959,'FLAT7000':209851.27},
 		'nev_st':{'s':259176,'sB':139604,'t':3748155,'tB':1930185,'tW':495559,'tWB':491463},
 		}
 
@@ -56,13 +58,13 @@ def LoadCuts(TYPE):
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[3,10],
 			'tau32':[0.0,0.61],
 			'minmass':[50.0,float("inf")],
-			'sjbtag':[0.814,1.0],
+			'sjbtag':[0.890,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.814,1.0],
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -72,13 +74,13 @@ def LoadCuts(TYPE):
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[1,3],
 			'tau32':[0.0,1.0],
 			'minmass':[0.0,float("inf")],
-			'sjbtag':[0.814,1.0],
+			'sjbtag':[0.890,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.814,1.0],
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -89,13 +91,13 @@ def LoadCuts(TYPE):
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[3,10],
 			'tau32':[0.0,1.0],
 			'minmass':[50.0,float("inf")],
 			'sjbtag':[0.0,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.814,1.0],
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -105,46 +107,81 @@ def LoadCuts(TYPE):
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[1,3],
 			'tau32':[0.0,1.0],
 			'minmass':[0.0,float("inf")],
 			'sjbtag':[0.0,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.814,1.0],
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
 			}
 
-	if TYPE=='sideband1':
+	if TYPE=='sideband1':	
  		return  {
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[3,10],
-			'tau32':[0.61,1.0],
+			'tau32':[0.61,1.0],	#
 			'minmass':[0.0,50.0],
-			'sjbtag':[0.814,1.0],
+			'sjbtag':[0.890,1.0],
 			'bmass':[0.0,70.0],
-			'btag':[0.814,1.0],
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
 			}
+
+	if TYPE=='rate_sideband1':	#minmass inv
+ 		return  {
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
+			'dy':[0.0,1.6],
+			'tmass':[130.0,200.0],
+			'nsubjets':[0,3],
+			'tau32':[0.0,1.0],	#
+			'minmass':[0.0,float("inf")],
+			'sjbtag':[0.890,1.0],
+			'bmass':[0.0,70.0],
+			'btag':[0.890,1.0],
+			'eta1':[0.0,0.5],
+			'eta2':[0.5,1.15],	
+			'eta3':[1.15,2.4]
+			}
+
 	if TYPE=='sideband2':
  		return  {
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[3,10],
-			'tau32':[0.0,0.61],
+			'tau32':[0.0,0.61],	#
 			'minmass':[50.0,float("inf")],
-			'sjbtag':[0.0,0.814],
+			'sjbtag':[0.0,0.890],
 			'bmass':[0.0,70.0],
-			'btag':[0.814,1.0],
+			'btag':[0.890,1.0],
+			'eta1':[0.0,0.5],
+			'eta2':[0.5,1.15],	
+			'eta3':[1.15,2.4]
+			}
+
+	if TYPE=='rate_sideband2':	#Sjbtag inv
+ 		return  {
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
+			'dy':[0.0,1.6],
+			'tmass':[130.0,200.0],
+			'nsubjets':[0,3],
+			'tau32':[0.0,1.0],	#
+			'minmass':[0.0,float("inf")],
+			'sjbtag':[0.0,0.890],
+			'bmass':[0.0,70.0],
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
@@ -155,17 +192,34 @@ def LoadCuts(TYPE):
 			'bpt':[350.0,float("inf")],
 			'tpt':[350.0,float("inf")],
 			'dy':[0.0,1.6],
-			'tmass':[138.0,188.0],
+			'tmass':[130.0,200.0],
 			'nsubjets':[3,10],
 			'tau32':[0.0,0.61],
 			'minmass':[50.0,float("inf")],
-			'sjbtag':[0.814,1.0],
-			'bmass':[70.0,float("inf")],
-			'btag':[0.814,1.0],
+			'sjbtag':[0.890,1.0],
+			'bmass':[70.0,float("inf")],	#inverted for lots of ttbar
+			'btag':[0.890,1.0],
 			'eta1':[0.0,0.5],
 			'eta2':[0.5,1.15],	
 			'eta3':[1.15,2.4]
 			}
+	if TYPE=='rate_sideband3':
+ 		return  {
+			'bpt':[350.0,float("inf")],
+			'tpt':[350.0,float("inf")],
+			'dy':[0.0,1.6],
+			'tmass':[130.0,200.0],
+			'nsubjets':[1,3],
+			'tau32':[0.0,1.0],
+			'minmass':[0.0,float("inf")],
+			'sjbtag':[0.890,1.0],
+			'bmass':[0.0,70.0],	
+			'btag':[0.890,1.0],
+			'eta1':[0.0,0.5],
+			'eta2':[0.5,1.15],	
+			'eta3':[1.15,2.4]
+			}
+
 
 #This function loads up Ntuples based on what type of set you want to analyze.  
 #This needs to be updated whenever new Ntuples are produced (unless the file locations are the same).
@@ -178,18 +232,20 @@ def Load_Ntuples(string,bx):
 	#	files += glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012D-22Jan2013/res/*.root")
 	if string == 'ttbar':
 		#files = glob.glob("/eos/uscms/store/user/srappocc/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150522_160344/0000/*.root")
-		files = glob.glob("/eos/uscms/store/user/knash/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/150608_221852/0000/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150617_183103/0000/*.root")
 
 	if string == 'QCDPT300':
-		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
 	if string == 'QCDPT470':
-		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/*/*/*.root")
 	if string == 'QCDPT600':
-		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/*/*/*.root")
 	if string == 'QCDPT800':
-		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/*/*/*.root")
 	if string == 'QCDPT1000':
-		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt25nsRecodebug_MCRUN2_74_V9-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/*/*/*.root")
+	if string == 'QCDPT1400':
+		files = glob.glob("/eos/uscms/store/user/knash/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/crab_b2ganafw741_QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/*/*/*.root")
 	if string == 'QCDHT1000':
 		files = glob.glob("/eos/uscms/store/user/devdatta/QCD_HT_1000ToInf_13TeV-madgraph/B2GAnaFW_PHYS14/*/*/*.root")
 	if string == 'QCDPT800_BROKEN':
@@ -222,12 +278,23 @@ def Load_Ntuples(string,bx):
 #	if string == 'singletop_tWB':
 #		files = glob.glob("/uscms_data/d3/knash/WPrime8TeV/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/singletop_tWB/res/*.root" )
 
+
+#25ns signal samples
+#	if string == 'signalright2700':
+#		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2700_25ns_take2/150602_194116/0000/*.root" )
+#	if string == 'signalright2000':
+#		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2000_25ns_take2/150602_193949/0000/*.root" )
+#	if string == 'signalright1300':
+#		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M1300_25ns_take2/150602_194037/0000/*.root" )
+	
+
+
 	if string == 'signalright2700':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2700_25ns_take2/150602_194116/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_50ns_take1/WPrime13TeV_B2GAnaFW_741_M2700_50ns/150624_195729/0000/*.root" )
 	if string == 'signalright2000':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2000_25ns_take2/150602_193949/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_50ns_take1/WPrime13TeV_B2GAnaFW_741_M2000_50ns/150624_195714/0000/*.root" )
 	if string == 'signalright1300':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M1300_25ns_take2/150602_194037/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_50ns_take1/WPrime13TeV_B2GAnaFW_741_M1300_50ns/150624_195525/0000/*.root" )
 
 	try:
 		print 'A total of ' + str(len(files)) + ' files'
@@ -439,7 +506,8 @@ def Fit_Uncertainty(List):
 	sigmah	    = List[0]
 	fits=len(List)-1
 	for ihist in range(0,len(List)):
-		if List[ihist].GetName() == 'QCDbkgBifpoly':
+		print List[ihist].GetName()
+		if List[ihist].GetName().find('Bifpoly') != -1:
 			nominalhist = List[ihist]
 	for ibin in range(0,nominalhist.GetXaxis().GetNbins()+1):
 
@@ -447,7 +515,7 @@ def Fit_Uncertainty(List):
 		sigma=0.0
 		sumsqdiff = 0.0
 		for ihist in range(0,len(List)):
-			if List[ihist].GetName() != 'QCDbkgBifpoly':
+			if List[ihist].GetName().find('Bifpoly') == -1:
 				sumsqdiff+=(List[ihist].GetBinContent(ibin)-nominalhist.GetBinContent(ibin))*(List[ihist].GetBinContent(ibin)-nominalhist.GetBinContent(ibin))
 		mse = sumsqdiff/fits
 		sigma = sqrt(mse)
@@ -472,7 +540,7 @@ def Make_Pull_plot( DATA,BKG,BKGUP,BKGDOWN ):
 			FSerr = DATA.GetBinErrorUp(ibin)
 			BKGerr = abs(BKGDOWN.GetBinContent(ibin)-BKG.GetBinContent(ibin))
 		sigma = sqrt(FSerr*FSerr + BKGerr*BKGerr)
-		if FScont < 0.99:
+		if FScont == 0.0:
 			pull.SetBinContent(ibin, 0.0 )	
 		else:
 			if sigma != 0 :

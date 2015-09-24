@@ -8,15 +8,12 @@ def build_allhad_model():
     model.fill_histogram_zerobins()
     model.set_signal_processes('wp*')
     for p in model.processes:
-       if p=='qcd': continue
-       if p!='ttbar':
-       		model.add_lognormal_uncertainty('lumi', 0.026, p)
-       		model.add_lognormal_uncertainty('CAbtag', math.log(1.02), p)
-       		model.add_lognormal_uncertainty('subjet_scalefactor', math.log(1.125), p)
-    model.add_lognormal_uncertainty('schannel_rate', math.log(1.30), 'sts')
-    model.add_lognormal_uncertainty('tchannel_rate', math.log(1.15), 'stt')
-    model.add_lognormal_uncertainty('tW_rate', math.log(1.20), 'sttw')
-    model.add_lognormal_uncertainty('ttbar_rate', math.log(1.19), 'ttbar')
+       	if p=='qcd': continue
+       	if p=='ttbar':
+       		model.add_lognormal_uncertainty('overall_ttbar', math.log(1.25), p)
+       		continue 
+   
+       	model.add_lognormal_uncertainty('overall_signal', math.log(1.15), p)
     return model
 
 def limits_allhad(model, step = 1):

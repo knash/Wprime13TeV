@@ -57,28 +57,51 @@ for f in files_to_sum:
 	commands.append('rm '+f) 
 	commands.append('hadd ' + f + " " + f.replace('_PSET','_job*_PSET') )
 	commands.append('mv ' +  f.replace('_PSET','_job*_PSET') + ' temprootfiles/')
-	commands.append('mv ' +  f + ' rootfiles/')
+	#commands.append('mv ' +  f + ' rootfiles/')
 
-ttbarfiles = sorted(glob.glob('TBanalyzerttbar700*_PSET_'+cuts+'.root'))
-for f in ttbarfiles:
-	basename = f.replace('700','')
-	name700 = f
-	name1000 = f.replace('700','1000')
+#ttbarfiles = sorted(glob.glob('TBanalyzerttbar700*_PSET_'+cuts+'.root'))
+#for f in ttbarfiles:
+#	basename = f.replace('700','')
+#	name700 = f
+#	name1000 = f.replace('700','1000')
 
-	scalestr = ''
+#	scalestr = ''
 
-	if name700.find('ttbar700scaleup') != -1:
-		scalestr = 'scaleup'
-	if name700.find('ttbar700scaledown') != -1:
-		scalestr = 'scaledown'
+#	if name700.find('ttbar700scaleup') != -1:
+#		scalestr = 'scaleup'
+#	if name700.find('ttbar700scaledown') != -1:
+#		scalestr = 'scaledown'
 
-	commands.append('rm ' + basename)
-	commands.append('python HistoWeight.py -i '+name700+' -o temprootfiles/'+name700.replace('.root','')+'weighted.root -w ' + str(lumi*xsec_ttbar['700']*ttagsf/nev_ttbar['700'+scalestr]))
-	commands.append('python HistoWeight.py -i '+name1000+' -o temprootfiles/'+name1000.replace('.root','')+'weighted.root -w ' + str(lumi*xsec_ttbar['1000']*ttagsf/nev_ttbar['1000'+scalestr]))
-	commands.append('hadd '+basename+' temprootfiles/'+name700.replace('.root','')+'weighted.root temprootfiles/'+name1000.replace('.root','')+'weighted.root')
-	commands.append('mv ' + name700 + ' ' + name1000 + ' temprootfiles/')
-	commands.append('mv ' + basename + ' rootfiles/')
+#	commands.append('rm ' + basename)
+#	commands.append('python HistoWeight.py -i '+name700+' -o temprootfiles/'+name700.replace('.root','')+'weighted.root -w ' + str(lumi*xsec_ttbar['700']*ttagsf/nev_ttbar['700'+scalestr]))
+#	commands.append('python HistoWeight.py -i '+name1000+' -o temprootfiles/'+name1000.replace('.root','')+'weighted.root -w ' + str(lumi*xsec_ttbar['1000']*ttagsf/nev_ttbar['1000'+scalestr]))
+#	commands.append('hadd '+basename+' temprootfiles/'+name700.replace('.root','')+'weighted.root temprootfiles/'+name1000.replace('.root','')+'weighted.root')
+#	commands.append('mv ' + name700 + ' ' + name1000 + ' temprootfiles/')
+#	commands.append('mv ' + basename + ' rootfiles/')
 
+commands.append('rm rootfiles/TBanalyzerttbar_PSET_'+cuts+'.root') #removes old file with same name in /rootfiles/
+commands.append('python HistoWeight.py -i TBanalyzerttbar_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root -o rootfiles/TBanalyzerttbar_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_ttbar['MG']*ttagsf/nev_ttbar['MG']))
+commands.append('mv TBanalyzerttbar_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root temprootfiles/')
+
+ptarray = [300, 470, 600, 800, 1000, 1400]
+
+commands.append('rm ' + 'TBanalyzerQCDPT_PSET_'+cuts+'weighted.root')
+commands.append('rm ' + 'TBanalyzerQCDPT_PSET_'+cuts+'.root')
+commands.append('hadd ' + 'TBanalyzerQCD_PSET_'+cuts+'.root' + " " +'TBanalyzerQCDPT*_PSET_'+cuts+'.root')	#adds the separated pt files into one
+
+for pti in ptarray:
+	pt = str(pti)
+	commands.append('rm ' + 'TBanalyzerQCDPT'+pt+'_PSET_'+cuts+'weighted.root')	#remove old weighted pt file
+	commands.append('python HistoWeight.py -i TBanalyzerQCDPT'+pt+'_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root -o TBanalyzerQCDPT'+pt+'_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_qcd[pt]*ttagsf/nev_qcd[pt])) #weights individual pt files by their appropriate weight
+	
+commands.append('hadd ' + 'TBanalyzerQCD_PSET_'+cuts+'weighted.root' + " " + 'TBanalyzerQCDPT*_PSET_'+cuts+'weighted.root') #adds the separated weighted files together
+commands.append('mv ' + 'TBanalyzerQCDPT*_PSET_'+cuts+'.root' + " " + 'temprootfiles/')		#moves the individual pt files to temp
+commands.append('mv ' + 'TBanalyzerQCDPT*_PSET_'+cuts+'weighted.root' + " " + 'temprootfiles/')	#moves the invididual weighted pt files to temp
+
+commands.append('rm ' + 'temprootfiles/TBanalyzerQCD_PSET_'+cuts+'.root')
+commands.append('rm ' + 'rootfiles/TBanalyzerQCD_PSET_'+cuts+'weighted.root')
+commands.append('mv ' + 'TBanalyzerQCD_PSET_'+cuts+'.root' + " " + 'temprootfiles/')
+commands.append('mv ' + 'TBanalyzerQCD_PSET_'+cuts+'weighted.root' + " " + 'rootfiles/')
 
 for coup in ['right','left','mixed']:
 	sigfiles = sorted(glob.glob('TBanalyzersignal'+coup+'*_PSET_'+cuts+'.root'))
@@ -100,18 +123,18 @@ for coup in ['right','left','mixed']:
 		commands.append('mv '+f.replace('TBanalyzersignal'+coup,'TBanalyzerweightedsignal'+coup)+' rootfiles/')
 
 
-stfiles = sorted(glob.glob('TBanalyzersingletop_*_Trigger_nominal_none_PSET_'+cuts+'.root'))
+#rstfiles = sorted(glob.glob('TBanalyzersingletop_*_Trigger_nominal_none_PSET_'+cuts+'.root'))
 
-for f in stfiles:
-	print f
-	channel = f.replace('TBanalyzersingletop_','').replace('_Trigger_nominal_none_PSET_'+cuts+'.root','')
-	print channel
-	xsec_ST = xsec_st[channel]
-	nev_ST = nev_st[channel]
-	commands.append('rm ' + f.replace('TBanalyzersingletop_','TBanalyzerweightedsingletop_'))	 
-	commands.append('python HistoWeight.py -i '+f+' -o '+f.replace('TBanalyzersingletop_','TBanalyzerweightedsingletop_')+' -w ' + str(lumi*xsec_ST*ttagsf/nev_ST))
-	commands.append('mv '+f+' temprootfiles/')
-	commands.append('mv '+f.replace('TBanalyzersingletop_','TBanalyzerweightedsingletop_')+' rootfiles/')
+#for f in stfiles:
+#	print f
+#	channel = f.replace('TBanalyzersingletop_','').replace('_Trigger_nominal_none_PSET_'+cuts+'.root','')
+#	print channel
+#	xsec_ST = xsec_st[channel]
+#	nev_ST = nev_st[channel]
+#	commands.append('rm ' + f.replace('TBanalyzersingletop_','TBanalyzerweightedsingletop_'))	 
+#	commands.append('python HistoWeight.py -i '+f+' -o '+f.replace('TBanalyzersingletop_','TBanalyzerweightedsingletop_')+' -w ' + str(lumi*xsec_ST*ttagsf/nev_ST))
+#	commands.append('mv '+f+' temprootfiles/')
+#	commands.append('mv '+f.replace('TBanalyzersingletop_','TBanalyzerweightedsingletop_')+' rootfiles/')
 
 
 
