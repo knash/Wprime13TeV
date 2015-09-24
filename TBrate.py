@@ -57,7 +57,7 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
                   dest		=	'cuts',
                   help		=	'Cuts type (ie default, rate, etc)')
 parser.add_option('-b', '--bx', metavar='F', type='string', action='store',
-                  default	=	'25ns',
+                  default	=	'50ns',
                   dest		=	'bx',
                   help		=	'bunch crossing 50ns or 25ns')
 
@@ -65,7 +65,7 @@ parser.add_option('-b', '--bx', metavar='F', type='string', action='store',
 
 (options, args) = parser.parse_args()
 
-gROOT.Macro("rootlogon.C")
+
 
 tname = options.tname.split(',')
 tnamestr = ''
@@ -89,7 +89,7 @@ if options.grid == 'on':
 	di = "tardir/"
 	sys.path.insert(0, 'tardir/')
 
-
+gROOT.Macro(di+"rootlogon.C")
 import Wprime_Functions	
 from Wprime_Functions import *
 
@@ -136,7 +136,7 @@ if options.set != 'data':
 	#Load up scale factors (to be used for MC only)
 
 	#TrigFile = TFile(di+"Triggerweight_"+options.set+".root")
-	TrigFile = TFile(di+"Triggerweight_signalright2000.root")
+	TrigFile = TFile(di+"Triggerweight_signalright2000btags.root")
 	TrigPlot = TrigFile.Get("TriggerWeight_"+tnamestr)
 
 	#PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
@@ -154,6 +154,12 @@ events = Events (files)
 
 AK8HL = Initlv("jetsAK8")
 	
+
+GeneratorHandle 	= 	Handle (  "GenEventInfoProduct")
+GeneratorLabel  	= 	( "generator" , "")
+
+
+
 BDiscHandle 	= 	Handle (  "vector<float> "  )
 BDiscLabel  	= 	( "jetsAK8" , "jetAK8CSV")
 
@@ -220,13 +226,15 @@ print "Creating histograms"
 #Define Histograms
 f.cd()
 #---------------------------------------------------------------------------------------------------------------------#
-pteta1pretag          = TH1D("pteta1pretag",           "b Probe pt in 0<Eta<0.6",             400,  0,  2000 )
-pteta2pretag          = TH1D("pteta2pretag",           "b Probe pt in 0.6<Eta<1.25",             400,  0,  2000 )
-pteta3pretag          = TH1D("pteta3pretag",           "b Probe pt in 1.25<Eta<2.5",             400,  0,  2000 )
+Nevents	    = TH1F("Nevents",     	  "mass of tb",     	  	         5, 0., 5. )
 
-pteta1          = TH1D("pteta1",           "b pt in 0<Eta<0.6",             400,  0,  2000 )
-pteta2          = TH1D("pteta2",           "b pt in 0.6<Eta<1.25",             400,  0,  2000 )
-pteta3          = TH1D("pteta3",           "b pt in 1.25<Eta<2.5",             400,  0,  2000 )
+pteta1pretag	= TH1D("pteta1pretag",           "b Probe pt in 0<Eta<0.6",             400,  0,  2000 )
+pteta2pretag	= TH1D("pteta2pretag",           "b Probe pt in 0.6<Eta<1.25",          400,  0,  2000 )
+pteta3pretag	= TH1D("pteta3pretag",           "b Probe pt in 1.25<Eta<2.5",          400,  0,  2000 )
+
+pteta1          = TH1D("pteta1",           "b pt in 0<Eta<0.6",             	400,  0,  2000 )
+pteta2          = TH1D("pteta2",           "b pt in 0.6<Eta<1.25",             	400,  0,  2000 )
+pteta3          = TH1D("pteta3",           "b pt in 1.25<Eta<2.5",             	400,  0,  2000 )
 
 pteta1pretag.Sumw2()
 pteta2pretag.Sumw2()
@@ -269,6 +277,12 @@ tree_vars = {"bpt":array('d',[0.]),"bmass":array('d',[0.]),"btag":array('d',[0.]
 Tree = Make_Trees(tree_vars)
 totevents = events.size()
 print str(totevents)  +  ' Events total'
+
+usegenweight = False
+if options.set == "QCDFLAT7000":
+	usegenweight = True
+	print "Using gen weight"
+
 for event in events:
     count	= 	count + 1
     weightSFb = 1.0
@@ -290,6 +304,17 @@ for event in events:
 	if count_index!=num:
 		continue 
 	
+
+
+    if usegenweight:
+
+		try:
+			event.getByLabel (GeneratorLabel, GeneratorHandle)
+    			gen 		= 	GeneratorHandle.product()
+			Nevents.Fill(0.,gen.weightProduct())
+		except:
+			continue 
+
 
     AK8LV = Makelv(AK8HL,event)
 
@@ -351,7 +376,8 @@ for event in events:
 		bjet = bJetsh1[0]
 		tjet = topJetsh0[0]
 
-
+	if abs(bjet.Eta())>2.40 or abs(tjet.Eta())>2.40:
+		continue 
     	weight=1.0
 	#Cuts are loaded from the Wprime_Functions.py file
 	#here bpt[0] is 370 and bpt[1] is inf, so we are making sure the b pt is at least 370 GeV
@@ -359,7 +385,15 @@ for event in events:
     	tpt_cut = tpt[0]<tjet.Perp()<tpt[1]
     	dy_cut = dy[0]<=abs(tjet.Rapidity()-bjet.Rapidity())<dy[1]
     	#We first perform the top and b candidate pt cuts and the deltaY cut
+
+	if usegenweight:
+		try:
+			weight*=gen.weightProduct()
+		except:
+			continue 
+
     	if bpt_cut and tpt_cut and dy_cut: 
+
 		if False:# options.set!="data":
 			#Pileup reweighting is done here 
 			event.getByLabel (puLabel, puHandle)
@@ -438,16 +472,16 @@ for event in events:
 			sjbtag_cut = sjbtag[0]<SJ_csvmax<=sjbtag[1]
 			if sjbtag_cut:
 				bmass_cut = bmass[0]<=topJetMass[bindexval]<bmass[1]
+
 				if bmass_cut:
+
 					eta1_cut = eta1[0]<=abs(bjet.Eta())<eta1[1]
 					eta2_cut = eta2[0]<=abs(bjet.Eta())<eta2[1]
 					eta3_cut = eta3[0]<=abs(bjet.Eta())<eta3[1]
 					#Extract tags and probes for the average b tagging rate here 
 					#We use three eta regions 
 					if eta1_cut:		
-						tbv = tjet
-						tbv+=bjet
-						MtbbptcomparepreSB1e1.Fill(bjet.Perp(),tbv.M(),weight)
+						MtbbptcomparepreSB1e1.Fill(bjet.Perp(),(tjet+bjet).M(),weight)
                 				pteta1pretag.Fill( bjet.Perp(),weight)
                 				if btag_cut :
 							MtbbptcomparepostSB1e1.Fill(bjet.Perp(),(tjet+bjet).M(),weightb)
