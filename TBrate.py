@@ -210,6 +210,12 @@ subjets3indexLabel  	= 	( "jetsAK8" , "jetAK8topSubjetIndex3")
 #subjetKeysAK8Handle 	= 	Handle (  "vector<vector<int> >"  )
 #subjetKeysAK8Label  	= 	( "subjetKeysAK8" , "")
 
+TstrHandle 	= 	Handle (  "vector<string>"  )
+TstrLabel  	= 	( "TriggerUserData" , "triggerNameTree")
+
+TbitHandle 	= 	Handle (  "vector<float>"  )
+TbitLabel  	= 	( "TriggerUserData" , "triggerBitTree")
+
 #---------------------------------------------------------------------------------------------------------------------#
 
 #Create the output file
@@ -422,12 +428,22 @@ for event in events:
                 	btag_cut = btag[0]<bJetBDisc[bindexval]<=btag[1]
 
 			ht = tjet.Perp() + bjet.Perp()
-			if tname != [] and options.set!='data' :
+			if options.tname != 'none' and options.set!='data' :
 				
 				#Trigger reweighting done here
 				TRW = Trigger_Lookup( ht , TrigPlot )
 				weight*=TRW
 
+			if options.tname != 'none' and options.set=='data' :
+    				event.getByLabel (TstrLabel, TstrHandle)
+    				Tstr 		= 	TstrHandle.product() 
+
+    				event.getByLabel (TbitLabel, TbitHandle)
+    				Tbit 		= 	TbitHandle.product() 
+
+
+				if not Trigger_Pass(tname,Tstr,Tbit):
+					continue
 
 
 			if False:#options.ptreweight == "on":

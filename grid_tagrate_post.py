@@ -59,6 +59,8 @@ for f in files_to_sum:
 	commands.append('mv ' +  f.replace('_PSET','_job*_PSET') + ' temprootfiles/')
 	#commands.append('mv ' +  f + ' rootfiles/')
 
+commands.append('mv TBratefiledata_PSET_'+cuts+'.root rootfiles/')
+
 # ttbar weighting and organization
 commands.append('rm rootfiles/TBratefilettbar_PSET_'+cuts+'weighted.root') #removes old weighted file with same name in /rootfiles/
 commands.append('python HistoWeight.py -i TBratefilettbar_PSET_'+cuts+'.root -o rootfiles/TBratefilettbar_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_ttbar['MG']*ttagsf/nev_ttbar['MG']))
@@ -68,22 +70,22 @@ commands.append('mv TBratefilettbar_PSET_'+cuts+'weighted.root rootfiles/')
 # QCD weighting and organization
 ptarray = [300, 470, 600, 800, 1000, 1400]
 
-commands.append('rm ' + 'TBratefileQCD_PSET_'+cuts+'weighted.root')
-commands.append('rm ' + 'TBratefileQCD_PSET_'+cuts+'.root')
-commands.append('hadd ' + 'TBratefileQCD_PSET_'+cuts+'.root' + " " +'TBratefileQCDPT*_PSET_'+cuts+'.root')	#adds the separated pt files into one
-for pti in ptarray:
-	pt = str(pti)
-	commands.append('rm ' + 'TBratefileQCDPT'+pt+'_PSET_'+cuts+'weighted.root')
-	commands.append('python HistoWeight.py -i TBratefileQCDPT'+pt+'_PSET_'+cuts+'.root -o TBratefileQCDPT'+pt+'_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_qcd[pt]*ttagsf/nev_qcd[pt])) #weights individual pt files by their appropriate weight
+#commands.append('rm ' + 'TBratefileQCD_PSET_'+cuts+'weighted.root')
+#commands.append('rm ' + 'TBratefileQCD_PSET_'+cuts+'.root')
+#commands.append('hadd ' + 'TBratefileQCD_PSET_'+cuts+'.root' + " " +'TBratefileQCDPT*_PSET_'+cuts+'.root')	#adds the separated pt files into one
 
-commands.append('hadd ' + 'TBratefileQCD_PSET_'+cuts+'weighted.root' + " " + 'TBratefileQCDPT*_PSET_'+cuts+'weighted.root') #adds the separated weighted files together	
-#commands.append('mv ' + 'TBratefileQCDPT*_PSET_'+cuts+'.root' + " " + 'temprootfiles/')		#moves the individual pt files to temp
-commands.append('mv ' + 'TBratefileQCDPT*_PSET_'+cuts+'weighted.root' + " " + 'temprootfiles/')	#moves the invididual weighted pt files to temp
+#for pti in ptarray:
+#	pt = str(pti)
+#	commands.append('rm ' + 'TBratefileQCDPT'+pt+'_PSET_'+cuts+'weighted.root')
+#	commands.append('python HistoWeight.py -i TBratefileQCDPT'+pt+'_PSET_'+cuts+'.root -o TBratefileQCDPT'+pt+'_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_qcd[pt]*ttagsf/nev_qcd[pt])) #weights individual pt files by their appropriate weight
 
-commands.append('rm temprootfiles/TBratefileQCD_PSET_'+cuts+'.root')		#removes prexisting ratefile
-commands.append('rm rootfiles/TBratefileQCD_PSET_'+cuts+'weighted.root')	#removes prexisting weighted ratefile
-commands.append('mv TBratefileQCD_PSET_'+cuts+'.root temprootfiles/')		#moves new ratefile to /temprootfiles
-commands.append('mv TBratefileQCD_PSET_'+cuts+'weighted.root rootfiles/')	#moves new weighted ratefile to /rootfiles
+#commands.append('hadd ' + 'TBratefileQCD_PSET_'+cuts+'weighted.root' + " " + 'TBratefileQCDPT*_PSET_'+cuts+'weighted.root') #adds the separated weighted files together	
+#commands.append('mv ' + 'TBratefileQCDPT*_PSET_'+cuts+'weighted.root' + " " + 'temprootfiles/')	#moves the invididual weighted pt files to temp
+
+#commands.append('rm temprootfiles/TBratefileQCD_PSET_'+cuts+'.root')		#removes prexisting ratefile
+#commands.append('rm rootfiles/TBratefileQCD_PSET_'+cuts+'weighted.root')	#removes prexisting weighted ratefile
+#commands.append('mv TBratefileQCD_PSET_'+cuts+'.root temprootfiles/')		#moves new ratefile to /temprootfiles
+#commands.append('mv TBratefileQCD_PSET_'+cuts+'weighted.root rootfiles/')	#moves new weighted ratefile to /rootfiles
 
 
 

@@ -59,6 +59,12 @@ for f in files_to_sum:
 	commands.append('mv ' +  f.replace('_PSET','_job*_PSET') + ' temprootfiles/')
 	#commands.append('mv ' +  f + ' rootfiles/')
 
+commands.append('cp TBanalyzerdata_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root'+' '+'TBanalyzerdata_PSET_'+cuts+'.root')
+#renaming because of long trigger name; should fix later in analyzer file
+commands.append('rm TBanalyzerdata_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root')
+commands.append('rm rootfiles/TBanalyzerdata_PSET_'+cuts+'.root')
+commands.append('mv TBanalyzerdata_PSET_'+cuts+'.root rootfiles/')
+
 #ttbarfiles = sorted(glob.glob('TBanalyzerttbar700*_PSET_'+cuts+'.root'))
 #for f in ttbarfiles:
 #	basename = f.replace('700','')
@@ -83,25 +89,31 @@ commands.append('rm rootfiles/TBanalyzerttbar_PSET_'+cuts+'.root') #removes old 
 commands.append('python HistoWeight.py -i TBanalyzerttbar_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root -o rootfiles/TBanalyzerttbar_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_ttbar['MG']*ttagsf/nev_ttbar['MG']))
 commands.append('mv TBanalyzerttbar_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root temprootfiles/')
 
+
+# QCD weighting and organization 
 ptarray = [300, 470, 600, 800, 1000, 1400]
 
-commands.append('rm ' + 'TBanalyzerQCDPT_PSET_'+cuts+'weighted.root')
-commands.append('rm ' + 'TBanalyzerQCDPT_PSET_'+cuts+'.root')
-commands.append('hadd ' + 'TBanalyzerQCD_PSET_'+cuts+'.root' + " " +'TBanalyzerQCDPT*_PSET_'+cuts+'.root')	#adds the separated pt files into one
+if False: #disabled for data
+	commands.append('rm ' + 'TBanalyzerQCDPT_PSET_'+cuts+'weighted.root')
+	commands.append('rm ' + 'TBanalyzerQCDPT_PSET_'+cuts+'.root')
+	commands.append('hadd ' + 'TBanalyzerQCD_PSET_'+cuts+'.root' + " " +'TBanalyzerQCDPT*_PSET_'+cuts+'.root')	#adds the separated pt files into one
 
-for pti in ptarray:
-	pt = str(pti)
-	commands.append('rm ' + 'TBanalyzerQCDPT'+pt+'_PSET_'+cuts+'weighted.root')	#remove old weighted pt file
-	commands.append('python HistoWeight.py -i TBanalyzerQCDPT'+pt+'_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root -o TBanalyzerQCDPT'+pt+'_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_qcd[pt]*ttagsf/nev_qcd[pt])) #weights individual pt files by their appropriate weight
+	for pti in ptarray:
+		pt = str(pti)
+		commands.append('rm ' + 'TBanalyzerQCDPT'+pt+'_PSET_'+cuts+'weighted.root')	#remove old weighted pt file
+		commands.append('python HistoWeight.py -i TBanalyzerQCDPT'+pt+'_Trigger_HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1_none_PSET_'+cuts+'.root -o TBanalyzerQCDPT'+pt+'_PSET_'+cuts+'weighted.root -w ' + str(lumi*xsec_qcd[pt]*ttagsf/nev_qcd[pt])) #weights individual pt files by their appropriate weight
 	
-commands.append('hadd ' + 'TBanalyzerQCD_PSET_'+cuts+'weighted.root' + " " + 'TBanalyzerQCDPT*_PSET_'+cuts+'weighted.root') #adds the separated weighted files together
-commands.append('mv ' + 'TBanalyzerQCDPT*_PSET_'+cuts+'.root' + " " + 'temprootfiles/')		#moves the individual pt files to temp
-commands.append('mv ' + 'TBanalyzerQCDPT*_PSET_'+cuts+'weighted.root' + " " + 'temprootfiles/')	#moves the invididual weighted pt files to temp
+	commands.append('hadd ' + 'TBanalyzerQCD_PSET_'+cuts+'weighted.root' + " " + 'TBanalyzerQCDPT*_PSET_'+cuts+'weighted.root') #adds the separated weighted files together
+	commands.append('mv ' + 'TBanalyzerQCDPT*_PSET_'+cuts+'.root' + " " + 'temprootfiles/')		#moves the individual pt files to temp
+	commands.append('mv ' + 'TBanalyzerQCDPT*_PSET_'+cuts+'weighted.root' + " " + 'temprootfiles/')	#moves the invididual weighted pt files to temp
 
-commands.append('rm ' + 'temprootfiles/TBanalyzerQCD_PSET_'+cuts+'.root')
-commands.append('rm ' + 'rootfiles/TBanalyzerQCD_PSET_'+cuts+'weighted.root')
-commands.append('mv ' + 'TBanalyzerQCD_PSET_'+cuts+'.root' + " " + 'temprootfiles/')
-commands.append('mv ' + 'TBanalyzerQCD_PSET_'+cuts+'weighted.root' + " " + 'rootfiles/')
+	commands.append('rm ' + 'temprootfiles/TBanalyzerQCD_PSET_'+cuts+'.root')
+	commands.append('rm ' + 'rootfiles/TBanalyzerQCD_PSET_'+cuts+'weighted.root')
+	commands.append('mv ' + 'TBanalyzerQCD_PSET_'+cuts+'.root' + " " + 'temprootfiles/')
+	commands.append('mv ' + 'TBanalyzerQCD_PSET_'+cuts+'weighted.root' + " " + 'rootfiles/')
+
+######################################################################################
+
 
 for coup in ['right','left','mixed']:
 	sigfiles = sorted(glob.glob('TBanalyzersignal'+coup+'*_PSET_'+cuts+'.root'))

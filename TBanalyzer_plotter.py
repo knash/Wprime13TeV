@@ -13,6 +13,11 @@ gROOT.Macro("rootlogon.C")
 gROOT.LoadMacro("insertlogo.C+")
 parser = OptionParser()
 
+parser.add_option('-s', '--set', metavar='F', type='string', action='store',
+                  default	=	'data',
+                  dest		=	'set',
+                  help		=	'data or QCD')
+
 parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
                   default	=	'default',
                   dest		=	'cuts',
@@ -88,13 +93,19 @@ ssubs=[]
 ssubsh=[]
 ssubsl=[]
 
+if options.set == 'data':
+	DataB11 = ROOT.TFile("rootfiles/TBanalyzerdata_PSET_"+options.cuts+".root")
+elif options.set == 'QCD':
+	DataB11 = ROOT.TFile("rootfiles/TBanalyzerQCD_PSET_"+options.cuts+"weighted.root")
+else:
+	print 'Error: Set selection invalid.'
 
-DataB11 = ROOT.TFile("rootfiles/TBanalyzerQCD_PSET_"+options.cuts+"weighted.root")
+
 TTmc 	= ROOT.TFile("rootfiles/TBanalyzerttbar_PSET_"+options.cuts+"weighted.root")
 
 DataFS 	= DataB11.Get("Mtb") 			# QCD FS
 DataBE 	= DataB11.Get("QCDbkg") 		# QCDbkg
-DataFS.Add(TTmc.Get("Mtb")) 			# QCD + ttbar
+#DataFS.Add(TTmc.Get("Mtb")) 			# QCD + ttbar
 
 DataBE2d = DataB11.Get("QCDbkg2D") 
 
@@ -386,7 +397,7 @@ bkgline.SetFillColor(0)
 bkgline.SetFillStyle(0)
 
 #leg.AddEntry( DataFS, 'Data', 'P')
-leg.AddEntry( DataFS, 'QCD +t#bar{t} prediction', 'P')
+leg.AddEntry( DataFS, 'Data', 'P')
 leg.AddEntry( DataBE, 'QCD background prediction', 'F')
 leg.AddEntry( TTmcFS, 't#bar{t} MC prediction', 'F')
 #leg.AddEntry( singletop, 'Single top quark MC prediction', 'F')

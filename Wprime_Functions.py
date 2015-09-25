@@ -33,7 +33,7 @@ from DataFormats.FWLite import Events, Handle
 #If I wanted to access the left handed W' cross section at 1900 GeV I could do Xsecl1900 = LoadConstants()['xsec_wpl']['1900']
 def LoadConstants():
 	 return  {
-		'lumi':10000.0,
+		'lumi':40.24,
 		'ttagsf':1.0,
 		'xsec_wpr':{'1300':2.9615,'2000':0.21351,'2700':0.041294},
 		'xsec_wpl':{'1700': 0.20028183251999998, '2200': 0.12110620368, '2100': 0.12566885759999999, '1300': 0.50971714199999996, '1800': 0.1740819102, '1600': 0.25585124993999997, '2000': 0.13701113712000001, '2700': 0.11197266959999999, '1500': 0.31458947519999991, '2900': 0.11225782920000001, '3000': 0.11240040900000001, '2400': 0.11543941529999999, '2300': 0.11660361635999998, '2600': 0.11313865133999999, '2800': 0.11213426004, '1400': 0.40551726599999999, '1900': 0.14849230967999999, '2500': 0.11430079584},
@@ -42,7 +42,7 @@ def LoadConstants():
 		'xsec_qcd':{'300':7823,'470':648.2,'600':186.9,'800':32.293,'1000':9.4183,'1400':0.84265,'800_BROKEN':32.293,'FLAT7000':2022100000},
 
 		'xsec_st':{'s':3.79,'sB':1.76,'t':56.4,'tB':30.7,'tW':11.1,'tWB':11.1},
-		'nev_wpr':{'1300':292000,'2000':148000,'2700':129000},
+		'nev_wpr':{'1300':129000,'2000':119000,'2700':105000},
 		'nev_wpl':{'2000':474565,},
 		'nev_wplr':{'2000':468663,},
 		'nev_ttbar':{'MG':4986320},
@@ -225,11 +225,13 @@ def LoadCuts(TYPE):
 #This needs to be updated whenever new Ntuples are produced (unless the file locations are the same).
 def Load_Ntuples(string,bx):
 	print 'running on ' + string 
-	#if string == 'data':
+	if string == 'data':
 	#	files = glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012A-22Jan2013/res/*.root")
 	#	files += glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012B-22Jan2013/res/*.root")
 	#	files += glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012C-22Jan2013/res/*.root")
 	#	files += glob.glob("/uscms_data/d3/knash/WPrime8TeV/data/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/Run2012D-22Jan2013/res/*.root")
+	#	files = glob.glob("/eos/uscms/store/user/asparker/JetHT/crab_b2ganafw74xV2_JetHT_Run2015B-PromptReco-v1/*/*/*.root")
+		files = glob.glob("/eos/uscms/store/user/jpilot/JetHT/B2GAnaFW_V74x_V43/*/*/*.root")	
 	if string == 'ttbar':
 		#files = glob.glob("/eos/uscms/store/user/srappocc/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150522_160344/0000/*.root")
 		files = glob.glob("/eos/uscms/store/user/knash/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_b2ganafw741_TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150617_183103/0000/*.root")
@@ -278,23 +280,12 @@ def Load_Ntuples(string,bx):
 #	if string == 'singletop_tWB':
 #		files = glob.glob("/uscms_data/d3/knash/WPrime8TeV/CMSSW_5_3_18/src/Analysis/TTBSMPatTuples/test/singletop_tWB/res/*.root" )
 
-
-#25ns signal samples
-#	if string == 'signalright2700':
-#		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2700_25ns_take2/150602_194116/0000/*.root" )
-#	if string == 'signalright2000':
-#		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2000_25ns_take2/150602_193949/0000/*.root" )
-#	if string == 'signalright1300':
-#		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M1300_25ns_take2/150602_194037/0000/*.root" )
-	
-
-
 	if string == 'signalright2700':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_50ns_take1/WPrime13TeV_B2GAnaFW_741_M2700_50ns/150624_195729/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2700GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2700_25ns_take2/150602_194116/0000/*.root" )
 	if string == 'signalright2000':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_50ns_take1/WPrime13TeV_B2GAnaFW_741_M2000_50ns/150624_195714/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M2000GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M2000_25ns_take2/150602_193949/0000/*.root" )
 	if string == 'signalright1300':
-		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_50ns_take1/WPrime13TeV_B2GAnaFW_741_M1300_50ns/150624_195525/0000/*.root" )
+		files = glob.glob("/eos/uscms/store/user/knash/SingletopWprimeTToHad_M1300GeV_right_13TeV-comphep_25ns_take2/WPrime13TeV_B2GAnaFW_741_M1300_25ns_take2/150602_194037/0000/*.root" )
 
 	try:
 		print 'A total of ' + str(len(files)) + ' files'
@@ -310,24 +301,30 @@ def Load_Ntuples(string,bx):
 
 #This is a poorly written function, but I cant think of a better way to do this 
 #It works, but you should be able to just have one input
-def BTR_Init(ST,CUT,di):
+def BTR_Init(ST,CUT,di,setval):
+
+	if setval == "ttbar":
+		setval = "data"
+	
+	print "setval: " + setval
+
 	if ST == 'Bifpoly':
-		TRBPE1 = open(di+"fitdata/bpinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/bpinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/bpinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/bpinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/bpinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/bpinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",BifPoly,0,1400,5)
 		eta2fit = TF1("eta2fit",BifPoly,0,1400,5)
 		eta3fit = TF1("eta3fit",BifPoly,0,1400,5)
 		Params = 5
 	if ST == 'Bifpoly_err':
-		TRBPE1 = open(di+"fitdata/bperrorinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/bperrorinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/bperrorinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/bperrorinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/bperrorinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/bperrorinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit=TF1("eta1fit",BifPolyErr,0,1400,10)
 		eta2fit=TF1("eta2fit",BifPolyErr,0,1400,10)
@@ -335,11 +332,11 @@ def BTR_Init(ST,CUT,di):
 		Params = 10
 
 	if ST == 'pol0':
-		TRBPE1 = open(di+"fitdata/pol0inputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol0input"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol0inputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol0input"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol0inputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol0input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol0',0,1400)
 		eta2fit = TF1("eta2fit",'pol0',0,1400)
@@ -347,11 +344,11 @@ def BTR_Init(ST,CUT,di):
 		Params = 1
 
 	if ST == 'pol2':
-		TRBPE1 = open(di+"fitdata/pol2inputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol2input"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol2inputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol2input"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol2inputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol2input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol2',0,1400)
 		eta2fit = TF1("eta2fit",'pol2',0,1400)
@@ -359,33 +356,33 @@ def BTR_Init(ST,CUT,di):
 		Params = 3
 
 	if ST == 'pol3':
-		TRBPE1 = open(di+"fitdata/pol3inputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol3input"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol3inputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol3input"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol3inputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol3input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol3',0,1400)
 		eta2fit = TF1("eta2fit",'pol3',0,1400)
 		eta3fit = TF1("eta3fit",'pol3',0,1400)
 		Params = 4
 	if ST == 'FIT':
-		TRBPE1 = open(di+"fitdata/newfitinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/newfitinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/newfitinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/newfitinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/newfitinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/newfitinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		eta2fit = TF1("eta2fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		eta3fit = TF1("eta3fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		Params = 4
 	if ST == 'expofit':
-		TRBPE1 = open(di+"fitdata/expoconinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/expoconinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/expoconinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/expoconinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/expoconinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/expoconinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'expo(0) + pol0(2)',0,1400)
 		eta2fit = TF1("eta2fit",'expo(0) + pol0(2)',0,1400)
@@ -472,6 +469,17 @@ def Trigger_Lookup( H , TRP):
                 jetTriggerWeight = TRP.GetBinContent(bin0)
                 Weight = jetTriggerWeight
 	return Weight
+
+def Trigger_Pass(tnamestr,trigs,bits):
+	###TAKE OUT!
+	tnamestr = ['HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p45_v2','HLT_PFHT800_v1']
+
+	for t in range(0,len(trigs)):
+		for tname in tnamestr:	
+			if trigs[t]==tname and bits[t] :
+				return True
+	return False
+
 #This looks up the ttbar pt reweighting scale factor 
 def PTW_Lookup( GP ):
 		genTpt = -100.
