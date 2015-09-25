@@ -28,12 +28,13 @@ from Wprime_Functions import *
 gROOT.Macro("rootlogon.C")
 #gROOT.LoadMacro("insertlogo.C+")
 
-BTR = BTR_Init('Bifpoly',options.cuts,'')
-BTR_err = BTR_Init('Bifpoly_err',options.cuts,'')
+BTR = BTR_Init('Bifpoly',options.cuts,'',options.set)
+BTR_err = BTR_Init('Bifpoly_err',options.cuts,'',options.set)
+
 fittitles = ["pol0","pol2","pol3","FIT","expofit"]
 fits = []
 for fittitle in fittitles:
-	fits.append(BTR_Init(fittitle,options.cuts,''))
+	fits.append(BTR_Init(fittitle,options.cuts,'',options.set))
 
 leg1 = TLegend(0.45,0.57,.84,.78)
 leg1.SetFillColor(0)
@@ -60,8 +61,14 @@ stack3 = THStack("typeb1probeseta3", "; Probe Jet p_{T} (GeV); Events / 50(GeV)"
 stack4 = THStack("typeb1tagseta1", "; b-tagged Jet p_{T} (GeV); Events / 50(GeV)")
 stack5 = THStack("typeb1tagseta2", "; b-tagged Jet p_{T} (GeV); Events / 50(GeV)")
 stack6 = THStack("typeb1tagseta3", "; b-tagged Jet p_{T} (GeV); Events / 50(GeV)")
+
 tagrates = ROOT.TFile("plots/TBrate_Maker_"+options.set+"_PSET_"+options.cuts+".root")
-ratedata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+"weighted.root")
+
+if options.set == "data":
+	ratedata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+".root")
+else:
+	ratedata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+"weighted.root")
+
 ratettbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
 
 tagrateswsig = ROOT.TFile("plots/B_tagging_sigcont.root")

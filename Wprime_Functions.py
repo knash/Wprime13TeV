@@ -280,24 +280,30 @@ def Load_Ntuples(string,bx):
 
 #This is a poorly written function, but I cant think of a better way to do this 
 #It works, but you should be able to just have one input
-def BTR_Init(ST,CUT,di):
+
+def BTR_Init(ST,CUT,di,setval):
+
+	if setval == "ttbar":
+		setval = "data"
+
+
 	if ST == 'Bifpoly':
-		TRBPE1 = open(di+"fitdata/bpinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/bpinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/bpinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/bpinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/bpinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/bpinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",BifPoly,0,1400,5)
 		eta2fit = TF1("eta2fit",BifPoly,0,1400,5)
 		eta3fit = TF1("eta3fit",BifPoly,0,1400,5)
 		Params = 5
 	if ST == 'Bifpoly_err':
-		TRBPE1 = open(di+"fitdata/bperrorinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/bperrorinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/bperrorinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/bperrorinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/bperrorinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/bperrorinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit=TF1("eta1fit",BifPolyErr,0,1400,10)
 		eta2fit=TF1("eta2fit",BifPolyErr,0,1400,10)
@@ -305,11 +311,11 @@ def BTR_Init(ST,CUT,di):
 		Params = 10
 
 	if ST == 'pol0':
-		TRBPE1 = open(di+"fitdata/pol0inputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol0input"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol0inputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol0input"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol0inputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol0input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol0',0,1400)
 		eta2fit = TF1("eta2fit",'pol0',0,1400)
@@ -317,11 +323,11 @@ def BTR_Init(ST,CUT,di):
 		Params = 1
 
 	if ST == 'pol2':
-		TRBPE1 = open(di+"fitdata/pol2inputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol2input"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol2inputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol2input"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol2inputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol2input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol2',0,1400)
 		eta2fit = TF1("eta2fit",'pol2',0,1400)
@@ -329,33 +335,33 @@ def BTR_Init(ST,CUT,di):
 		Params = 3
 
 	if ST == 'pol3':
-		TRBPE1 = open(di+"fitdata/pol3inputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/pol3input"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/pol3inputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/pol3input"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/pol3inputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/pol3input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'pol3',0,1400)
 		eta2fit = TF1("eta2fit",'pol3',0,1400)
 		eta3fit = TF1("eta3fit",'pol3',0,1400)
 		Params = 4
 	if ST == 'FIT':
-		TRBPE1 = open(di+"fitdata/newfitinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/newfitinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/newfitinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/newfitinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/newfitinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/newfitinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		eta2fit = TF1("eta2fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		eta3fit = TF1("eta3fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
 		Params = 4
 	if ST == 'expofit':
-		TRBPE1 = open(di+"fitdata/expoconinputQCDeta1_PSET_"+CUT+".txt")
+		TRBPE1 = open(di+"fitdata/expoconinput"+setval+"eta1_PSET_"+CUT+".txt")
 		TRBPE1.seek(0)
-		TRBPE2 = open(di+"fitdata/expoconinputQCDeta2_PSET_"+CUT+".txt")
+		TRBPE2 = open(di+"fitdata/expoconinput"+setval+"eta2_PSET_"+CUT+".txt")
 		TRBPE2.seek(0)
-		TRBPE3 = open(di+"fitdata/expoconinputQCDeta3_PSET_"+CUT+".txt")
+		TRBPE3 = open(di+"fitdata/expoconinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
 		eta1fit = TF1("eta1fit",'expo(0) + pol0(2)',0,1400)
 		eta2fit = TF1("eta2fit",'expo(0) + pol0(2)',0,1400)
@@ -442,6 +448,17 @@ def Trigger_Lookup( H , TRP):
                 jetTriggerWeight = TRP.GetBinContent(bin0)
                 Weight = jetTriggerWeight
 	return Weight
+
+def Trigger_Pass(tnamestr,trigs,bits):
+	###TAKE OUT!
+	tnamestr = ['HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p45_v2','HLT_PFHT800_v1']
+
+	for t in range(0,len(trigs)):
+		for tname in tnamestr:	
+			if trigs[t]==tname and bits[t] :
+				return True
+	return False
+
 #This looks up the ttbar pt reweighting scale factor 
 def PTW_Lookup( GP ):
 		genTpt = -100.

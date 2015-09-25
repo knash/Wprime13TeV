@@ -125,9 +125,9 @@ print "Running on "+options.set
 #Load up data and ttbar
 if options.set == 'data':
 	fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+".root")
-	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+".root")
+	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
 #for QCD only
-else:
+if options.set=='QCD':
 	fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+"weighted.root")
 	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
 
@@ -972,9 +972,21 @@ for ibin in range(0,len(bins2)-1):
 		print neta1.Integral(bin1,bin2,0,-1)
 		print deta1.Integral(bin1,bin2,0,-1)
 
-		vavg1.append(pre1[ibin].Integral()/dpre1[ibin].Integral())
-		vavg2.append(pre2[ibin].Integral()/dpre2[ibin].Integral())
-		vavg3.append(pre3[ibin].Integral()/dpre3[ibin].Integral())
+		if dpre1[ibin].Integral() == 0:
+			vavg1.append(0)
+		else:
+			vavg1.append(pre1[ibin].Integral()/dpre1[ibin].Integral())
+	
+		if dpre2[ibin].Integral() == 0:
+			vavg2.append(0)
+		else:
+			vavg2.append(pre2[ibin].Integral()/dpre2[ibin].Integral())
+
+		if dpre3[ibin].Integral() == 0:
+			vavg3.append(0)
+		else:
+			vavg3.append(pre3[ibin].Integral()/dpre3[ibin].Integral())
+
 
 		tempbin1 = 0
 		error1 = ROOT.Double(1.0)

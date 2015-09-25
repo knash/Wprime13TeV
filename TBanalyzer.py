@@ -103,6 +103,14 @@ for iname in range(0,len(tname)):
 	if iname!=len(tname)-1:
 		tnamestr+='OR'
 
+if tnamestr='HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1ORHLT_PFHT900_v1':
+	tnameformat='nominal'
+elif tnamestr='':
+	tnameformat='none'
+else:
+	tnameformat=tnamestr
+
+
 print "Options summary"
 print "=================="
 for  opt,value in options.__dict__.items():
@@ -212,6 +220,13 @@ nSubjetsHandle 	= 	Handle (  "vector<float> "  )
 nSubjetsLabel  	= 	( "jetsAK8" , "jetAK8nSubJets")
 
 #just added -jL
+
+TstrHandle 	= 	Handle (  "vector<string>"  )
+TstrLabel  	= 	( "TriggerUserData" , "triggerNameTree")
+
+TbitHandle 	= 	Handle (  "vector<float>"  )
+TbitLabel  	= 	( "TriggerUserData" , "triggerBitTree")
+
 partonFlavourHandle 	= 	Handle (  "vector<float> "  )
 partonFlavourLabel  	= 	( "jetsAK8" , "jetAK8PartonFlavour")
 
@@ -248,17 +263,17 @@ subjets3indexLabel  	= 	( "jetsAK8" , "jetAK8topSubjetIndex3")
 #---------------------------------------------------------------------------------------------------------------------#
 
 if jobs != 1:
-	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+options.tname+"_"+options.modulesuffix +pustr+pstr+"_job"+options.num+"of"+options.jobs+"_PSET_"+options.cuts+".root", "recreate" )
+	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+options.modulesuffix +pustr+pstr+"_job"+options.num+"of"+options.jobs+"_PSET_"+options.cuts+".root", "recreate" )
 else:
-	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+options.tname+"_"+options.modulesuffix +pustr+pstr+"_PSET_"+options.cuts+".root", "recreate" )
+	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+options.modulesuffix +pustr+pstr+"_PSET_"+options.cuts+".root", "recreate" )
 
 #Load up the average b-tagging rates -- Takes parameters from text file and makes a function
-BTR = BTR_Init('Bifpoly','rate_'+options.cuts,di)
-BTR_err = BTR_Init('Bifpoly_err','rate_'+options.cuts,di)
+BTR = BTR_Init('Bifpoly','rate_'+options.cuts,di,options.set)
+BTR_err = BTR_Init('Bifpoly_err','rate_'+options.cuts,di,options.set)
 fittitles = ["pol0","pol2","pol3","FIT","Bifpoly","expofit"]
 fits = []
 for fittitle in fittitles:
-	fits.append(BTR_Init(fittitle,'rate_'+options.cuts,di))
+	fits.append(BTR_Init(fittitle,'rate_'+options.cuts,di,options.set))
 
 print "Creating histograms"
 
@@ -314,7 +329,7 @@ count = 0
 jobiter = 0
 print "Start looping"
 #initialize the ttree variables
-tree_vars = {"bpt":array('d',[0.]),"bmass":array('d',[0.]),"btag":array('d',[0.]),"tpt":array('d',[0.]),"tmass":array('d',[0.]),"nsubjets":array('d',[0.]),"sjbtag":array('d',[0.])}
+tree_vars = {"bpt":array('d',[0.]),"bmass":array('d',[0.]),"btag":array('d',[0.]),"tpt":array('d',[0.]),"tmass":array('d',[0.]),"nsubjets":array('d',[0.]),"sjbtag":array('d',[0.]),"run":array('d',[0.]),"lumi":array('d',[0.]),"event":array('d',[0.])}
 Tree = Make_Trees(tree_vars)
 
 goodEvents = []
@@ -489,6 +504,25 @@ for event in events:
                 		btag_cut = btag[0]<bJetBDisc[bindexval]<=btag[1]
 
 				ht = tjet.Perp() + bjet.Perp()
+
+
+
+				if options.tname != 'none' and options.set!='data':
+					TRW = Trigger_Lookup( ht , TrigPlot ) 
+					weight*=TRW
+						
+				if options.tname != 'none' and options.set=='data' :
+	    				event.getByLabel (TstrLabel, TstrHandle)
+	    				Tstr 		= 	TstrHandle.product() 
+
+	    				event.getByLabel (TbitLabel, TbitHandle)
+	    				Tbit 		= 	TbitHandle.product() 
+
+
+					if not Trigger_Pass(tname,Tstr,Tbit):
+						continue
+
+
 				if options.tname != "none" :
 				#Trigger reweighting done here
 					TRW = Trigger_Lookup( ht , TrigPlot ) 
@@ -610,7 +644,8 @@ for event in events:
 								MtbBDown.Fill((tjet+bjet).M(),weightSFbdown) 
 								Mtbptup.Fill((tjet+bjet).M(),weightSFptup) 
 								Mtbptdown.Fill((tjet+bjet).M(),weightSFptdown) 
-								temp_variables = {"bpt":bjet.Perp(),"bmass":topJetMass[bindexval],"btag":bJetBDisc[bindexval],"tpt":tjet.Perp(),"tmass":topJetMass[tindexval],"nsubjets":nSubjets[tindexval],"sjbtag":SJ_csvmax}		
++								temp_variables = {"bpt":bjet.Perp(),"bmass":topJetMass[bindexval],"btag":bJetBDisc[bindexval],"tpt":tjet.Perp(),"tmass":topJetMass[tindexval],"nsubjets":nSubjets[tindexval],"sjbtag":SJ_csvmax,"run":event.object().id().run(),"lumi":event.object().id().luminosityBlock(),"event":event.object().id().event() }		
+
 
 								for tv in tree_vars.keys():
 									tree_vars[tv][0] = temp_variables[tv]

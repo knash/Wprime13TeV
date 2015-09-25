@@ -17,6 +17,10 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
                   default	=	'default',
                   dest		=	'cuts',
                   help		=	'Cuts type (ie default, rate, etc)')
+parser.add_option('-s', '--set', metavar='F', type='string', action='store',
+                  default	=	'data',
+                  dest		=	'set',
+                  help		=	'data or QCD')
 (options, args) = parser.parse_args()
 
 cuts = options.cuts
@@ -88,13 +92,23 @@ ssubs=[]
 ssubsh=[]
 ssubsl=[]
 
-
-DataB11 = ROOT.TFile("rootfiles/TBanalyzerQCD_PSET_"+options.cuts+"weighted.root")
 TTmc 	= ROOT.TFile("rootfiles/TBanalyzerttbar_PSET_"+options.cuts+"weighted.root")
+if options.set == 'data':
+	DataB11 = ROOT.TFile("rootfiles/TBanalyzerdata_PSET_"+options.cuts+".root")
+	DataFS 	= DataB11.Get("Mtb") 			
+	DataBE 	= DataB11.Get("QCDbkg") 		
+elif options.set == 'QCD':
+	DataB11 = ROOT.TFile("rootfiles/TBanalyzerQCD_PSET_"+options.cuts+"weighted.root")
+	DataFS 	= DataB11.Get("Mtb") 			
+	DataBE 	= DataB11.Get("QCDbkg") 		
+	DataFS.Add(TTmc.Get("Mtb")) 			# QCD + ttbar
+else:
+	print 'Error: Set selection invalid.'
 
-DataFS 	= DataB11.Get("Mtb") 			# QCD FS
-DataBE 	= DataB11.Get("QCDbkg") 		# QCDbkg
-DataFS.Add(TTmc.Get("Mtb")) 			# QCD + ttbar
+
+
+
+
 
 DataBE2d = DataB11.Get("QCDbkg2D") 
 
@@ -215,11 +229,11 @@ TTmcBEl.Rebin(rebin)
 unsubbkg = DataBE.Clone()
 
 # Uncomment when using data -JL #
-
-#DataBE.Add(TTmcBE,-1)
-#DataBE2d.Add(TTmcBE2d,-1)
-#DataBEl.Add(TTmcBE,-1)
-#DataBEh.Add(TTmcBE,-1)
+if options.set=='data':
+	DataBE.Add(TTmcBE,-1)
+	DataBE2d.Add(TTmcBE2d,-1)
+	DataBEl.Add(TTmcBE,-1)
+	DataBEh.Add(TTmcBE,-1)
 
 singletop = ROOT.TH1F("singletop",     "singletop",     	  	      140, 500, 4000 )
 singletop.Rebin(rebin)
@@ -386,7 +400,10 @@ bkgline.SetFillColor(0)
 bkgline.SetFillStyle(0)
 
 #leg.AddEntry( DataFS, 'Data', 'P')
-leg.AddEntry( DataFS, 'QCD +t#bar{t} prediction', 'P')
+elif options.set == 'QCD':
+	leg.AddEntry( DataFS, 'QCD +t#bar{t} prediction', 'P')
+elif options.set == 'data':
+	leg.AddEntry( DataFS, 'data', 'P')
 leg.AddEntry( DataBE, 'QCD background prediction', 'F')
 leg.AddEntry( TTmcFS, 't#bar{t} MC prediction', 'F')
 #leg.AddEntry( singletop, 'Single top quark MC prediction', 'F')

@@ -180,6 +180,12 @@ nSubjetsHandle 	= 	Handle (  "vector<float> "  )
 nSubjetsLabel  	= 	( "jetsAK8" , "jetAK8nSubJets")
 
 
+TstrHandle 	= 	Handle (  "vector<string>"  )
+TstrLabel  	= 	( "TriggerUserData" , "triggerNameTree")
+
+TbitHandle 	= 	Handle (  "vector<float>"  )
+TbitLabel  	= 	( "TriggerUserData" , "triggerBitTree")
+
 softDropMassHandle 	= 	Handle (  "vector<float> "  )
 softDropMassLabel  	= 	( "jetsAK8" , "jetAK8softDropMass")
 
@@ -428,13 +434,24 @@ for event in events:
                 	btag_cut = btag[0]<bJetBDisc[bindexval]<=btag[1]
 
 			ht = tjet.Perp() + bjet.Perp()
-			if tname != [] and options.set!='data' :
-				
-				#Trigger reweighting done here
-				TRW = Trigger_Lookup( ht , TrigPlot )
+
+
+
+
+			if options.tname != 'none' and options.set!='data':
+				TRW = Trigger_Lookup( ht , TrigPlot ) 
 				weight*=TRW
+						
+			if options.tname != 'none' and options.set=='data' :
+	    			event.getByLabel (TstrLabel, TstrHandle)
+	    			Tstr 		= 	TstrHandle.product() 
+
+	    			event.getByLabel (TbitLabel, TbitHandle)
+	    			Tbit 		= 	TbitHandle.product() 
 
 
+				if not Trigger_Pass(tname,Tstr,Tbit):
+					continue
 
 			if False:#options.ptreweight == "on":
 				#ttbar pt reweighting done here
