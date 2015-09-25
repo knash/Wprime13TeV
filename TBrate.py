@@ -75,6 +75,12 @@ for iname in range(0,len(tname)):
 		tnamestr+='OR'
 	
 
+if tnamestr='HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1ORHLT_PFHT900_v1':
+	tnameformat='nominal'
+elif tnamestr='':
+	tnameformat='none'
+else:
+	tnameformat=tnamestr
 print "Options summary"
 print "=================="
 for  opt,value in options.__dict__.items():
