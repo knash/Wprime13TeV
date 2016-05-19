@@ -85,7 +85,6 @@ from Wprime_Functions import *
 
 Cons = LoadConstants()
 lumi = Cons['lumi']
-ttagsf = Cons['ttagsf']
 xsec_wpr = Cons['xsec_wpr']
 xsec_wpl = Cons['xsec_wpl']
 xsec_wplr = Cons['xsec_wplr']
@@ -130,7 +129,7 @@ if __name__ == "__main__":
 
 
     xsec_wpr = Cons['xsec_wpr']
-    masses = [1300,2000,2700] 
+    masses = [1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900] 
 
     x_mass = array('d')
     y_limit = array('d')
@@ -150,7 +149,7 @@ if __name__ == "__main__":
     for line in f1:
 
         data = map(float,line.split())
-        rt_xsec = xsec_wpr[str(int(data[0]))]/(0.676)
+        rt_xsec = xsec_wpr[str(int(data[0]))]*Cons['kfac']/(0.676)
         #print data
         # data is an array along the line, has 8 entries
         x_mass.append( data[0]/1000.0  )    # mass
@@ -164,7 +163,7 @@ if __name__ == "__main__":
     # i = 0
     for line in f2:
         data = map(float,line.split())
-        rt_xsec = xsec_wpr[str(int(data[0]))]/(0.676)
+        rt_xsec = xsec_wpr[str(int(data[0]))]*Cons['kfac']/(0.676)
         y_limit.append( data[1]*rt_xsec )
  
     print "Limit Table"
@@ -190,15 +189,15 @@ if __name__ == "__main__":
 
     g_limit.Draw("alp")
     g_limit.GetYaxis().SetRangeUser(0., 80.)
-    g_limit.GetXaxis().SetRangeUser(1.3, 2.7)
+    g_limit.GetXaxis().SetRangeUser(1.2, 2.9)
     if logScale:
-        g_limit.SetMinimum(6.0e-3) #0.005
-        g_limit.SetMaximum(500.) #10000
+        g_limit.SetMinimum(1.0e-2) #0.005
+        g_limit.SetMaximum(4000.) #10000
     else:
         # g_limit.SetMaximum(80.)
         g_limit.SetMaximum(0.5)#20.)
 
-    #g_limit.Draw("al")		#uncomm later
+    g_limit.Draw("al")		#uncomm later
     
     g_mclimit = TGraph(len(x_mass), x_mass, y_mclimit)
     g_mclimit.SetTitle("")
@@ -229,7 +228,7 @@ if __name__ == "__main__":
     graphWP.SetMarkerSize(0.5)
     q = 0
     for wpmass in masses:
-        rt_xsec = xsec_wpr[str(int(wpmass))]/(0.676)
+        rt_xsec = xsec_wpr[str(int(wpmass))]*Cons['kfac']/(0.676)
     	graphWP.SetPoint(q,    wpmass/1000. ,   rt_xsec    )
 	q+=1
     graphWP.SetLineWidth(3)
@@ -251,7 +250,7 @@ if __name__ == "__main__":
    
 
  
-    #g_limit.Draw("l")		#uncomm later
+    g_limit.Draw("l")		#uncomm later
     g_mclimit.Draw("l")
     #g_limit.Draw("l")		#uncomm later
     graphWP.Draw("l")
@@ -263,7 +262,7 @@ if __name__ == "__main__":
 	  legend = TLegend(0.42, 0.35, 0.86, 0.75, legLabel)
     
     #legend.SetTextFont(42)
-    #legend.AddEntry(g_limit, "Observed (95% CL)","l")		#uncomm later
+    legend.AddEntry(g_limit, "Observed (95% CL)","l")		#uncomm later
     legend.AddEntry(g_mclimit, "Expected (95% CL)","l")
     legend.AddEntry(g_error, "#pm 1 #sigma Expected", "f")
     legend.AddEntry(g_error95, "#pm 2 #sigma Expected", "f")
@@ -279,7 +278,7 @@ if __name__ == "__main__":
     text1 = ROOT.TLatex()
     text1.SetNDC()
     text1.SetTextFont(42)
-    text1.DrawLatex(0.2,0.84, "#scale[1.0]{CMS, L = 10 fb^{-1} at  #sqrt{s} = 13 TeV}")
+    text1.DrawLatex(0.2,0.84, "#scale[1.0]{CMS, L = 2.55 fb^{-1} at  #sqrt{s} = 13 TeV}")
     
     text11 = ROOT.TLatex()
     text11.SetTextFont(42)
@@ -315,6 +314,9 @@ if __name__ == "__main__":
     cv.SaveAs("plots/limits_theta_"+postpend+".root")
 
     obs = Inter(g_limit,graphWP)
+
+
+
     exp = Inter(g_mclimit,graphWP)
 
 

@@ -1,3 +1,4 @@
 # !/bin/sh
-
-python thetaGrid.py "$1" "$2"
+cd ./tardir/
+echo `ls`
+python thetaGrid.py "$1"

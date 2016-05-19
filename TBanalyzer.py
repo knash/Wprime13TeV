@@ -41,15 +41,31 @@ parser.add_option('-n', '--num', metavar='F', type='string', action='store',
                   default	=	'all',
                   dest		=	'num',
                   help		=	'job number')
+
+parser.add_option('-B', '--bkg', metavar='F', type='string', action='store',
+                  default	=	'nominal',
+                  dest		=	'bkg',
+                  help		=	'cuts to use for rate file')
+
 parser.add_option('-j', '--jobs', metavar='F', type='string', action='store',
                   default	=	'1',
                   dest		=	'jobs',
                   help		=	'number of jobs')
 
+
+parser.add_option('-y', '--modmass', metavar='F', type='string', action='store',
+                  default	=	'nominal',
+                  dest		=	'modmass',
+                  help		=	'nominal up or down')
+
 parser.add_option('-t', '--tname', metavar='F', type='string', action='store',
-                  default	=	'HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1,HLT_PFHT900_v1',
+                  default	=	'HLT_PFHT800_v2,HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p45_v3',
                   dest		=	'tname',
                   help		=	'trigger name')
+parser.add_option('-S', '--split', metavar='F', type='string', action='store',
+                  default	=	'file',
+                  dest		=	'split',
+                  help		=	'split by event of file')
 
 #parser.add_option('-t', '--trigger', metavar='F', type='string', action='store',
 #                  default	=	'none',
@@ -74,8 +90,16 @@ parser.add_option('-p', '--pdfweights', metavar='F', type='string', action='stor
                   default	=	'nominal',
                   dest		=	'pdfweights',
                   help		=	'nominal, up, or down')
+parser.add_option('-J', '--JES', metavar='F', type='string', action='store',
+                  default	=	'nominal',
+                  dest		=	'JES',
+                  help		=	'nominal, up, or down')
+parser.add_option('-R', '--JER', metavar='F', type='string', action='store',
+                  default	=	'nominal',
+                  dest		=	'JER',
+                  help		=	'nominal, up, or down')
 parser.add_option('-z', '--pdfset', metavar='F', type='string', action='store',
-                  default	=	'cteq66',
+                  default	=	'',
                   dest		=	'pdfset',
                   help		=	'pdf set')
 parser.add_option('--printEvents', metavar='F', action='store_true',
@@ -90,9 +114,14 @@ parser.add_option('-b', '--bx', metavar='F', type='string', action='store',
                   default	=	'25ns',
                   dest		=	'bx',
                   help		=	'bunch crossing 50ns or 25ns')
-
-
-
+parser.add_option('-T', '--tempop', metavar='F', type='string', action='store',
+                  default	=	'norm',
+                  dest		=	'tempop',
+                  help		=	'temp option')
+parser.add_option('--twojet', metavar='F', action='store_true',
+                  default=False,
+                  dest='twojet',
+                  help='twojet')
 
 (options, args) = parser.parse_args()
 
@@ -103,9 +132,9 @@ for iname in range(0,len(tname)):
 	if iname!=len(tname)-1:
 		tnamestr+='OR'
 
-if tnamestr='HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p41_v1ORHLT_PFHT900_v1':
+if tnamestr=='HLT_PFHT800_v2ORHLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p45_v3':
 	tnameformat='nominal'
-elif tnamestr='':
+elif tnamestr=='':
 	tnameformat='none'
 else:
 	tnameformat=tnamestr
@@ -123,7 +152,7 @@ if options.grid == 'on':
 	di = "tardir/"
 	sys.path.insert(0, 'tardir/')
 
-
+gROOT.Macro(di+"rootlogon.C")
 
 import Wprime_Functions	
 from Wprime_Functions import *
@@ -132,6 +161,7 @@ from Wprime_Functions import *
 Cuts = LoadCuts(options.cuts)
 bpt = Cuts['bpt']
 tpt = Cuts['tpt']
+ptmincut = Cuts['ptmincut']
 dy = Cuts['dy']
 tmass = Cuts['tmass']
 nsubjets = Cuts['nsubjets']
@@ -144,6 +174,8 @@ eta1 = Cuts['eta1']
 eta2 = Cuts['eta2']
 eta3 = Cuts['eta3']
 
+
+
 #For large datasets we need to parallelize the processing
 jobs=int(options.jobs)
 if jobs != 1:
@@ -155,9 +187,28 @@ else:
 	print "Running over all events"
 
 #This section defines some strings that are used in naming the optput files
-mod = "ttbsmAna"
-if options.modulesuffix != "none" :
-	mod = mod + options.modulesuffix
+
+mmstr = ""
+if options.modmass!="nominal":
+	print "using modm uncertainty"
+	mmstr = "_modm_"+options.modmass
+
+TJ = ''
+if options.twojet:
+	TJ='_twojetmod'
+
+mod = ''
+post = ''
+if options.JES!='nominal':
+	mod = mod + 'JES_' + options.JES
+	post='jes'+options.JES
+if options.JER!='nominal':
+	mod = mod + 'JER_' + options.JER
+	post='jer'+options.JER
+
+TO = ""
+if options.tempop!='norm':
+	TO=options.tempop
 
 pstr = ""
 if options.pdfweights!="nominal":
@@ -167,43 +218,74 @@ if options.pdfweights!="nominal":
 pustr = ""
 if options.pileup=='off':
 	pustr = "_pileup_unweighted"
+if options.pileup=='up':
+	pustr = "_pileup_up"
+if options.pileup=='down':
+	pustr = "_pileup_down"
+mod = mod+pustr
+if mod == '':
+	mod = options.modulesuffix
 
+
+ModFile = ROOT.TFile(di+"ModMassFile_PSET_rate_"+options.cuts +".root")
+ModPlot = ModFile.Get("rtmass")
 
 run_b_SF = True
 #Based on what set we want to analyze, we find all Ntuple root files 
 
 files = Load_Ntuples(options.set, options.bx) 
-
-if (options.set.find('ttbar') != -1) or (options.set.find('singletop') != -1):
+bkgset='data'
+if (options.set.find('ttbar') != -1) or (options.set.find('ST') != -1):
 	settype = 'ttbar'
 elif (options.set.find('QCD') != -1):
-	settype ='QCD'
+	settype ='ttbar'
+	bkgset='QCD'
 	run_b_SF = False
 else :
 	
 	settype = options.set.replace('right','').replace('left','').replace('mixed','')
 
+
+
 print 'The type of set is ' + settype
 
 if options.set != 'data':
 	#Load up scale factors (to be used for MC only)
+	TrigFile = TFile(di+"Triggerweight_databtagsmass.root")
+	TrigPlot = TrigFile.Get("TriggerWeight_"+tnamestr+"_pre_HLT_PFHT475_v2")
 
-	TrigFile = TFile(di+"Triggerweight_signalright2000btags.root")	
-	TrigPlot = TrigFile.Get("TriggerWeight_"+tnamestr)
 
 	#UNCOMMENT LATER
-	#PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
-	#PilePlot = PileFile.Get("Pileup_Ratio")
+	PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
+	if options.pileup == 'up':
+		PilePlot = PileFile.Get("Pileup_Ratio_up")
+	elif options.pileup == 'down':
+		PilePlot = PileFile.Get("Pileup_Ratio_down")
+	else:
+		PilePlot = PileFile.Get("Pileup_Ratio")
+jobiter = 0
+splitfiles = []
+if jobs != 1 and options.split=="file":
+    for ifile in range(1,len(files)+1):
+    	if (ifile-1) % jobs == 0:
+		jobiter+=1
+	count_index = ifile  - (jobiter-1)*jobs
+	if count_index==num:
+		splitfiles.append(files[ifile-1])
 
-# We select all the events:    
-events = Events (files)
+    events = Events(splitfiles)
+if options.split=="event" or jobs == 1:	  
+	events = Events(files)
 
 #Here we load up handles and labels.
 #These are used to grab entries from the Ntuples.
 #To see all the current types in an Ntuple use edmDumpEventContent /PathtoNtuple/Ntuple.root
 
-AK8HL = Initlv("jetsAK8")
-	
+AK8HL = Initlv("jetsAK8",post)
+
+
+
+
 BDiscHandle 	= 	Handle (  "vector<float> "  )
 BDiscLabel  	= 	( "jetsAK8" , "jetAK8CSV")
 
@@ -219,13 +301,9 @@ minmassLabel  	= 	( "jetsAK8" , "jetAK8minmass")
 nSubjetsHandle 	= 	Handle (  "vector<float> "  )
 nSubjetsLabel  	= 	( "jetsAK8" , "jetAK8nSubJets")
 
-#just added -jL
 
-TstrHandle 	= 	Handle (  "vector<string>"  )
-TstrLabel  	= 	( "TriggerUserData" , "triggerNameTree")
-
-TbitHandle 	= 	Handle (  "vector<float>"  )
-TbitLabel  	= 	( "TriggerUserData" , "triggerBitTree")
+pdfHandle 	= 	Handle (  "vector<float> "  )
+pdfLabel  	= 	( "weights" , "pdfWeights"+options.pdfset)
 
 partonFlavourHandle 	= 	Handle (  "vector<float> "  )
 partonFlavourLabel  	= 	( "jetsAK8" , "jetAK8PartonFlavour")
@@ -260,26 +338,50 @@ subjets2indexLabel  	= 	( "jetsAK8" , "jetAK8topSubjetIndex2")
 subjets3indexHandle 	= 	Handle (  "vector<float> "  )
 subjets3indexLabel  	= 	( "jetsAK8" , "jetAK8topSubjetIndex3")
 
+
+
+
+
+softDropMassuncorrHandle 	= 	Handle (  "vector<float> "  )
+softDropMassuncorrLabel  	= 	( "jetsAK8" , "jetAK8softDropMassuncorr")
+
+vsubjets0indexHandle 	= 	Handle (  "vector<float> "  )
+vsubjets0indexLabel  	= 	( "jetsAK8" , "jetAK8vSubjetIndex0")
+
+vsubjets1indexHandle 	= 	Handle (  "vector<float> "  )
+vsubjets1indexLabel  	= 	( "jetsAK8" , "jetAK8vSubjetIndex1")
+
+subjetsAK8CSVHandle 	= 	Handle (  "vector<float> "  )
+subjetsAK8CSVLabel  	= 	( "subjetsAK8" , "subjetAK8CSV")
+
+
+
 #---------------------------------------------------------------------------------------------------------------------#
 
 if jobs != 1:
-	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+options.modulesuffix +pustr+pstr+"_job"+options.num+"of"+options.jobs+"_PSET_"+options.cuts+".root", "recreate" )
+	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+mod+pstr+mmstr+TO+"_job"+options.num+"of"+options.jobs+TJ+"_PSET_"+options.cuts+".root", "recreate" )
 else:
-	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+options.modulesuffix +pustr+pstr+"_PSET_"+options.cuts+".root", "recreate" )
+	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+mod +pstr+mmstr+TO+TJ+"_PSET_"+options.cuts+".root", "recreate" )
+
+
+if options.bkg=='nominal':
+	ratestr = options.cuts
+else:
+	ratestr = options.bkg
 
 #Load up the average b-tagging rates -- Takes parameters from text file and makes a function
-BTR = BTR_Init('Bifpoly','rate_'+options.cuts,di,options.set)
-BTR_err = BTR_Init('Bifpoly_err','rate_'+options.cuts,di,options.set)
+BTR = BTR_Init('Bifpoly','rate_'+ratestr,di,bkgset)
+BTR_err = BTR_Init('Bifpoly_err','rate_'+ratestr,di,bkgset)
 fittitles = ["pol0","pol2","pol3","FIT","Bifpoly","expofit"]
 fits = []
 for fittitle in fittitles:
-	fits.append(BTR_Init(fittitle,'rate_'+options.cuts,di,options.set))
+	fits.append(BTR_Init(fittitle,'rate_'+ratestr,di,bkgset))
 
 print "Creating histograms"
 
 #Define Histograms
 
-TagFile1 = TFile(di+"Tagrate2D.root")
+TagFile1 = TFile(di+"Tagrate2D"+bkgset+'rate_'+ratestr+".root")
 TagPlot2de1= TagFile1.Get("tagrateeta1")
 TagPlot2de2= TagFile1.Get("tagrateeta2")
 TagPlot2de3= TagFile1.Get("tagrateeta3")
@@ -287,7 +389,7 @@ TagPlot2de3= TagFile1.Get("tagrateeta3")
 f.cd()
 #---------------------------------------------------------------------------------------------------------------------#
 Mtb		= TH1F("Mtb",		"mass of tb",     	  	      	140, 500, 4000 )
-Mb		= TH1F("Mb",		"mass of b",     	  	      	140, 500, 4000 )
+Mb		= TH1F("Mb",		"mass of b",     	  	      	200, 0, 400 )
 
 Nevents		= TH1F("Nevents",	"mass of tb",     	  	          5, 0., 5. )
 
@@ -295,7 +397,15 @@ Mtbptup		= TH1F("Mtbptup",	"mass of tb ttbar pt reweighting up",	140, 500, 4000 
 Mtbptdown	= TH1F("Mtbptdown",     "mass of tb ttbar pt reweighting up",   140, 500, 4000 )
 
 MtbBup		= TH1F("MtbBup",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
-MtbBDown	= TH1F("MtbBDown",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
+MtbBdown	= TH1F("MtbBdown",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
+
+MtbTup		= TH1F("MtbTup",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
+MtbTdown	= TH1F("MtbTdown",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
+
+
+Mtbtrigup		= TH1F("Mtbtrigup",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
+Mtbtrigdown	= TH1F("Mtbtrigdown",	"mass of tb B tag SF up",     	  	140, 500, 4000 )
+
 
 QCDbkg		= TH1F("QCDbkg",	"QCD background estimate",		140, 500, 4000 )
 QCDbkgh		= TH1F("QCDbkgh",	"QCD background estimate up error",	140, 500, 4000 )
@@ -304,11 +414,15 @@ QCDbkg2D	= TH1F("QCDbkg2D",	"QCD background estimate 2d error",	140, 500, 4000 )
 
 Mtb.Sumw2()
 
+Mtbtrigup.Sumw2()
+Mtbtrigdown.Sumw2()
+
+
 Mtbptup.Sumw2()
 Mtbptdown.Sumw2()
 
 MtbBup.Sumw2()
-MtbBDown.Sumw2()
+MtbBdown.Sumw2()
 
 QCDbkg.Sumw2()
 QCDbkgh.Sumw2()
@@ -326,21 +440,21 @@ for ihist in range(0,len(fittitles)):
 #---------------------------------------------------------------------------------------------------------------------#
 
 count = 0
-jobiter = 0
+
 print "Start looping"
 #initialize the ttree variables
-tree_vars = {"bpt":array('d',[0.]),"bmass":array('d',[0.]),"btag":array('d',[0.]),"tpt":array('d',[0.]),"tmass":array('d',[0.]),"nsubjets":array('d',[0.]),"sjbtag":array('d',[0.]),"run":array('d',[0.]),"lumi":array('d',[0.]),"event":array('d',[0.])}
+tree_vars = {"bpt":array('d',[0.]),"bmass":array('d',[0.]),"btag":array('d',[0.]),"tpt":array('d',[0.]),"tmass":array('d',[0.]),"nsubjets":array('d',[0.]),"sjbtag":array('d',[0.]),"run":array('d',[0.]),"lumi":array('d',[0.]),"event":array('d',[0.]),"weight":array('d',[0.])}
 Tree = Make_Trees(tree_vars)
 
 goodEvents = []
-totevents = events.size()
-print str(totevents)  +  ' Events total'
+#totevents = events.size()
+#print str(totevents)  +  ' Events total'
 
-usegenweight = False
-if options.set == "QCDFLAT7000":
-	usegenweight = True
-	print "Using gen weight"
-
+#usegenweight = False
+#if options.set == "QCDFLAT7000":
+#	usegenweight = True
+#	print "Using gen weight"
+nfail = 0 
 for event in events:
     weightSFb = 1.0
     errorSFb = 0.0
@@ -348,33 +462,37 @@ for event in events:
     
     m = 0
     t = 0
-    #if count > 1000:
-	#break
+  #  if count > 10000:
+#	break
 
     if count % 100000 == 0 :
-      print  '--------- Processing Event ' + str(count) +'   -- percent complete ' + str(100*count/totevents) + '% -- '
+      print  '--------- Processing Event ' + str(count) #+'   -- percent complete ' + str(100*count/totevents) + '% -- '
 
     #Here we split up event processing based on number of jobs 
     #This is set up to have jobs range from 1 to the total number of jobs (ie dont start at job 0)
 
-    if jobs != 1:
+    if jobs != 1 and options.split=="event":
     	if (count - 1) % jobs == 0:
 		jobiter+=1
 	count_index = count - (jobiter-1)*jobs
 	if count_index!=num:
 		continue 
 
-    if usegenweight:
+ #   if usegenweight:
+#
+#		try:
+#			event.getByLabel (GeneratorLabel, GeneratorHandle)
+ #   			gen 		= 	GeneratorHandle.product()
+#			Nevents.Fill(0.,gen.weightProduct())
+#		except:
+#			continue 
 
-		try:
-			event.getByLabel (GeneratorLabel, GeneratorHandle)
-    			gen 		= 	GeneratorHandle.product()
-			Nevents.Fill(0.,gen.weightProduct())
-		except:
-			continue 
-
+    try:
+   	AK8LV = Makelv(AK8HL,event)
+    except:
+	nfail+=1
+	continue 
     # We load up the relevant handles and labels and create collections
-    AK8LV = Makelv(AK8HL,event)
 
     if len(AK8LV)==0:
 	continue
@@ -399,21 +517,33 @@ for event in events:
     bjh0 = 0
     bjh1 = 0
 
-    #Require 1 pt>150 jet in each hemisphere (top jets already have the 150GeV requirement) 
+    tjh0 = 0
+    tjh1 = 0
 
+    #Require 1 pt>150 jet in each hemisphere (top jets already have the 150GeV requirement) 
     for bjet in bJetsh0:
-	if bjet.Perp() > 200.0:
+	if ptmincut[0] < bjet.Perp() < ptmincut[1]:
 		bjh0+=1
+    for tjet in topJetsh0:
+	if ptmincut[0] < tjet.Perp()  < ptmincut[1]:
+		tjh0+=1
+
     for bjet in bJetsh1:
-	if bjet.Perp() > 200.0:
+	if ptmincut[0] < bjet.Perp()  < ptmincut[1]:
 		bjh1+=1
 
-    njets11b0 	= 	((len(topJetsh1) == 1) and (bjh0 == 1))
-    njets11b1 	= 	((len(topJetsh0) == 1) and (bjh1 == 1))
-
+    for tjet in topJetsh1:
+	if ptmincut[0] < tjet.Perp()  < ptmincut[1]:
+		tjh1+=1
+    if options.twojet:
+   	 njets11b0 	= 	((tjh1 == 1) and (bjh0 == 1))
+   	 njets11b1 	= 	((tjh0 == 1) and (bjh1 == 1))
+    else:
+   	 njets11b0 	= 	((tjh1 >= 1) and (bjh0 >= 1))
+   	 njets11b1 	= 	((tjh0 >= 1) and (bjh1 >= 1))
     for hemis in ['hemis0','hemis1']:
     	if hemis == 'hemis0'   :
-		if not njets11b0:
+		if not njets11b0 :
 			continue 
 		#The Ntuple entries are ordered in pt, so [0] is the highest pt entry
 		#We are calling a candidate b jet (highest pt jet in hemisphere0)  
@@ -438,6 +568,8 @@ for event in events:
 	if abs(bjet.Eta()) > 2.4 or abs(tjet.Eta()) > 2.4:
 		continue
 
+
+	
     	weight=1.0
      	weightSFptup=1.0
      	weightSFptdown=1.0
@@ -451,25 +583,36 @@ for event in events:
     	if bpt_cut and tpt_cut and dy_cut: 
 
     		if options.pdfweights != "nominal" :
+
             		event.getByLabel( pdfLabel, pdfHandle )
             		pdfs = pdfHandle.product()
-			iweight = PDF_Lookup( pdfs , options.pdfweights )
+			if options.tempop=="norm":
+				iweight = PDF_Lookup( pdfs , options.pdfweights)
+			if options.tempop=="ave":
+				iweight = PDF_LookupAVE( pdfs , options.pdfweights)
+			if options.tempop=="max":
+				iweight = PDF_LookupMAX( pdfs , options.pdfweights)
+			if options.tempop=="std":
+				iweight = PDF_LookupSTD( pdfs , options.pdfweights)
+
             		weight *= iweight
 
-		if usegenweight:
-			try:
-				weight*=gen.weightProduct()
 
-			except:
-				continue 	
+		weightSFb = 1.0
+		weightSFbdown = 1.0
+		weightSFbup = 1.0
 
-#######
-		#UNCOMMENT LATER, remove False
-		if False:# options.set!="data":
+		weightSFt = 1.0
+		weightSFtdown = 1.0
+		weightSFtup = 1.0
 
+
+		if options.set!="data":
+
+		
 			event.getByLabel (puLabel, puHandle)
     			PileUp 		= 	puHandle.product()
-               		bin1 = PilePlot.FindBin(PileUp[0]) 
+               		bin1 = PilePlot.FindBin(float(PileUp[0])) 
 
 			if options.pileup != 'off':
 				weight *= PilePlot.GetBinContent(bin1)
@@ -479,12 +622,28 @@ for event in events:
 				#btagging scale factor reweighting done here
 				SFB = SFB_Lookup( bjet.Perp() )
 				weightSFb = SFB[0]
-				errorSFb = SFB[1]
-#######
+				weightSFbdown = SFB[1]
+				weightSFbup = SFB[2]
+		
+			if options.cuts=="default" or options.cuts=="sideband3" :
+				#btagging scale factor reweighting done here
+				SFT = SFT_Lookup( tjet.Perp() )
+				weightSFt = SFT[0]
+				weightSFtdown = SFT[1]
+				weightSFtup = SFT[2]
 
         	event.getByLabel (softDropMassLabel, softDropMassHandle)
         	topJetMass 	= 	softDropMassHandle.product()
-		tmass_cut = tmass[0]<topJetMass[tindexval]<tmass[1]
+
+
+        	event.getByLabel (softDropMassuncorrLabel, softDropMassuncorrHandle)
+        	topJetMassuncorr 	= 	softDropMassuncorrHandle.product()
+
+
+		[tmassc,bmassc] = [topJetMassuncorr[tindexval],topJetMass[bindexval]]
+	
+
+		tmass_cut = tmass[0]<tmassc<tmass[1]
 
 		if tmass_cut :
 
@@ -495,39 +654,31 @@ for event in events:
 
 			minmass_cut = minmass[0]<=topJetminmass[tindexval]<minmass[1]
 			nsubjets_cut = nsubjets[0]<=nSubjets[tindexval]<nsubjets[1]
-
+		
 	 		if minmass_cut and nsubjets_cut:
 
    				event.getByLabel (BDiscLabel, BDiscHandle)
     				bJetBDisc 	= 	BDiscHandle.product()
-		
+
                 		btag_cut = btag[0]<bJetBDisc[bindexval]<=btag[1]
 
 				ht = tjet.Perp() + bjet.Perp()
 
 
 
+				weighttrigup=1.0
+				weighttrigdown=1.0
 				if options.tname != 'none' and options.set!='data':
-					TRW = Trigger_Lookup( ht , TrigPlot ) 
+
+
+					TRW = Trigger_Lookup( ht , TrigPlot )[0]
+					TRWup = Trigger_Lookup( ht , TrigPlot )[1]
+					TRWdown = Trigger_Lookup( ht , TrigPlot )[2]
+
+					weighttrigup=weight*TRWup
+					weighttrigdown=weight*TRWdown
 					weight*=TRW
-						
-				if options.tname != 'none' and options.set=='data' :
-	    				event.getByLabel (TstrLabel, TstrHandle)
-	    				Tstr 		= 	TstrHandle.product() 
 
-	    				event.getByLabel (TbitLabel, TbitHandle)
-	    				Tbit 		= 	TbitHandle.product() 
-
-
-					if not Trigger_Pass(tname,Tstr,Tbit):
-						continue
-
-
-				if options.tname != "none" :
-				#Trigger reweighting done here
-					TRW = Trigger_Lookup( ht , TrigPlot ) 
-					weight*=TRW
-		
 				if options.ptreweight == "on":
 					#ttbar pt reweighting done here
 					event.getByLabel( GenLabel, GenHandle )
@@ -536,37 +687,70 @@ for event in events:
 					weight*=PTW
      					weightSFptup=max(0.0,weight*(2*PTW-1))
      					weightSFptdown=weight
+				#Done differently than TBkinematics
+				weightSFtup=weight*weightSFb*weightSFtup
+				weightSFtdown=weight*weightSFb*weightSFtdown
+				weight*=weightSFt
 
 				weightb = weight*weightSFb
 				weightSFptup*=weightSFb
 				weightSFptdown*=weightSFb
-				weightSFbup = weight*(weightSFb+errorSFb)
-				weightSFbdown = weight*(weightSFb-errorSFb)
+				weightSFbup = weight*(weightSFbup)
+				weightSFbdown = weight*(weightSFbdown)
+				weighttrigup*=weightSFb*weightSFt
+				weighttrigdown*=weightSFb*weightSFt
+
+    				#event.getByLabel (subjets0indexLabel, subjets0indexHandle)
+    				#subjets0index 		= 	subjets0indexHandle.product() 
+
+    				#event.getByLabel (subjets1indexLabel, subjets1indexHandle)
+    				#subjets1index 		= 	subjets1indexHandle.product() 
+
+    				#event.getByLabel (subjets2indexLabel, subjets2indexHandle)
+    				#subjets2index 		= 	subjets2indexHandle.product() 
+
+    				#event.getByLabel (subjets3indexLabel, subjets3indexHandle)
+    				#subjets3index 		= 	subjets3indexHandle.product()
+
+    				#event.getByLabel (subjetsCSVLabel, subjetsCSVHandle)
+    				#subjetsCSV 		= 	subjetsCSVHandle.product()  
 
 
-    				event.getByLabel (subjets0indexLabel, subjets0indexHandle)
-    				subjets0index 		= 	subjets0indexHandle.product() 
 
-    				event.getByLabel (subjets1indexLabel, subjets1indexHandle)
-    				subjets1index 		= 	subjets1indexHandle.product() 
-
-    				event.getByLabel (subjets2indexLabel, subjets2indexHandle)
-    				subjets2index 		= 	subjets2indexHandle.product() 
-
-    				event.getByLabel (subjets3indexLabel, subjets3indexHandle)
-    				subjets3index 		= 	subjets3indexHandle.product()
-
-    				event.getByLabel (subjetsCSVLabel, subjetsCSVHandle)
-    				subjetsCSV 		= 	subjetsCSVHandle.product()  
-
-
-
-				SJ_csvs = [subjets0index,subjets1index,subjets2index,subjets3index]
+				#SJ_csvs = [subjets0index,subjets1index,subjets2index,subjets3index]
 			
-				SJ_csvvals = []
-				for icsv in range(0,int(nSubjets[tindexval])):
-					SJ_csvvals.append(subjetsCSV[int(SJ_csvs[icsv][tindexval])])
+
+    				event.getByLabel (vsubjets0indexLabel,vsubjets0indexHandle )
+    				vsubjets0index 		= 	vsubjets0indexHandle.product() 
+
+    				event.getByLabel (vsubjets1indexLabel,vsubjets1indexHandle )
+    				vsubjets1index 		= 	vsubjets1indexHandle.product() 
+
+    				event.getByLabel (subjetsAK8CSVLabel,subjetsAK8CSVHandle )
+    				subjetsAK8CSV		= 	subjetsAK8CSVHandle.product() 
+
+
+
+				if len(subjetsAK8CSV)==0:
+					continue
+				if len(subjetsAK8CSV)<2:
+					subjetsAK8CSV[int(vsubjets0index[tindexval])]
+				else:
+    					SJ_csvvals = [subjetsAK8CSV[int(vsubjets0index[tindexval])],subjetsAK8CSV[int(vsubjets1index[tindexval])]]
 				SJ_csvmax = max(SJ_csvvals)
+
+
+
+
+
+				#SJ_csvvals = []
+				#for icsv in range(0,int(nSubjets[tindexval])):
+			#		if int(SJ_csvs[icsv][tindexval])!=-1:
+			#			SJ_csvvals.append(subjetsCSV[int(SJ_csvs[icsv][tindexval])])
+			#		else:
+			#			SJ_csvvals.append(0.)
+			#	SJ_csvmax = max(SJ_csvvals)
+
 				sjbtag_cut = sjbtag[0]<SJ_csvmax<=sjbtag[1]
 
 
@@ -583,13 +767,17 @@ for event in events:
     				tau3 		= 	tau3Handle.product()  
 
 
-				tau32_cut =  tau32[0]<=tau3[tindexval]/tau2[tindexval]<tau32[1]
+				if tau2[tindexval]>0.:
+					tau32_cut =  tau32[0]<=tau3[tindexval]/tau2[tindexval]<tau32[1]
+				else:
+					tau32_cut =  tau32[0]<=1.0<tau32[1]
+
 
 				if sjbtag_cut :
 
 					if tau32_cut:
 
-						bmass_cut = bmass[0]<=topJetMass[bindexval]<bmass[1]
+						bmass_cut = bmass[0]<=bmassc<bmass[1]
 						if bmass_cut:
 
 							eta_regions = [eta1,eta2,eta3]
@@ -599,52 +787,70 @@ for event in events:
 							BTRweighterrup = BTRweight+sqrt(BTRweightsigsq)
 							BTRweighterrdown = BTRweight-sqrt(BTRweightsigsq)
 
+							modm = bmassc
+							if options.modmass=='nominal':
+                						massw = ModPlot.Interpolate(modm)
+							if options.modmass=='up':
+                						massw = 1 + 0.5*(ModPlot.Interpolate(modm)-1)
+							if options.modmass=='down':
+                						massw = max(0.0,1 + 1.5*(ModPlot.Interpolate(modm)-1))
+
+
+
 
 							eta1_cut = eta1[0]<=abs(bjet.Eta())<eta1[1]
 							eta2_cut = eta2[0]<=abs(bjet.Eta())<eta2[1]
 							eta3_cut = eta3[0]<=abs(bjet.Eta())<eta3[1]
-
-							if (eta1_cut) :
-								xbin = TagPlot2de1.GetXaxis().FindBin(bjet.Perp())
-								ybin = TagPlot2de1.GetYaxis().FindBin((tjet+bjet).M())
-								tagrate2d = TagPlot2de1.GetBinContent(xbin,ybin)
-								QCDbkg2D.Fill((tjet+bjet).M(),tagrate2d*weight)
+							if not btag_cut:
+								if (eta1_cut) :
+									xbin = TagPlot2de1.GetXaxis().FindBin(bjet.Perp())
+									ybin = TagPlot2de1.GetYaxis().FindBin((tjet+bjet).M())
+									tagrate2d = TagPlot2de1.GetBinContent(xbin,ybin)
+									QCDbkg2D.Fill((tjet+bjet).M(),tagrate2d*weight*massw)
 			
-							if (eta2_cut):
-								xbin = TagPlot2de2.GetXaxis().FindBin(bjet.Perp())
-								ybin = TagPlot2de2.GetYaxis().FindBin((tjet+bjet).M())
-								tagrate2d = TagPlot2de2.GetBinContent(xbin,ybin)
-								QCDbkg2D.Fill((tjet+bjet).M(),tagrate2d*weight)
+								if (eta2_cut):
+									xbin = TagPlot2de2.GetXaxis().FindBin(bjet.Perp())
+									ybin = TagPlot2de2.GetYaxis().FindBin((tjet+bjet).M())
+									tagrate2d = TagPlot2de2.GetBinContent(xbin,ybin)
+									QCDbkg2D.Fill((tjet+bjet).M(),tagrate2d*weight*massw)
 
-							if (eta3_cut):
-
-								xbin = TagPlot2de3.GetXaxis().FindBin(bjet.Perp())
-								ybin = TagPlot2de3.GetYaxis().FindBin((tjet+bjet).M())
-								tagrate2d = TagPlot2de3.GetBinContent(xbin,ybin)
-								QCDbkg2D.Fill((tjet+bjet).M(),tagrate2d*weight)
+								if (eta3_cut):
+	
+									xbin = TagPlot2de3.GetXaxis().FindBin(bjet.Perp())
+									ybin = TagPlot2de3.GetYaxis().FindBin((tjet+bjet).M())
+									tagrate2d = TagPlot2de3.GetBinContent(xbin,ybin)
+									QCDbkg2D.Fill((tjet+bjet).M(),tagrate2d*weight*massw)
 
 							
-							for ifit in range(0,len(fittitles)):
-								tempweight = bkg_weight(bjet,fits[ifit],eta_regions)
-								QCDbkg_ARR[ifit].Fill((tjet+bjet).M(),tempweight*weight) 
-
-							#Temporary check to see if there are erratically off weight factors
-							if BTRweight > 0.2 or weight > 1:
-								print "BTRW: " + str(BTRweight)
-								print "Weight: " + str(weight)
-							QCDbkg.Fill((tjet+bjet).M(),BTRweight*weight)
-							QCDbkgh.Fill((tjet+bjet).M(),BTRweighterrup*weight)
-							QCDbkgl.Fill((tjet+bjet).M(),BTRweighterrdown*weight) 
+								for ifit in range(0,len(fittitles)):
+									tempweight = bkg_weight(bjet,fits[ifit],eta_regions)
+									QCDbkg_ARR[ifit].Fill((tjet+bjet).M(),tempweight*weight*massw) 
+								
+								QCDbkg.Fill((tjet+bjet).M(),BTRweight*weight*massw)
+								QCDbkgh.Fill((tjet+bjet).M(),BTRweighterrup*weight*massw)
+								QCDbkgl.Fill((tjet+bjet).M(),BTRweighterrdown*weight*massw) 
 	
         				        	if btag_cut:
 
                                       				goodEvents.append( [ event.object().id().run(), event.object().id().luminosityBlock(), event.object().id().event() ] )
 								Mtb.Fill((tjet+bjet).M(),weightb) 
+
+
+
 								MtbBup.Fill((tjet+bjet).M(),weightSFbup) 
-								MtbBDown.Fill((tjet+bjet).M(),weightSFbdown) 
+								MtbBdown.Fill((tjet+bjet).M(),weightSFbdown) 
+
+
+								MtbTup.Fill((tjet+bjet).M(),weightSFtup) 
+								MtbTdown.Fill((tjet+bjet).M(),weightSFtdown) 
+
+
 								Mtbptup.Fill((tjet+bjet).M(),weightSFptup) 
 								Mtbptdown.Fill((tjet+bjet).M(),weightSFptdown) 
-+								temp_variables = {"bpt":bjet.Perp(),"bmass":topJetMass[bindexval],"btag":bJetBDisc[bindexval],"tpt":tjet.Perp(),"tmass":topJetMass[tindexval],"nsubjets":nSubjets[tindexval],"sjbtag":SJ_csvmax,"run":event.object().id().run(),"lumi":event.object().id().luminosityBlock(),"event":event.object().id().event() }		
+
+								Mtbtrigup.Fill((tjet+bjet).M(),weighttrigup)
+								Mtbtrigdown.Fill((tjet+bjet).M(),weighttrigdown)
+								temp_variables = {"bpt":bjet.Perp(),"bmass":bmassc,"btag":bJetBDisc[bindexval],"tpt":tjet.Perp(),"tmass":tmassc,"nsubjets":nSubjets[tindexval],"sjbtag":SJ_csvmax,"run":event.object().id().run(),"lumi":event.object().id().luminosityBlock(),"event":event.object().id().event(),"weight":weightb }		
 
 
 								for tv in tree_vars.keys():

@@ -1,48 +1,851 @@
-python ./tardir/TBanalyzer.py -s ttbar -n 1 -j 5 -c default -g on
-python ./tardir/TBanalyzer.py -s ttbar -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s ttbar -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s ttbar -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s ttbar -n 5 -j 5 -c default -g on
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -c default  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -c default  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -c default  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -c default  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -c default  -g on
 
-python ./tardir/TBanalyzer.py -s QCDPT300 -n 1 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT300 -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT300 -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT300 -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT300 -n 5 -j 5 -c default -g on
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -y up -c default  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -y up -c default  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -y up -c default  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -y up -c default  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -y up -c default  -g on
 
-python ./tardir/TBanalyzer.py -s QCDPT470 -n 1 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT470 -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT470 -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT470 -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT470 -n 5 -j 5 -c default -g on
 
-python ./tardir/TBanalyzer.py -s QCDPT600 -n 1 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT600 -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT600 -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT600 -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT600 -n 5 -j 5 -c default -g on
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -y down -c default  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -y down -c default  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -y down -c default  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -y down -c default  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -y down -c default  -g on
 
-python ./tardir/TBanalyzer.py -s QCDPT800 -n 1 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT800 -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT800 -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT800 -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT800 -n 5 -j 5 -c default -g on
 
-python ./tardir/TBanalyzer.py -s QCDPT1000 -n 1 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1000 -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1000 -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1000 -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1000 -n 5 -j 5 -c default -g on
+python ./tardir/TBanalyzer.py -s ttbar -c default  -g on
 
-python ./tardir/TBanalyzer.py -s QCDPT1400 -n 1 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1400 -n 2 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1400 -n 3 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1400 -n 4 -j 5 -c default -g on 
-python ./tardir/TBanalyzer.py -s QCDPT1400 -n 5 -j 5 -c default -g on
+python ./tardir/TBanalyzer.py -s signalright1100 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default  -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default  -g on
 
-python ./tardir/TBanalyzer.py -s signalright1300 -c default -g on 
-python ./tardir/TBanalyzer.py -s signalright2000 -c default -g on 
-python ./tardir/TBanalyzer.py -s signalright2700 -c default -g on 
 
+python ./tardir/TBanalyzer.py -s QCDHT500  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -c default  -g on
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500 -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -y up  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -y up  -c default  -g on
+
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500 -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -y down  -c default  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -y down  -c default  -g on
+
+
+
+
+python ./tardir/TBanalyzer.py -s STTW -c default  -g on
+python ./tardir/TBanalyzer.py -s STTWB -c default  -g on
+
+python ./tardir/TBanalyzer.py -s ttbarscaleup -c default  -g on
+python ./tardir/TBanalyzer.py -s ttbarscaledown -c default  -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -J up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -J up   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -J down   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -J down   -g on
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -R up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -R up   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -R down   -g on
+
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -R down   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -x up   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -x up   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -x down   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -x down   -g on
+
+
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -c sideband2  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -c sideband2  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -c sideband2  -g on
+
+
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -y up -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -y up -c sideband2  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -y up -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -y up -c sideband2  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -y up -c sideband2  -g on
+
+
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -y down -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -y down -c sideband2  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -y down -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -y down -c sideband2  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -y down -c sideband2  -g on
+
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2  -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2  -g on
+
+python ./tardir/TBanalyzer.py -s QCDHT500  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -c sideband2  -g on
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500 -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -y up  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -y up  -c sideband2  -g on
+
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500 -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -y down  -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -y down  -c sideband2  -g on
+
+
+
+python ./tardir/TBanalyzer.py -s STTW -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s STTWB -c sideband2  -g on
+
+python ./tardir/TBanalyzer.py -s ttbarscaleup -c sideband2  -g on
+python ./tardir/TBanalyzer.py -s ttbarscaledown -c sideband2  -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2 -J up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2 -J up   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2 -J down   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2 -J down   -g on
+
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2 -R up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2 -R up   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2 -R down   -g on
+
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2 -R down   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2 -x up   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2 -x up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband2 -x down   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband2 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband2 -x down   -g on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -c sideband3  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -c sideband3  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -c sideband3  -g on
+
+
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -y up -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -y up -c sideband3  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -y up -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -y up -c sideband3  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -y up -c sideband3  -g on
+
+
+python ./tardir/TBanalyzer.py -s data -n 1 -j 5 -y down -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s data -n 2 -j 5 -y down -c sideband3  -g on 
+python ./tardir/TBanalyzer.py -s data -n 3 -j 5 -y down -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s data -n 4 -j 5 -y down -c sideband3  -g on 
+python ./tardir/TBanalyzer.py -s data -n 5 -j 5 -y down -c sideband3  -g on
+
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3  -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3  -g on
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -c sideband3  -g on
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500 -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -y up  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -y up  -c sideband3  -g on
+
+
+
+python ./tardir/TBanalyzer.py -s QCDHT500 -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 1 -j 4  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 2 -j 4  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 3 -j 4  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT700 -n 4 -j 4  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 1 -j 3  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 2 -j 3  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1000 -n 3 -j 3  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 1 -j 3  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 2 -j 3  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT1500 -n 3 -j 3  -y down  -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s QCDHT2000 -y down  -c sideband3  -g on
+
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s STTW -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s STTWB -c sideband3  -g on
+
+python ./tardir/TBanalyzer.py -s ttbarscaleup -c sideband3  -g on
+python ./tardir/TBanalyzer.py -s ttbarscaledown -c sideband3  -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3 -J up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3 -J up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3 -J up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3 -J down   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3 -J down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3 -J down   -g on
+
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3 -R up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3 -R up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3 -R up   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3 -R down   -g on
+
+
+
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3 -R down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3 -R down   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3 -x up   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3 -x up   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3 -x up   -g on
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c sideband3 -x down   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c sideband3 -x down   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c sideband3 -x down   -g on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###default only
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -x off   -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -x off   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -x off   -g on
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -p up  -g on
+
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -p up -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -p up -z NNPDF   -g on
+
+
+
+
+
+python ./tardir/TBanalyzer.py -s ttbar -c default -p down   -g on
+python ./tardir/TBanalyzer.py -s signalright1100 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1200 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1300 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1400 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1500 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1600 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1700 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1800 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright1900 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2000 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2100 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2200 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2300 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2400 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2500 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2600 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2700 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2800 -c default -p down -z NNPDF   -g on
+python ./tardir/TBanalyzer.py -s signalright2900 -c default -p down -z NNPDF   -g on
 
 

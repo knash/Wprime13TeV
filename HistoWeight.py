@@ -35,7 +35,7 @@ weight = options.weight
 
 
 
-
+Good=True
 
 try :
 	reweight = array('d',[0.])
@@ -46,6 +46,10 @@ try :
 
 except :
 	reweight =array('d',[1.])
+
+if len(D)==0:
+	Good = False
+
 for i in range(0,len(D)):
 	a = D[i].ReadObj()
 	try:
@@ -55,12 +59,15 @@ for i in range(0,len(D)):
 		if  a.GetName() != 'Weight':
 			print "not scaling " + str(a.GetName()) 
 			a.CloneTree().Write()
-
-weightv = array('d',[weight])
-t = TTree("Weight", "Weight");
-t.Branch('weightv',weightv, "weightv/D")
-#weightv = weight
-t.Fill()
-t.Write()
-output.Close()
+if Good:
+	weightv = array('d',[weight])
+	t = TTree("Weight", "Weight");
+	t.Branch('weightv',weightv, "weightv/D")
+	#weightv = weight
+	t.Fill()
+	t.Write()
+	output.Close()
+else:
+	raise Exception('BAD ROOT FILE!')
+	output.Close()
 

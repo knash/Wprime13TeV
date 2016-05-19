@@ -4,7 +4,7 @@ import glob
 import copy
 import re
 import sys
-
+import os
 from optparse import OptionParser
 
 
@@ -16,10 +16,10 @@ parser.add_option('--file', metavar='F', type='string', action='store',
                   help='analysis file')
 
 
-parser.add_option('--crabfile', metavar='F', type='string', action='store',
-                  dest='crabfile',
-                  default='crabThetaGrid.cfg',
-                  help='crab file')
+parser.add_option('--uidir', metavar='F', type='string', action='store',
+                  dest='uidir',
+                  default=None,
+                  help='crab UI directory')
 
 
 (options, args) = parser.parse_args()
@@ -31,22 +31,42 @@ outfile = options.file.split('.')[0]
 
 uidir = outfile
 
+commands1 = []
+commands2 = []
+commands3 = []
 
 
-commands = [
+commands1= [
     'rm analysis.py',
     'rm -rf analysis/',
+    'rm -rf '+options.uidir,
     'rm analysis.tgz',
-    'sed "s/RSTEP/0/g " ' + options.file + '  > ./analysis.py',
+    'cp ' + options.file + ' ./analysis.py',
     './utils2/theta-auto.py',
-    'tar -cz analysis/ > analysis.tgz',
+    'mkdir '+options.uidir,
+    'rm theta.listOfJobs'
+] 
+anaFilesRaw = glob.glob( 'analysis/*quant*.cfg' ) 
+for ifile in range(0,len(anaFilesRaw)):
+	commands2.append('echo source ./tardir/thetaGrid.sh '+str(ifile)+' >> theta.listOfJobs')
+#commands2.append('echo source ./tardir/thetaGridbs.sh 1 >> theta.listOfJaaobs')
+commands2.append('cp -r theta.listOfJobs grid_theta_sub.csh analysis thetaGrid.sh thetaGrid.py analysis_wprimeR_comb_limits.py WprimeCombinationHistos_leptonic.root Limits_allhadronic_right_PSET_default.root gridpack_wpTemplate.tgz '+options.uidir)
+
+commands3=[
+    'tar -cz ../analysis/ > ./analysis.tgz',
     'cp analysis.tgz ' + outfile + '.tgz',
-    'crab -create  crab -USER.ui_working_dir ' + uidir + ' -create -cfg ' + options.crabfile,
-    'crab -submit -c ' + uidir,
-    'crab -status -c ' + uidir
+    'source ./grid_theta_sub.csh'
     ]
 
-for s in commands :
+for s in commands1 :
+    print 'executing ' + s
+    subprocess.call( [s], shell=True )
+
+for s in commands2 :
+    print 'executing ' + s
+    subprocess.call( [s], shell=True )
+os.chdir('./'+options.uidir)
+for s in commands3 :
     print 'executing ' + s
     subprocess.call( [s], shell=True )
 

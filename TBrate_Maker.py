@@ -39,7 +39,15 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
                   dest		=	'cuts',
                   help		=	'Cuts type (ie default, rate, etc)')
 
+parser.add_option('--batch', metavar='F', action='store_true',
+                  default=False,
+                  dest='batch',
+                  help='batch')
 (options, args) = parser.parse_args()
+
+if options.batch:
+	ROOT.gROOT.SetBatch(True)
+	ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 gROOT.Macro("rootlogon.C")
 
@@ -121,28 +129,21 @@ p44 = 0.0
 
 
 print "Running on "+options.set
+fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
+fst = TFile(rootdir+"TBratefileST_PSET_"+options.cuts+".root")
 
-#Load up data and ttbar
-if options.set == 'data':
-	fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+".root")
-	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
-#for QCD only
-if options.set=='QCD':
-	fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+"weighted.root")
-	fttbar = TFile(rootdir+"TBratefilettbar_PSET_"+options.cuts+"weighted.root")
+fdata = TFile(rootdir+"TBratefile"+options.set+"_PSET_"+options.cuts+".root")
 
 
 #Load up signal to look at contamination
+
 SigFiles = [
-TFile(rootdir+"TBratefileweightedsignalright1300_PSET_"+options.cuts+".root"),
+TFile(rootdir+"TBratefileweightedsignalright1200_PSET_"+options.cuts+".root"),
 TFile(rootdir+"TBratefileweightedsignalright2000_PSET_"+options.cuts+".root"),
-TFile(rootdir+"TBratefileweightedsignalright2700_PSET_"+options.cuts+".root"),
+TFile(rootdir+"TBratefileweightedsignalright2800_PSET_"+options.cuts+".root"),
 ]
 
-if options.set == 'data':
-	output = TFile( "plots/TBrate_Maker_"+setstr+"_PSET_"+options.cuts+".root", "recreate" )
-else:
-	output = TFile( "plots/TBrate_Maker_"+setstr+"_PSET_"+options.cuts+".root", "recreate" )
+output = TFile( "plots/TBrate_Maker_"+setstr+"_PSET_"+options.cuts+".root", "recreate" )
 output.cd()
 
 # Get numerators and denominators for each eta region
@@ -178,13 +179,32 @@ dtot1 = ttdeta1.Integral() + deta1.Integral()
 dtot2 = ttdeta2.Integral() + deta2.Integral()
 dtot3 = ttdeta3.Integral() + deta3.Integral()
 
+stneta1 = fst.Get("pteta1")
+stdeta1 = fst.Get("pteta1pretag")
+
+stneta2 = fst.Get("pteta2")
+stdeta2 = fst.Get("pteta2pretag")
+
+stneta3 = fst.Get("pteta3")
+stdeta3 = fst.Get("pteta3pretag")
+
+
+
+
 print "pretag QCD & " +strf1(deta1.Integral()) + " ($"+ strf(100*deta1.Integral()/dtot1) + "\%$) & " + strf1(deta2.Integral()) + " ($"+ strf(100*deta2.Integral()/dtot2) + "\%$) & " + strf1(deta3.Integral()) + " ($"+ strf(100*deta3.Integral()/dtot3) + "\%$)"
 print "tagged QCD & " +strf1(neta1.Integral()) + " ($"+ strf(100*neta1.Integral()/ntot1) + "\%$) & " + strf1(neta2.Integral()) + " ($"+ strf(100*neta2.Integral()/ntot2) + "\%$) & " + strf1(neta3.Integral()) + " ($"+ strf(100*neta3.Integral()/ntot3) + "\%$)"
 print "pretag "+r"$\ttbar$ & " +strf1(ttdeta1.Integral()) + " ($"+ strf(100*ttdeta1.Integral()/dtot1) + "\%$) & " + strf1(ttdeta2.Integral()) + " ($"+ strf(100*ttdeta2.Integral()/dtot2) + "\%$) & " + strf1(ttdeta3.Integral()) + " ($"+ strf(100*ttdeta3.Integral()/dtot3) + "\%$)"
 print "tagged "+r"$\ttbar$ & " +strf1(ttneta1.Integral()) + " ($"+ strf(100*ttneta1.Integral()/ntot1) + "\%$) & " + strf1(ttneta2.Integral()) + " ($"+ strf(100*ttneta2.Integral()/ntot2) + "\%$) & " + strf1(ttneta3.Integral()) + " ($"+ strf(100*ttneta3.Integral()/ntot3) + "\%$)"
 bins=[]
-#bins= [350,420,450,500,590,720,1300]
-bins= [300,420,550,660,1060,1250,1400]
+
+#bins= [350,420,550,660,1060,1250,1400]
+#Low data run
+bins= [350,400,470,570,700,1400]
+BPS = [500,650,550]
+if options.cuts=='rate_sideband2':
+	BPS = [500,550,450]
+if options.cuts=='rate_sideband3':
+	BPS = [500,550,450]
 bins2=array('d',bins)
 
 neta1r = neta1.Rebin(len(bins2)-1,"neta1r",bins2)
@@ -206,9 +226,20 @@ ttneta3r = ttneta3.Rebin(len(bins2)-1,"ttneta3r",bins2)
 ttdeta3r = ttdeta3.Rebin(len(bins2)-1,"ttdeta3r",bins2)
 
 
+stneta1r = stneta1.Rebin(len(bins2)-1,"stneta1r",bins2)
+stdeta1r = stdeta1.Rebin(len(bins2)-1,"stdeta1r",bins2)
+
+stneta2r = stneta2.Rebin(len(bins2)-1,"stneta2r",bins2)
+stdeta2r = stdeta2.Rebin(len(bins2)-1,"stdeta2r",bins2)
+
+stneta3r = stneta3.Rebin(len(bins2)-1,"stneta3r",bins2)
+stdeta3r = stdeta3.Rebin(len(bins2)-1,"stdeta3r",bins2)
+
 #TTbar subtraction is done here
+dtot = deta1.Integral()+deta2.Integral()+deta3.Integral()
+ntot = neta1.Integral()+neta2.Integral()+neta3.Integral()
 if options.set=='data':
-	print 'subtracting ttbar'
+	print 'subtracting ttbar and singletop'
 	neta1r.Add(ttneta1r,-1)
 	deta1r.Add(ttdeta1r,-1)
 	neta2r.Add(ttneta2r,-1)
@@ -216,9 +247,19 @@ if options.set=='data':
 	neta3r.Add(ttneta3r,-1)
 	deta3r.Add(ttdeta3r,-1)
 
+	neta1r.Add(stneta1r,-1)
+	deta1r.Add(stdeta1r,-1)
+	neta2r.Add(stneta2r,-1)
+	deta2r.Add(stdeta2r,-1)
+	neta3r.Add(stneta3r,-1)
+	deta3r.Add(stdeta3r,-1)
+
 outputa = TFile( "plots/B_tagging_sigcont"+setstr+".root", "recreate" )
 outputa.cd()
 mass = [1300,2000,2700]
+print "Data & "+strf((deta1r.Integral()+deta2r.Integral()+deta3r.Integral())*100./dtot)+"% & "+strf((neta1r.Integral()+neta2r.Integral()+neta3r.Integral())*100./ntot)+"% \\\\" 
+print "\\ttbar & "+strf((ttdeta1r.Integral()+ttdeta2r.Integral()+ttdeta3r.Integral())*100./dtot)+"% & "+strf((ttneta1r.Integral()+ttneta2r.Integral()+ttneta3r.Integral())*100./ntot)+"% \\\\" 
+
 for ifile in range(0,len(SigFiles)):
 	nseta1 = SigFiles[ifile].Get("pteta1")
 	dseta1 = SigFiles[ifile].Get("pteta1pretag")
@@ -237,8 +278,13 @@ for ifile in range(0,len(SigFiles)):
 	nseta3r = nseta3.Rebin(len(bins2)-1,"nseta3r",bins2)
 	dseta3r = dseta3.Rebin(len(bins2)-1,"dseta3r",bins2)
 
-	print "pretag signal at "+str(mass[ifile])+"$\GeV$ & " +strf1(dseta1.Integral()) + " ($"+ strf(100*dseta1.Integral()/dtot1) + "\%$) & " + strf1(dseta2.Integral()) + " ($"+ strf(100*dseta2.Integral()/dtot2) + "\%$) & " + strf1(dseta3.Integral()) + " ($"+ strf(100*dseta3.Integral()/dtot3) + "\%$)"
-	print "tagged signal at "+str(mass[ifile])+"$\GeV$ & " +strf1(nseta1.Integral()) + " ($"+ strf(100*nseta1.Integral()/ntot1) + "\%$) & " + strf1(nseta2.Integral()) + " ($"+ strf(100*nseta2.Integral()/ntot2) + "\%$) & " + strf1(nseta3.Integral()) + " ($"+ strf(100*nseta3.Integral()/ntot3) + "\%$)"
+
+	print "Signal at "+str(mass[ifile])+" $\\GeV$ & "+strf((dseta1r.Integral()+dseta2r.Integral()+dseta3r.Integral())*100./dtot)+"% & "+strf((nseta1r.Integral()+nseta2r.Integral()+nseta3r.Integral())*100./ntot)+"% \\\\" 
+
+
+
+#	print "pretag signal at "+str(mass[ifile])+"$\GeV$ & " +strf1(dseta1.Integral()) + " ($"+ strf(100*dseta1.Integral()/dtot1) + "\%$) & " + strf1(dseta2.Integral()) + " ($"+ strf(100*dseta2.Integral()/dtot2) + "\%$) & " + strf1(dseta3.Integral()) + " ($"+ strf(100*dseta3.Integral()/dtot3) + "\%$)"
+#	print "tagged signal at "+str(mass[ifile])+"$\GeV$ & " +strf1(nseta1.Integral()) + " ($"+ strf(100*nseta1.Integral()/ntot1) + "\%$) & " + strf1(nseta2.Integral()) + " ($"+ strf(100*nseta2.Integral()/ntot2) + "\%$) & " + strf1(nseta3.Integral()) + " ($"+ strf(100*nseta3.Integral()/ntot3) + "\%$)"
 
 	nseta1r.Add(neta1r)
 	dseta1r.Add(deta1r)
@@ -381,7 +427,7 @@ print "------------------------------------"
 
 # This is the fit we use.  BIFP is the bifurcation point
 
-BIFP=500.0
+BIFP=BPS[0]
 BP =TF1("BP",BifPoly,350,1400,5)
 BP.FixParameter(4,BIFP)
 
@@ -389,8 +435,12 @@ c4 = TCanvas('c4', 'Tagrate1', 1300, 600)
 c4.cd()
 tagrateeta1.Fit("BP","F")
 
-sys.stdout = Outf16
+
 fitter = TVirtualFitter.GetFitter()
+print "p value"
+print BP.GetProb()
+print BP.GetChisquare()
+sys.stdout = Outf16
 print(fitter.GetParameter(0))
 print(fitter.GetParameter(1))
 print(fitter.GetParameter(2))
@@ -430,14 +480,19 @@ c4.Print("plots/BPTAGETA1FIT"+setstr+".root","root")
 c3 = TCanvas('c3', 'Tagrate2', 1300, 600)
 c3.cd()
 
-BIFP=550.0
+BIFP=BPS[1]
 BP =TF1("BP",BifPoly,350,1400,5)
 BP.FixParameter(4,BIFP)
 tagrateeta2.Fit("BP","F")
 sys.stdout = saveout
 
-sys.stdout = Outf17
+
 fitter = TVirtualFitter.GetFitter()
+
+print "p value"
+print BP.GetProb()
+print BP.GetChisquare()
+sys.stdout = Outf17
 print(fitter.GetParameter(0))
 print(fitter.GetParameter(1))
 print(fitter.GetParameter(2))
@@ -474,7 +529,7 @@ c2.cd()
 #fix = tagrateeta3.GetBinContent(fixbin)
 #BP.FixParameter(0,fix)
 
-BIFP=550.0
+BIFP=BPS[2]
 BP =TF1("BP",BifPoly,350,1400,5)
 BP.FixParameter(4,BIFP)
 tagrateeta3.Fit("BP","F")
@@ -487,8 +542,12 @@ sys.stdout = saveout
 #print "ratio"
 #print BP.GetChisquare()/BP.GetNDF()
 #print ""
-sys.stdout = Outf18
+
 fitter = TVirtualFitter.GetFitter()
+print "p value"
+print BP.GetProb()
+print BP.GetChisquare()
+sys.stdout = Outf18
 print(fitter.GetParameter(0))
 print(fitter.GetParameter(1))
 print(fitter.GetParameter(2))
@@ -876,7 +935,7 @@ print str(p33)
 
 
 
-output1 = ROOT.TFile( "Tagrate2D.root", "recreate" )
+output1 = ROOT.TFile( "Tagrate2D"+options.set+options.cuts+".root", "recreate" )
 output2 = ROOT.TFile( "plots/Tagrate2Ddelta.root", "recreate" )
 
 output = ROOT.TFile( "plots/TagrateSlices.root", "recreate" )
@@ -916,6 +975,16 @@ deta2ttbar = fttbar.Get("MtbbptcomparepreSB1e2")
 neta3ttbar = fttbar.Get("MtbbptcomparepostSB1e3")
 deta3ttbar = fttbar.Get("MtbbptcomparepreSB1e3")
 
+neta1st = fst.Get("MtbbptcomparepostSB1e1")
+deta1st = fst.Get("MtbbptcomparepreSB1e1")
+
+neta2st = fst.Get("MtbbptcomparepostSB1e2")
+deta2st = fst.Get("MtbbptcomparepreSB1e2")
+
+neta3st = fst.Get("MtbbptcomparepostSB1e3")
+deta3st = fst.Get("MtbbptcomparepreSB1e3")
+
+
 neta1 = neta1NOSUB.Clone("neta1")
 neta2 = neta2NOSUB.Clone("neta2")
 neta3 = neta3NOSUB.Clone("neta3")
@@ -930,6 +999,13 @@ if options.set=="data":
 	deta1.Add(deta1ttbar,-1)
 	deta2.Add(deta2ttbar,-1)
 	deta3.Add(deta3ttbar,-1)
+
+	neta1.Add(neta1st,-1)
+	neta2.Add(neta2st,-1)
+	neta3.Add(neta3st,-1)
+	deta1.Add(deta1st,-1)
+	deta2.Add(deta2st,-1)
+	deta3.Add(deta3st,-1)
 
 slopeta1 = []
 slopeta2 = []
@@ -1131,15 +1207,44 @@ for ibin in range(0,len(bins2)-1):
 		output.cd()
 
 
+	
+if options.set == 'QCD':
+
+	outputM = ROOT.TFile( "ModMassFile_PSET_"+options.cuts +".root", "recreate" )
+	outputM.cd()
+
+	ModM = fdata.Get("bmasshpost")
+	ModMd = fdata.Get("bmassh")
+
+	ModM.Rebin(4)
+	ModMd.Rebin(4)
+	lastbin = ModM.FindLastBinAbove(0,1)
+	ModM.SetBinContent(lastbin+1,ModM.GetBinContent(lastbin))
+	ModMd.SetBinContent(lastbin+1,ModMd.GetBinContent(lastbin))
+	ModM.Scale(1./ModM.Integral())
+	ModMd.Scale(1./ModMd.Integral())
+	ModM.Write("bmasspost")
+	ModMd.Write("bmasspre")
+
+	ModM.Divide(ModMd)
+
+	ModM.Write("rtmass")
+
+	outputM.Write()
+	outputM.Close()
+	
 tagrateeta1 = neta1r.Clone("tagrateeta1")
-tagrateeta1.Divide(tagrateeta1,deta1r,1,1,"B")
+#tagrateeta1.Divide(tagrateeta1,deta1r,1,1,"B")
+tagrateeta1.Divide(deta1r)
 
 tagrateeta2 = neta2r.Clone("tagrateeta2")
-tagrateeta2.Divide(tagrateeta2,deta2r,1,1,"B")
+#tagrateeta2.Divide(tagrateeta2,deta2r,1,1,"B")
+tagrateeta2.Divide(deta2r)
 
 tagrateeta3 = neta3r.Clone("tagrateeta3")
-tagrateeta3.Divide(tagrateeta3,deta3r,1,1,"B")
-	
+#tagrateeta3.Divide(tagrateeta3,deta3r,1,1,"B")
+tagrateeta3.Divide(deta3r)
+
 output1.cd()
 tagrateeta1.Write("SB1tagrate2Deta1")
 tagrateeta2.Write("SB1tagrate2Deta2")

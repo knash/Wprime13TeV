@@ -20,7 +20,7 @@ subprocess.call( [s], shell=True )
 
 
 # Get the analysis files
-anaFilesRaw = glob.glob( 'analysis/*.cfg' )
+anaFilesRaw = glob.glob( 'analysis/*quant*.cfg' )
 anaFiles = sorted(anaFilesRaw)
 print 'All analysis files are : '
 print anaFiles
@@ -30,7 +30,7 @@ print 'Will be processing ' + anaFile
 
 # Unpack the gridpack
 print 'Unpacking the theta gridpack'
-s = 'tar -zxvf gridpack.tgz'
+s = 'tar -zxvf gridpack_wpTemplate.tgz'
 print 'executing ' + s
 subprocess.call( [s], shell=True )
 
@@ -38,7 +38,7 @@ subprocess.call( [s], shell=True )
 # Now get the name of the logfile and output file
 strippedName = copy.copy(anaFile)
 strippedNameIndex1 = strippedName.find('/') + 1
-strippedNameIndex2 = strippedName.find('.')
+strippedNameIndex2 = strippedName.find('.c')
 strippedName2 = strippedName[strippedNameIndex1:strippedNameIndex2]
 print 'stripped name is ' + strippedName2
 
@@ -58,8 +58,18 @@ s = 'bin/theta ' + anaFile + ' > /dev/null'
 print 'executing ' + s
 subprocess.call( [s], shell=True )
 
+s = 'ls -trlh'
+print 'executing ' + s
+subprocess.call( [s], shell=True )
+
 # tar up the results
 print 'Tarring up the results to results.tgz'
-s = 'tar -cz ' + logName + ' ' + outName + ' > results.tgz'
+s = 'tar -cz ' + logName + ' ' + outName + ' > ../results' + str(index)+'.tgz'
+files1 = glob.glob( '*quant*.cfg' )
+print files1
+files1 = glob.glob( '*quant*.db' )
+print files1
+files1 = glob.glob( '*quant*.txt' )
+print files1
 print 'executing ' + s
 subprocess.call( [s], shell=True )
