@@ -199,9 +199,14 @@ bins=[]
 
 #bins= [350,420,550,660,1060,1250,1400]
 #Low data run
-bins= [350,400,470,570,700,1400]
+#bins= [350,400,470,570,700,1400]
+
+bins= [350,400,470,570,700,900,1400]
+#if options.set=='qcd':
+#	bins= [350,400,470,570,700,900,2000]
 BPS = [500,650,550]
 if options.cuts=='rate_sideband2':
+#	bins= [350,400,470,570,700,900,2000]
 	BPS = [500,550,450]
 if options.cuts=='rate_sideband3':
 	BPS = [500,550,450]
@@ -428,7 +433,7 @@ print "------------------------------------"
 # This is the fit we use.  BIFP is the bifurcation point
 
 BIFP=BPS[0]
-BP =TF1("BP",BifPoly,350,1400,5)
+BP =TF1("BP",BifPoly,350,2000,5)
 BP.FixParameter(4,BIFP)
 
 c4 = TCanvas('c4', 'Tagrate1', 1300, 600)
@@ -481,7 +486,7 @@ c3 = TCanvas('c3', 'Tagrate2', 1300, 600)
 c3.cd()
 
 BIFP=BPS[1]
-BP =TF1("BP",BifPoly,350,1400,5)
+BP =TF1("BP",BifPoly,350,2000,5)
 BP.FixParameter(4,BIFP)
 tagrateeta2.Fit("BP","F")
 sys.stdout = saveout
@@ -530,7 +535,7 @@ c2.cd()
 #BP.FixParameter(0,fix)
 
 BIFP=BPS[2]
-BP =TF1("BP",BifPoly,350,1400,5)
+BP =TF1("BP",BifPoly,350,2000,5)
 BP.FixParameter(4,BIFP)
 tagrateeta3.Fit("BP","F")
 sys.stdout = saveout

@@ -37,17 +37,19 @@ def LoadConstants():
 		
 		'lumi':2553.0,
 		'kfac':1.2,
-		'xsec_wpr':{'1100':3.09,'1200':2.17,'1300':1.55,'1400':1.129,'1500':0.834,'1600':0.623,'1700':0.471,'1800':0.359,'1900':0.276,'2000':0.214,'2100':0.166,'2200':0.130,'2300':0.103,'2400':0.0813 ,'2500':0.0646,'2600':0.0516,'2700':0.0413,'2800':0.0318,'2900':0.0267,'3000':0.0216},
+		'xsec_wpr':{'1000':4.52,'1100':3.09,'1200':2.17,'1300':1.55,'1400':1.129,'1500':0.834,'1600':0.623,'1700':0.471,'1800':0.359,'1900':0.276,'2000':0.214,'2100':0.166,'2200':0.130,'2300':0.103,'2400':0.0813 ,'2500':0.0646,'2600':0.0516,'2700':0.0413,'2800':0.0318,'2900':0.0267,'3000':0.0216},
 		'xsec_wpl':{'1400': 0.},
 		'xsec_wplr':{'1400': 0.},
 		'xsec_ttbar':{'MG':831.76,'PH':831.76,'PHscaleup':831.76,'PHscaledown':831.76 },
 		'xsec_qcd':{'300':7823,'470':648.2,'600':186.9,'800':32.293,'1000':9.4183,'1400':0.84265,'1800':0.1091,'HT500':31630,'HT700':6802,'HT1000':1206,'HT1500':120.4,'HT2000':25.25},
 		'xsec_st':{'S':11.36,'T':216.97,'TW':35.85,'TWB':35.85},
-		'nev_wpr':{'1100':200000,'1200':200000,'1300':197600,'1400':157200,'1500':104800,'1600':198200,'1700':200000,'1800':200000,'1900':200000,'2000':198400,'2100':200000,'2200':200000,'2300':200000,'2400':197600,'2500':200000,'2600':200000,'2700':194200,'2800':200000,'2900':199200,'3000':199200},
+		'xsec_wjets':{'HT600':95.14},
+		'nev_wpr':{'1000':198400,'1100':200000,'1200':200000,'1300':197600,'1400':157200,'1500':104800,'1600':198200,'1700':200000,'1800':200000,'1900':200000,'2000':198400,'2100':200000,'2200':200000,'2300':200000,'2400':197600,'2500':200000,'2600':200000,'2700':194200,'2800':200000,'2900':199200,'3000':199200},
 		'nev_wpl':{'2000':474565,},
 		'nev_wplr':{'2000':468663,},
+		'nev_wjets':{'HT600':1008034},
 		'nev_ttbar':{'MG':11339232,'PH':19757190,'PHscaleup':9921174,'PHscaledown':9860774},
-		'nev_qcd':{'300':2933611,'470':1936832,'600':1964128,'800':1937216,'1000':1487136,'1400':197959,'1800':193608,'HT500':19664159,'HT700':15356448,'HT1000':4963895,'HT1500':3868886,'HT2000':1912529},
+		'nev_qcd':{'300':2933611,'470':1936832,'600':1964128,'800':1937216,'1000':1487136,'1400':197959,'1800':193608,'HT500':19664159,'HT700':15077752,'HT1000':4963895,'HT1500':3868886,'HT2000':1912529},
 		'nev_st':{'S':984400,'T':49858384,'TW':995600 ,'TWB':988500},
 		}
 
@@ -358,12 +360,37 @@ def Load_Ntuples(string,bx):
 
  		#files = glob.glob("/uscms_data/d3/knash/WPrime13TeV/B2GAnaFW/SlimNtuples_test/CMSSW_7_4_15/src/Analysis/B2GAnaFW/test/B2GEDMNtuple_slimtest.root")
  		#files = glob.glob("/uscms_data/d3/knash/WPrime13TeV/B2GAnaFW/SlimNtuples_test/CMSSW_7_4_15/src/Analysis/B2GAnaFW/test/B2GEDMNtuple_slimregular.root")
+
+
+	if string == 'B2GsignalLH1200':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-1200_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH1400':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-1400_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH1600':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-1600_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH1800':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-1800_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH2000':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-2000_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH2200':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-2200_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH2400':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-2400_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH2600':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-2600_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH2800':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-2800_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'B2GsignalLH3000':
+		files = glob.glob("/eos/uscms/store/user/lcorcodi/BstarToTW_M-3000_LH_TuneCUETP8M1_13TeV-madgraph-pythia8/RunIISpring16MiniAODv2_B2GAnaFW_80x_V1p0/160624*/0000/*.root")
+	if string == 'ttbar80X':
+ 		files = glob.glob("/uscms_data/d3/lcorcodi/BStar13TeV/SlimTuples/crab_TT_TuneCUETP8M1_13TeV-powheg-pythia8_B2GAnaFW_V1p1_80x_Slim_V2/*/0000/*.root")
+
 	if string == 'ttbar':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/TT_TuneCUETP8M1_13TeV-powheg-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-pythia8_B2GAnaFW_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/TT_TuneCUETP8M1_13TeV-powheg-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-pythia8_B2GAnaFW_V8p4_Slim_V12/*/0000/*.root")
 	if string == 'ttbarscaleup':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/TT_TuneCUETP8M1_13TeV-powheg-scaleup-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-scaleup-pythia8_B2GAnaFW_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/TT_TuneCUETP8M1_13TeV-powheg-scaleup-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-scaleup-pythia8_B2GAnaFW_V8p4_Slim_V12/*/0000/*.root")
 	if string == 'ttbarscaledown':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/TT_TuneCUETP8M1_13TeV-powheg-scaledown-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-scaledown-pythia8_B2GAnaFW_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/TT_TuneCUETP8M1_13TeV-powheg-scaledown-pythia8/crab_TT_TuneCUETP8M1_13TeV-powheg-scaledown-pythia8_B2GAnaFW_V8p4_Slim_V12/*/0000/*.root")
 
  #	if string == 'QCDPT300':
  #		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/crab_QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8_v74x_V6_25ns/150928_144140/0000/*.root")
@@ -381,33 +408,46 @@ def Load_Ntuples(string,bx):
  #		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/crab_QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8_v74x_V6_25ns/150928_144234/0000/*.root")
 
 
+	if string == 'WJETS':
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V12/160629_214546/0000/*.root")
+ 
+
+	if string == 'QCDHT300':
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V12/*/0000/*.root")
+ 
 	if string == 'QCDHT500':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V10/*/0000/*.root")
- 	if string == 'QCDHT700':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V12/*/0000/*.root")
+ 
+	if string == 'QCDHT700':
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V11/*/0000/*.root")
  	if string == 'QCDHT1000':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V12/*/0000/*.root")
  	if string == 'QCDHT1500':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V11/*/0000/*.root")
 	if string == 'QCDHT2000':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_V8p4_Slim_V12/*/0000/*.root")
  
   
 
 
 	#if string == 'STS':
- 	#	files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/crab_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_V8p4_Slim_V10/160113_205221/0000/*.root")
+ 	#	files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/crab_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_V8p4_Slim_V12/160113_205221/0000/*.root")
 	#if string == 'STT':
- 	#	files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/crab_ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_V8p4_Slim_V10/160113_205147/0000/*.root")
- 	#	files += glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/crab_ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_ext1_V8p4_Slim_V10/160114_161134/0000/*.root")
+ 	#	files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/crab_ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_V8p4_Slim_V12/160113_205147/0000/*.root")
+ 	#	files += glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/crab_ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1_ext1_V8p4_Slim_V12/160114_161134/0000/*.root")
 	if string == 'STTW':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/crab_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/crab_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_V8p4_Slim_V12/*/0000/*.root")
 	if string == 'STTWB':
- 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/crab_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_V8p4_Slim_V10/*/0000/*.root")
+ 		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/crab_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1_V8p4_Slim_V12/*/0000/*.root")
 
 	if string.find('signalright')!=-1:
 		sigmass = string.replace('signalright','')
-		files = glob.glob("/uscms_data/d3/knash/SlimNtuples/WprimeToTB_TToHad_M-"+sigmass+"_RH_TuneCUETP8M1_13TeV-comphep-pythia8/crab_WPrime13TeV_RH_"+sigmass+"_B2GAnaFW_V8p4_Slim_V10/*/*/*.root")
+		if string == 'signalright1000' or string == 'signalright1100': 
+			files = glob.glob("/uscms_data/d3/knash/SlimNtuples/WprimeToTB_TToHad_M-"+sigmass+"_RH_TuneCUETP8M1_13TeV-comphep-pythia8/crab_WPrime13TeV_RH_"+sigmass+"_B2GAnaFW_V8p4_Slim_V12/*/*/*.root")
+		else:
+			files = glob.glob("/uscms_data/d3/knash/SlimNtuples/WprimeToTB_TToHad_M-"+sigmass+"_RH_TuneCUETP8M1_13TeV-comphep-pythia8/crab_WPrime13TeV_RH_"+sigmass+"_B2GAnaFW_V8p4_Slim_V12/*/*/*.root")
+
+
 	#if string == 'signalleft2800':
 	#	files = glob.glob("/eos/uscms/store/user/knash/Wprimeleft280013TeV_pythia8/crab_WPrime13TeV_LeftCut_Fullsim_B2GAnaFW_V6_2800_LH_25ns/151123_180958/0000/*.root")
 	for i in range(0,len(files)):
@@ -442,9 +482,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/bpinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit = TF1("eta1fit",BifPoly,0,1400,5)
-		eta2fit = TF1("eta2fit",BifPoly,0,1400,5)
-		eta3fit = TF1("eta3fit",BifPoly,0,1400,5)
+		eta1fit = TF1("eta1fit",BifPoly,0,2000,5)
+		eta2fit = TF1("eta2fit",BifPoly,0,2000,5)
+		eta3fit = TF1("eta3fit",BifPoly,0,2000,5)
 		Params = 5
 	if ST == 'Bifpoly_err':
 		TRBPE1 = open("./"+di+"fitdata/bperrorinput"+setval+"eta1_PSET_"+CUT+".txt")
@@ -453,9 +493,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/bperrorinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit=TF1("eta1fit",BifPolyErr,0,1400,10)
-		eta2fit=TF1("eta2fit",BifPolyErr,0,1400,10)
-		eta3fit=TF1("eta3fit",BifPolyErr,0,1400,10)
+		eta1fit=TF1("eta1fit",BifPolyErr,0,2000,10)
+		eta2fit=TF1("eta2fit",BifPolyErr,0,2000,10)
+		eta3fit=TF1("eta3fit",BifPolyErr,0,2000,10)
 		Params = 10
 
 	if ST == 'pol0':
@@ -465,9 +505,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/pol0input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit = TF1("eta1fit",'pol0',0,1400)
-		eta2fit = TF1("eta2fit",'pol0',0,1400)
-		eta3fit = TF1("eta3fit",'pol0',0,1400)
+		eta1fit = TF1("eta1fit",'pol0',0,2000)
+		eta2fit = TF1("eta2fit",'pol0',0,2000)
+		eta3fit = TF1("eta3fit",'pol0',0,2000)
 		Params = 1
 
 	if ST == 'pol2':
@@ -477,9 +517,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/pol2input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit = TF1("eta1fit",'pol2',0,1400)
-		eta2fit = TF1("eta2fit",'pol2',0,1400)
-		eta3fit = TF1("eta3fit",'pol2',0,1400)
+		eta1fit = TF1("eta1fit",'pol2',0,2000)
+		eta2fit = TF1("eta2fit",'pol2',0,2000)
+		eta3fit = TF1("eta3fit",'pol2',0,2000)
 		Params = 3
 
 	if ST == 'pol3':
@@ -489,9 +529,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/pol3input"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit = TF1("eta1fit",'pol3',0,1400)
-		eta2fit = TF1("eta2fit",'pol3',0,1400)
-		eta3fit = TF1("eta3fit",'pol3',0,1400)
+		eta1fit = TF1("eta1fit",'pol3',0,2000)
+		eta2fit = TF1("eta2fit",'pol3',0,2000)
+		eta3fit = TF1("eta3fit",'pol3',0,2000)
 		Params = 4
 	if ST == 'FIT':
 		TRBPE1 = open("./"+di+"fitdata/newfitinput"+setval+"eta1_PSET_"+CUT+".txt")
@@ -500,9 +540,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/newfitinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit = TF1("eta1fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
-		eta2fit = TF1("eta2fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
-		eta3fit = TF1("eta3fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,1400)
+		eta1fit = TF1("eta1fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,2000)
+		eta2fit = TF1("eta2fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,2000)
+		eta3fit = TF1("eta3fit",'[0]*([1]+x)/([2]+x)+[3]*x',0,2000)
 		Params = 4
 	if ST == 'expofit':
 		TRBPE1 = open("./"+di+"fitdata/expoconinput"+setval+"eta1_PSET_"+CUT+".txt")
@@ -511,9 +551,9 @@ def BTR_Init(ST,CUT,di,setval):
 		TRBPE2.seek(0)
 		TRBPE3 = open("./"+di+"fitdata/expoconinput"+setval+"eta3_PSET_"+CUT+".txt")
 		TRBPE3.seek(0)
-		eta1fit = TF1("eta1fit",'expo(0) + pol0(2)',0,1400)
-		eta2fit = TF1("eta2fit",'expo(0) + pol0(2)',0,1400)
-		eta3fit = TF1("eta3fit",'expo(0) + pol0(2)',0,1400)
+		eta1fit = TF1("eta1fit",'expo(0) + pol0(2)',0,2000)
+		eta2fit = TF1("eta2fit",'expo(0) + pol0(2)',0,2000)
+		eta3fit = TF1("eta3fit",'expo(0) + pol0(2)',0,2000)
 		Params = 3
 
 	TBP1 = TRBPE1.read()
@@ -590,7 +630,8 @@ def SFB_Lookup( Y ):
 	return [weightSFb,weightSFb_down,weightSFb_up]
 #This looks up the PDF uncertainty
 def SFT_Lookup( pttop ):
-	ttagsf = [[0.82,0.09],[0.93,0.20]]
+
+	ttagsf = [[0.88,0.11],[1.00,0.23]]
 	ttagsfregions = [[0,550],[550,float("inf")]]
 
 	for ipttop in range(0,len(ttagsfregions)):
@@ -798,12 +839,14 @@ def Makelv(vector,event):
 def Hemispherize(LV1,LV2):
 	tjets = [[],[]]
 	bjets = [[],[]]
+
 	for iLV1 in range(0,len(LV1)):
 
 		if abs(Math.VectorUtil.DeltaPhi(LV1[0],LV1[iLV1]))> TMath.Pi()/2:
 			tjets[1].append(iLV1)
 		else:
 			tjets[0].append(iLV1)
+
 	for iLV2 in range(0,len(LV2)):
 		if abs(Math.VectorUtil.DeltaPhi(LV1[0],LV2[iLV2]))> TMath.Pi()/2:
 			bjets[1].append(iLV2)
@@ -818,4 +861,5 @@ def strf( x ):
 
 def strf1( x ):
 	return '%.0f' % x
-
+def strf2( x ):
+	return '%.1f' % x

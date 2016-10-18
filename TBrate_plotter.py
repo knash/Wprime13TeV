@@ -8,6 +8,10 @@ import ROOT
 import sys
 from ROOT import *
 from array import *
+
+gROOT.Macro("rootlogon.C")
+gROOT.LoadMacro("insertlogo.C+")
+
 from optparse import OptionParser
 parser = OptionParser()
 
@@ -48,7 +52,7 @@ fits = []
 for fittitle in fittitles:
 	fits.append(BTR_Init(fittitle,options.cuts,'',options.set))
 
-leg1 = TLegend(0.45,0.57,.84,.78)
+leg1 = TLegend(0.45,0.55,.84,.84)
 leg1.SetFillColor(0)
 leg1.SetBorderSize(0)
 
@@ -557,7 +561,7 @@ for eta in range(0,3):
 	#chis.DrawLatex( 0.20, 0.6, "#scale[1.0]{#chi^{2} / dof = "+strf(chi2eta1/ndofeta1)+"}" )
 	leg1.Draw()
 	c4.RedrawAxis()
-
+	insertlogo(c4, 4, 11 )
 	c4.Print('plots/tagrateeta'+str(eta+1)+'fitBP.root', 'root')
 	c4.Print('plots/tagrateeta'+str(eta+1)+'fitBP.pdf', 'pdf')
 	c4.Print('plots/tagrateeta'+str(eta+1)+'fitBP.png', 'png')

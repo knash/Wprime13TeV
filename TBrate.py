@@ -200,8 +200,8 @@ BDiscLabel  	= 	( "jetsAK8" , "jetAK8CSV")
 puHandle    	= 	Handle("int")
 puLabel     	= 	( "eventUserData", "puNtrueInt" )
 
-GenFlavHandle 	= 	Handle (  "vector<float> "  ) 
-GenFlavLabel  	= 	( "jetsAK8" , "jetAK8PartonFlavour")
+partonFlavourHandle 	= 	Handle (  "vector<float> "  )
+partonFlavourLabel  	= 	( "jetsAK8" , "jetAK8PartonFlavour")
 
 
 minmassHandle 	= 	Handle (  "vector<float> "  )
@@ -298,10 +298,11 @@ pteta2pretag.Sumw2()
 pteta3pretag.Sumw2()
 
 
-partonflavpre  = TH1D("partonflavpre",           "b pt in 1.25<Eta<2.5",             	41,  -0.5,  40.5 )
-partonflavpost  = TH1D("partonflavpost",           "b pt in 1.25<Eta<2.5",             	41,  -0.5,  40.5 )
-partonflavpre.Sumw2()
-partonflavpost.Sumw2()
+pflavpre = TH1F("pflavpre",	"pflavpre",		30, -0.5, 29.5 )
+pflavpost = TH1F("pflavpost",	"pflavpost",		30, -0.5, 29.5 )
+
+pflavpre.Sumw2()
+pflavpost.Sumw2()
 
 pteta1.Sumw2()
 pteta2.Sumw2()
@@ -582,13 +583,17 @@ for event in events:
     			subjetsAK8CSV		= 	subjetsAK8CSVHandle.product() 
 
 
+
+
 			if len(subjetsAK8CSV)==0:
 				continue
 			if len(subjetsAK8CSV)<2:
-				subjetsAK8CSV[int(vsubjets0index[tindexval])]
+				SJ_csvvals = [subjetsAK8CSV[int(vsubjets0index[tindexval])]]
 			else:
     				SJ_csvvals = [subjetsAK8CSV[int(vsubjets0index[tindexval])],subjetsAK8CSV[int(vsubjets1index[tindexval])]]
-			
+			SJ_csvmax = max(SJ_csvvals)
+
+
 		#	SJ_csvvals = []
 		#	for icsv in range(0,int(nSubjets[tindexval])):
 		#		if int(SJ_csvs[icsv][tindexval])!=-1:
@@ -628,11 +633,19 @@ for event in events:
 					eta3_cut = eta3[0]<=abs(bjet.Eta())<eta3[1]
 					#Extract tags and probes for the average b tagging rate here 
 					#We use three eta regions 
+
+					if options.set!="data":
+    						event.getByLabel (partonFlavourLabel, partonFlavourHandle)
+    						partonFlavour 		= 	partonFlavourHandle.product()  
+
 					if not btag_cut:	
 						bmassh.Fill(bmassc,weight)
+						if options.set!="data":
+							pflavpre.Fill(abs(partonFlavour[bindexval]))
                 			if btag_cut :
 						bmasshpost.Fill(bmassc,weight)
-
+						if options.set!="data":
+							pflavpost.Fill(abs(partonFlavour[bindexval]))
 
 					if eta1_cut:	
 						if not btag_cut:	
@@ -659,13 +672,7 @@ for event in events:
 							MtbbptcomparepostSB1e3.Fill(bjet.Perp(),(tjet+bjet).M(),weightb)
                 					pteta3.Fill( bjet.Perp(),weightb)
 
-					if options.set!='data':
-    						event.getByLabel (GenFlavLabel, GenFlavHandle)
-    						GenFlav		= 	GenFlavHandle.product()  
-						if not btag_cut:
-							partonflavpre.Fill( abs(GenFlav[bindexval]),weightb)
-                				if btag_cut :
-							partonflavpost.Fill( abs(GenFlav[bindexval]),weightb)
+
 
 
 					temp_variables = {"bpt":bjet.Perp(),"bmass":bmassc,"btag":bJetBDisc[bindexval],"tpt":tjet.Perp(),"tmass":tmassc,"nsubjets":nSubjets[tindexval],"sjbtag":SJ_csvmax}

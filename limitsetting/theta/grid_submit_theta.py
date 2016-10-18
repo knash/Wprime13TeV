@@ -46,11 +46,16 @@ commands1= [
     'mkdir '+options.uidir,
     'rm theta.listOfJobs'
 ] 
+
+for s in commands1 :
+    print 'executing ' + s
+    subprocess.call( [s], shell=True )
+
 anaFilesRaw = glob.glob( 'analysis/*quant*.cfg' ) 
 for ifile in range(0,len(anaFilesRaw)):
 	commands2.append('echo source ./tardir/thetaGrid.sh '+str(ifile)+' >> theta.listOfJobs')
 #commands2.append('echo source ./tardir/thetaGridbs.sh 1 >> theta.listOfJaaobs')
-commands2.append('cp -r theta.listOfJobs grid_theta_sub.csh analysis thetaGrid.sh thetaGrid.py analysis_wprimeR_comb_limits.py WprimeCombinationHistos_leptonic.root Limits_allhadronic_right_PSET_default.root gridpack_wpTemplate.tgz '+options.uidir)
+commands2.append('cp -r theta.listOfJobs grid_theta_sub.csh analysis thetaGrid.sh thetaGrid.py analysis_wprimeR_comb_limits.py WprimeCombinationHistos_leptonic.root WprimeCombinationHistos_hadronic.root Limits_allhadronic_right_PSET_default.root gridpack_wpTemplate.tgz '+options.uidir)
 
 commands3=[
     'tar -cz ../analysis/ > ./analysis.tgz',
@@ -58,9 +63,6 @@ commands3=[
     'source ./grid_theta_sub.csh'
     ]
 
-for s in commands1 :
-    print 'executing ' + s
-    subprocess.call( [s], shell=True )
 
 for s in commands2 :
     print 'executing ' + s

@@ -4,6 +4,7 @@ import ROOT
 from ROOT import *
 def histogram_filter(hname):
     if 'ttag' in hname: return False
+    if 'TwoD' in hname: return False
     return True
  
 def build_allhad_model():
@@ -21,8 +22,8 @@ def build_allhad_model():
        		model.add_lognormal_uncertainty('st_TW_xsec', math.log(1.054), p)
       # 	model.add_lognormal_uncertainty('topsf', math.log(1.15), p)
        	model.add_lognormal_uncertainty('lumi', math.log(1.027), p)
-       	model.add_lognormal_uncertainty('ttag', math.log(1.215), p)
-       	model.add_lognormal_uncertainty('AK8btag', math.log(1.05), p)
+       	model.add_lognormal_uncertainty('ttag', math.log(1.23), p)
+       	model.add_lognormal_uncertainty('AK8btag', math.log(1.03), p)
     return model
 
 def limits_allhad(model, step = 0):
@@ -43,11 +44,16 @@ def limits_allhad(model, step = 0):
    plot_observed.write_txt('bayesian_observed_allhad_limits_WprimeR.txt')
    
    myopts = Options()
-   myopts.set('minimizer', 'strategy', 'newton_vanilla')
+   myopts.set('minimizer', 'strategy', 'robust')
+   myopts.set('minimizer', 'minuit_tolerance_factor', '100000')
    hrange = (100, -3.0, 3.0)
    histogram_specs = {}
-   
+
    parVals = mle(model, input = 'data', n=1, with_error=True, with_covariance=False,options = myopts)
+
+
+   #parVals = mle(model, input='data', n=1, options = options)
+
 
 
    parlist = ['__nll','beta_signal']
@@ -62,6 +68,32 @@ def limits_allhad(model, step = 0):
    S68high = TLine(-0.5,1,len(parVals['wp1800'].keys())-1.5,1)
    Pull = ROOT.TH1F("Pull",     "pullplot",     	  	len(parVals['wp1800'].keys())-2, -0.5, len(parVals['wp1800'].keys())-1.5 )
    i=0
+
+   print parVals
+
+   nuisances = ['','pile','pdf','modm','modtb','jer','q2','lumi','st_TW_xsec','ttbar_xsec','Fit','btag','pdf','Alt','lumi','trig','jes','ttag','AK8btag']
+   procs = [['ttbar','st','qcd'],['ttbar'],['ttbar'],['qcd'],['qcd'],['ttbar'],['ttbar'],['st'],['ttbar'],['qcd'],['ttbar'],['ttbar'],['qcd'],['ttbar','st'],['ttbar'],['ttbar'],['ttbar','st'],['ttbar']]
+
+   for nu in nuisances:
+
+	if nu=='':
+		nudev=['']
+
+	else:
+		nudev=['up','down']
+	for n in nudev:		
+		parameter_values = {}
+   		for p in model.get_parameters(['wp1800']):
+			if p==nu:
+				if n=='up':
+   					parameter_values[p] = parVals['wp1800'][p][0][0]+parVals['wp1800'][p][0][1]
+				if n=='down':
+   					parameter_values[p] = parVals['wp1800'][p][0][0]-parVals['wp1800'][p][0][1]
+			else:
+   				parameter_values[p] = parVals['wp1800'][p][0][0]
+   		histos = evaluate_prediction(model, parameter_values)
+   		write_histograms_to_rootfile(histos, 'histos-mle'+nu+n+'.root')
+
    for par in parVals['wp1800'].keys():
 	if par in parlist:
 		continue 
@@ -145,17 +177,18 @@ def limits_allhad(model, step = 0):
    c1.Print('nuisance1800.root', 'root')
    c1.Print('nuisance1800.pdf', 'pdf')
 
-   print parVals
-   
-   histograms1 = bayesian_posteriors(model, input = 'data', n=1, histogram_specs = histogram_specs)
+
+   print model.signal_process_groups 
+   histograms1 = bayesian_posteriors(model, input = 'data', n=1, histogram_specs = histogram_specs,signal_process_groups={'wp1800':['wp1800']})
    write_histograms_to_rootfile(histograms1, 'histos_posteriors.root')
-   histograms2 = bayesian_posterior_model_prediction(model, input = 'data', n=1)
+   histograms2 = bayesian_posterior_model_prediction(model, input = 'data', n=1,signal_process_groups={'wp1800':['wp1800']})
    write_histograms_to_rootfile(histograms2, 'histos_posterior_model_prediction.root')
    posteriors = ROOT.TFile("histos_posteriors.root")
    setstr = 'wp1800'
-   nuisances = ['pile','pdf','jer','q2','lumi','st_TW_xsec','ttbar_xsec','Fit','btag','pdf','Alt','lumi','trig','jes','ttag']
 
    for n in range(0,len(nuisances)):
+	if nuisances[n]=='':
+		continue
 	print nuisances[n]
 	histo = posteriors.Get(setstr + '__'  +nuisances[n] + '__0')
         c2 = TCanvas('c2', 'post', 600, 400)
@@ -181,7 +214,7 @@ for p in model.distribution.get_parameters():
     d = model.distribution.get_distribution(p)
     if d['typ'] == 'gauss' and d['mean'] == 0.0 and d['width'] == 1.0:
         model.distribution.set_distribution_parameters(p, range = [-5.0, 5.0])
+model_summary(model, True, True, True)
 
-
-limits_allhad(model,1)
+limits_allhad(model,0)
 

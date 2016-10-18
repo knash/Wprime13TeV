@@ -58,6 +58,13 @@ parser.add_option('-y', '--modmass', metavar='F', type='string', action='store',
                   dest		=	'modmass',
                   help		=	'nominal up or down')
 
+parser.add_option('-Y', '--modtb', metavar='F', type='string', action='store',
+                  default	=	'nominal',
+                  dest		=	'modtb',
+                  help		=	'nominal up or down')
+
+
+
 parser.add_option('-t', '--tname', metavar='F', type='string', action='store',
                   default	=	'HLT_PFHT800_v2,HLT_AK8DiPFJet280_200_TrimMass30_BTagCSV0p45_v3',
                   dest		=	'tname',
@@ -193,6 +200,12 @@ if options.modmass!="nominal":
 	print "using modm uncertainty"
 	mmstr = "_modm_"+options.modmass
 
+mmtbstr = ""
+if options.modtb!="nominal":
+	print "using modtb uncertainty"
+	mmtbstr = "_modtb_"+options.modtb
+
+
 TJ = ''
 if options.twojet:
 	TJ='_twojetmod'
@@ -230,6 +243,10 @@ if mod == '':
 ModFile = ROOT.TFile(di+"ModMassFile_PSET_rate_"+options.cuts +".root")
 ModPlot = ModFile.Get("rtmass")
 
+
+ModtbFile = ROOT.TFile(di+"bkgwQCD"+options.cuts+".root")
+ModtbPlot = ModtbFile.Get("bkgw")
+
 run_b_SF = True
 #Based on what set we want to analyze, we find all Ntuple root files 
 
@@ -256,7 +273,10 @@ if options.set != 'data':
 
 
 	#UNCOMMENT LATER
-	PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
+	if options.set=="WJETS":
+		PileFile = TFile(di+"PileUp_Ratio_ttbar.root")
+	else:
+		PileFile = TFile(di+"PileUp_Ratio_"+settype+".root")
 	if options.pileup == 'up':
 		PilePlot = PileFile.Get("Pileup_Ratio_up")
 	elif options.pileup == 'down':
@@ -265,6 +285,7 @@ if options.set != 'data':
 		PilePlot = PileFile.Get("Pileup_Ratio")
 jobiter = 0
 splitfiles = []
+
 if jobs != 1 and options.split=="file":
     for ifile in range(1,len(files)+1):
     	if (ifile-1) % jobs == 0:
@@ -284,7 +305,8 @@ if options.split=="event" or jobs == 1:
 AK8HL = Initlv("jetsAK8",post)
 
 
-
+PtnomHandle 	= 	Handle (  "vector<float> "  )
+PtnomLabel  	= 	( "jetsAK8" , "jetAK8Pt")
 
 BDiscHandle 	= 	Handle (  "vector<float> "  )
 BDiscLabel  	= 	( "jetsAK8" , "jetAK8CSV")
@@ -359,9 +381,9 @@ subjetsAK8CSVLabel  	= 	( "subjetsAK8" , "subjetAK8CSV")
 #---------------------------------------------------------------------------------------------------------------------#
 
 if jobs != 1:
-	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+mod+pstr+mmstr+TO+"_job"+options.num+"of"+options.jobs+TJ+"_PSET_"+options.cuts+".root", "recreate" )
+	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+mod+pstr+mmstr+mmtbstr+TO+"_job"+options.num+"of"+options.jobs+TJ+"_PSET_"+options.cuts+".root", "recreate" )
 else:
-	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+mod +pstr+mmstr+TO+TJ+"_PSET_"+options.cuts+".root", "recreate" )
+	f = TFile( "TBanalyzer"+options.set+"_Trigger_"+tnameformat+"_"+mod +pstr+mmstr+mmtbstr+TO+TJ+"_PSET_"+options.cuts+".root", "recreate" )
 
 
 if options.bkg=='nominal':
@@ -393,6 +415,9 @@ Mb		= TH1F("Mb",		"mass of b",     	  	      	200, 0, 400 )
 
 Nevents		= TH1F("Nevents",	"mass of tb",     	  	          5, 0., 5. )
 
+Nsdsj		= TH1F("Nsdsj",	"mass of tb",     	  	          5, 0., 5. )
+
+
 Mtbptup		= TH1F("Mtbptup",	"mass of tb ttbar pt reweighting up",	140, 500, 4000 )
 Mtbptdown	= TH1F("Mtbptdown",     "mass of tb ttbar pt reweighting up",   140, 500, 4000 )
 
@@ -412,6 +437,12 @@ QCDbkgh		= TH1F("QCDbkgh",	"QCD background estimate up error",	140, 500, 4000 )
 QCDbkgl		= TH1F("QCDbkgl",	"QCD background estimate down error",	140, 500, 4000 )
 QCDbkg2D	= TH1F("QCDbkg2D",	"QCD background estimate 2d error",	140, 500, 4000 )
 
+pflavpre = TH1F("pflavpre",	"pflavpre",		30, -0.5, 29.5 )
+pflavpost = TH1F("pflavpost",	"pflavpost",		30, -0.5, 29.5 )
+
+pflavpre.Sumw2()
+pflavpost.Sumw2()
+
 Mtb.Sumw2()
 
 Mtbtrigup.Sumw2()
@@ -429,6 +460,8 @@ QCDbkgh.Sumw2()
 QCDbkgl.Sumw2()
 
 QCDbkg_ARR = []
+
+
 
 for ihist in range(0,len(fittitles)):
 	QCDbkg_ARR.append(TH1F("QCDbkg"+str(fittitles[ihist]),     "mass W' in b+1 pt est etabin",     	  	      140, 500, 4000 ))
@@ -462,8 +495,8 @@ for event in events:
     
     m = 0
     t = 0
-  #  if count > 10000:
-#	break
+    if count > 100000:
+	break
 
     if count % 100000 == 0 :
       print  '--------- Processing Event ' + str(count) #+'   -- percent complete ' + str(100*count/totevents) + '% -- '
@@ -504,7 +537,6 @@ for event in events:
     bJetsh0  =  []
     topJetsh1 = []
     topJetsh0  = []
-
     for i in range(0,len(bindex[1])):
    	bJetsh1.append(AK8LV[bindex[1][i]])
     for i in range(0,len(bindex[0])):
@@ -639,8 +671,19 @@ for event in events:
         	event.getByLabel (softDropMassuncorrLabel, softDropMassuncorrHandle)
         	topJetMassuncorr 	= 	softDropMassuncorrHandle.product()
 
+        	event.getByLabel (PtnomLabel, PtnomHandle)
+        	Ptnom 	= 	PtnomHandle.product()
+		
+		tcorr = 1.0
+		bcorr = 1.0
+		if options.JER!='nominal':
+			tcorr=tjet.Perp()/Ptnom[tindexval]
+			bcorr=bjet.Perp()/Ptnom[bindexval]
+		if options.JES!='nominal':
+			bcorr=bjet.Perp()/Ptnom[bindexval]
 
-		[tmassc,bmassc] = [topJetMassuncorr[tindexval],topJetMass[bindexval]]
+		#####TEMPORARY#####
+		[tmassc,bmassc] = [topJetMassuncorr[tindexval]*tcorr,topJetMass[bindexval]*bcorr]
 	
 
 		tmass_cut = tmass[0]<tmassc<tmass[1]
@@ -729,12 +772,12 @@ for event in events:
     				event.getByLabel (subjetsAK8CSVLabel,subjetsAK8CSVHandle )
     				subjetsAK8CSV		= 	subjetsAK8CSVHandle.product() 
 
-
+				Nsdsj.Fill(len(subjetsAK8CSV))
 
 				if len(subjetsAK8CSV)==0:
 					continue
 				if len(subjetsAK8CSV)<2:
-					subjetsAK8CSV[int(vsubjets0index[tindexval])]
+					SJ_csvvals = [subjetsAK8CSV[int(vsubjets0index[tindexval])]]
 				else:
     					SJ_csvvals = [subjetsAK8CSV[int(vsubjets0index[tindexval])],subjetsAK8CSV[int(vsubjets1index[tindexval])]]
 				SJ_csvmax = max(SJ_csvvals)
@@ -796,12 +839,29 @@ for event in events:
                 						massw = max(0.0,1 + 1.5*(ModPlot.Interpolate(modm)-1))
 
 
+							modmtb = (tjet+bjet).M()
+							tbbin = ModtbPlot.FindBin(modmtb)
+							tberr = ModtbPlot.GetBinError(tbbin)
+							if options.modtb=='nominal':
+                						tbw = ModtbPlot.GetBinContent(tbbin)
+							if options.modtb=='up':
+                						tbw = 1.0
 
-
+							if options.modtb=='down':
+                						tbw = max(0.0,1 + 2.0*(ModtbPlot.GetBinContent(tbbin)-1))
+							if bkgset!='QCD':
+								massw*=tbw
+					
 							eta1_cut = eta1[0]<=abs(bjet.Eta())<eta1[1]
 							eta2_cut = eta2[0]<=abs(bjet.Eta())<eta2[1]
 							eta3_cut = eta3[0]<=abs(bjet.Eta())<eta3[1]
+							if options.set!="data":
+    								event.getByLabel (partonFlavourLabel, partonFlavourHandle)
+    								partonFlavour 		= 	partonFlavourHandle.product()  
+				
 							if not btag_cut:
+								if options.set!="data":
+									pflavpre.Fill(abs(partonFlavour[bindexval]))
 								if (eta1_cut) :
 									xbin = TagPlot2de1.GetXaxis().FindBin(bjet.Perp())
 									ybin = TagPlot2de1.GetYaxis().FindBin((tjet+bjet).M())
@@ -832,6 +892,11 @@ for event in events:
 	
         				        	if btag_cut:
 
+								if options.set!="data":
+								
+									pflavpost.Fill(abs(partonFlavour[bindexval]))
+
+
                                       				goodEvents.append( [ event.object().id().run(), event.object().id().luminosityBlock(), event.object().id().event() ] )
 								Mtb.Fill((tjet+bjet).M(),weightb) 
 
@@ -850,6 +915,12 @@ for event in events:
 
 								Mtbtrigup.Fill((tjet+bjet).M(),weighttrigup)
 								Mtbtrigdown.Fill((tjet+bjet).M(),weighttrigdown)
+								#print weightb
+								#print weightSFb
+								#print weightSFt
+								#print PilePlot.GetBinContent(bin1)
+								#print float(PileUp[0])
+								#print 
 								temp_variables = {"bpt":bjet.Perp(),"bmass":bmassc,"btag":bJetBDisc[bindexval],"tpt":tjet.Perp(),"tmass":tmassc,"nsubjets":nSubjets[tindexval],"sjbtag":SJ_csvmax,"run":event.object().id().run(),"lumi":event.object().id().luminosityBlock(),"event":event.object().id().event(),"weight":weightb }		
 
 

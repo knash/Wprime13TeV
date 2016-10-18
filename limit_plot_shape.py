@@ -80,6 +80,10 @@ argv = []
 from ROOT import *
 import ROOT
 
+
+gROOT.Macro("rootlogon.C")
+gROOT.LoadMacro("insertlogo.C+")
+
 import Wprime_Functions	
 from Wprime_Functions import *
 
@@ -100,7 +104,8 @@ nev_st = Cons['nev_st']
 
 import Wprime_Functions	
 from Wprime_Functions import *
-    
+gROOT.Macro("rootlogon.C")
+gROOT.LoadMacro("insertlogo.C+")
 def make_smooth_graph(h2,h3):
     h2 = TGraph(h2)
     h3 = TGraph(h3)
@@ -129,7 +134,7 @@ if __name__ == "__main__":
 
 
     xsec_wpr = Cons['xsec_wpr']
-    masses = [1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900] 
+    masses = [1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900] 
 
     x_mass = array('d')
     y_limit = array('d')
@@ -189,7 +194,7 @@ if __name__ == "__main__":
 
     g_limit.Draw("alp")
     g_limit.GetYaxis().SetRangeUser(0., 80.)
-    g_limit.GetXaxis().SetRangeUser(1.2, 2.9)
+    g_limit.GetXaxis().SetRangeUser(1.0, 2.9)
     if logScale:
         g_limit.SetMinimum(1.0e-2) #0.005
         g_limit.SetMaximum(4000.) #10000
@@ -257,16 +262,16 @@ if __name__ == "__main__":
 
     legLabel = ""
     if logScale:
-	  legend = TLegend(0.42, 0.45, 0.86, 0.84, legLabel)
+	  legend = TLegend(0.47, 0.45, 0.86, 0.84, legLabel)
     else:
-	  legend = TLegend(0.42, 0.35, 0.86, 0.75, legLabel)
+	  legend = TLegend(0.47, 0.35, 0.86, 0.75, legLabel)
     
     #legend.SetTextFont(42)
-    legend.AddEntry(g_limit, "Observed (95% CL)","l")		#uncomm later
-    legend.AddEntry(g_mclimit, "Expected (95% CL)","l")
-    legend.AddEntry(g_error, "#pm 1 #sigma Expected", "f")
-    legend.AddEntry(g_error95, "#pm 2 #sigma Expected", "f")
-    legend.AddEntry(graphWP, "Theory W'_{R}", "l")
+    legend.AddEntry(g_limit, "Observed limit (95% CL)","l")		#uncomm later
+    legend.AddEntry(g_mclimit, "Expected limit (95% CL)","l")
+    legend.AddEntry(g_error, "68% Expected", "f")
+    legend.AddEntry(g_error95, "95% Expected", "f")
+    legend.AddEntry(graphWP, "W'_{R} signal", "l")
 
     g_limit.GetYaxis().SetTitleOffset(1.4)
 
@@ -278,7 +283,7 @@ if __name__ == "__main__":
     text1 = ROOT.TLatex()
     text1.SetNDC()
     text1.SetTextFont(42)
-    text1.DrawLatex(0.2,0.84, "#scale[1.0]{CMS, L = 2.55 fb^{-1} at  #sqrt{s} = 13 TeV}")
+    #text1.DrawLatex(0.2,0.84, "#scale[1.0]{CMS, L = 2.55 fb^{-1} at  #sqrt{s} = 13 TeV}")
     
     text11 = ROOT.TLatex()
     text11.SetTextFont(42)
@@ -297,11 +302,13 @@ if __name__ == "__main__":
     #text2.SetTextSizePixels(17)
     #text2.Draw()
 
+
+    insertlogo(cv, 4, 11 )
 	
     legend.Draw("same")
     g_limit.Draw("p same")
 
-    postpend = "AllHadronic"
+    postpend = options.outputName
     if logScale:
         postpend = postpend + "_log"
     if options.noTheory :

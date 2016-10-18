@@ -14,11 +14,11 @@ leg.SetBorderSize(0)
 
 ROOT.gROOT.Macro("rootlogon.C")
 
-fdata = ROOT.TFile("Data69000_246908-260627_silver_v2.root")
-fdataup = ROOT.TFile("Data72450_246908-260627_silver_v2.root")
-fdatadown = ROOT.TFile("Data65550_246908-260627_silver_v2.root")
+fdata = ROOT.TFile("Pileup_12884pb.root")
+fdataup = ROOT.TFile("Pileup_12884pb_up.root")
+fdatadown = ROOT.TFile("Pileup_12884pb_down.root")
 
-fttbar  = ROOT.TFile("TBPileupttbar.root")
+fttbar  = ROOT.TFile("TBPileupttbar80X.root")
 
 
 output = ROOT.TFile( "PileUp_Ratio_ttbar.root", "recreate" )
@@ -55,6 +55,59 @@ ttbar_pileup_reweight_down.Divide(dttbar)
 ttbar_pileup_reweight_down.Write()
 
 
+
+
+
+
+
+
+
+
+
+
+
+files = [
+ROOT.TFile("TBPileupB2GsignalLH1200.root"),
+ROOT.TFile("TBPileupB2GsignalLH1400.root"),
+ROOT.TFile("TBPileupB2GsignalLH1600.root"),
+ROOT.TFile("TBPileupB2GsignalLH1800.root"),
+ROOT.TFile("TBPileupB2GsignalLH2000.root"),
+ROOT.TFile("TBPileupB2GsignalLH2200.root"),
+ROOT.TFile("TBPileupB2GsignalLH2400.root"),
+ROOT.TFile("TBPileupB2GsignalLH2600.root"),
+ROOT.TFile("TBPileupB2GsignalLH2800.root"),
+ROOT.TFile("TBPileupB2GsignalLH3000.root")
+]
+
+names = [
+"PileUp_Ratio_signal1200.root",
+"PileUp_Ratio_signal1400.root",
+"PileUp_Ratio_signal1600.root",
+"PileUp_Ratio_signal1800.root",
+"PileUp_Ratio_signal2000.root",
+"PileUp_Ratio_signal2200.root",
+"PileUp_Ratio_signal2400.root",
+"PileUp_Ratio_signal2600.root",
+"PileUp_Ratio_signal2800.root",
+"PileUp_Ratio_signal3000.root"
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 files = [
 
 ROOT.TFile("TBPileupsignalright1200.root"),
@@ -97,7 +150,7 @@ names = [
 "PileUp_Ratio_signal2800.root",
 "PileUp_Ratio_signal2900.root"
 ]
-
+'''
 dhists = []
 dhistsalt = []
 for ifile in range(0,len(files)):

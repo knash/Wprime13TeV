@@ -3,6 +3,7 @@ import array
 import glob
 import math
 import ROOT
+import copy
 import sys
 from ROOT import *
 from array import *
@@ -15,6 +16,12 @@ parser.add_option('-c', '--cuts', metavar='F', type='string', action='store',
                   default	=	'default',
                   dest		=	'cuts',
                   help		=	'Cuts type (ie default, rate, etc)')
+
+parser.add_option('-s', '--signalinject', metavar='F', type='string', action='store',
+                  default	=	'False',
+                  dest		=	'signalinject',
+                  help		=	'Cuts type (ie default, rate, etc)')
+
 (options, args) = parser.parse_args()
 
 
@@ -33,19 +40,28 @@ from Wprime_Functions import *
 #trigsup=["nominal","up","nominal"]
 #trigsdown=["nominal","down","nominal"]
 
+SI = ''
+if options.signalinject=='True':
+	SI='SignalInjected'
+
+
 
 LabelsU=['__jes__','__trig__','__ptsmear__']
-mass = [1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900]
+mass = [1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900]
 rebin =2
 for coup in ['right']:
 
-	output = ROOT.TFile( "limitsetting/theta/Limits_allhadronic_"+coup+"_PSET_"+cuts+".root", "recreate" )
+	output = ROOT.TFile( "limitsetting/theta/Limits"+SI+"_allhadronic_"+coup+"_PSET_"+cuts+".root", "recreate" )
 	output.cd()
 
 
 	Data = ROOT.TFile("rootfiles/TBanalyzerdata_Trigger_nominal_none_PSET_"+options.cuts+".root")
 	Datamodmdown = ROOT.TFile("rootfiles/TBanalyzerdata_Trigger_nominal_none_modm_down_PSET_"+options.cuts+".root")
 	Datamodmup = ROOT.TFile("rootfiles/TBanalyzerdata_Trigger_nominal_none_modm_up_PSET_"+options.cuts+".root")
+
+
+	Datamodtbdown = ROOT.TFile("rootfiles/TBanalyzerdata_Trigger_nominal_none_modtb_down_PSET_"+options.cuts+".root")
+	Datamodtbup = ROOT.TFile("rootfiles/TBanalyzerdata_Trigger_nominal_none_modtb_up_PSET_"+options.cuts+".root")
 
 
 	TTmc 	= ROOT.TFile("rootfiles/TBanalyzerttbar_none_PSET_"+options.cuts+"weighted.root")
@@ -136,12 +152,32 @@ for coup in ['right']:
 	TTmcFSTdown =  TTmc.Get("MtbTdown")
 
 	DataFS = Data.Get("Mtb")
+
 	DataQCD = Data.Get("QCDbkg")
 	DataQCD2d = Data.Get("QCDbkg2D")
 	DataQCDUp = Data.Get("QCDbkgh")
 	DataQCDDown = Data.Get("QCDbkgl")
 	DataQCDmodmup = Datamodmup.Get("QCDbkg")
 	DataQCDmodmdown = Datamodmdown.Get("QCDbkg")
+
+	DataQCDmodtbup = Datamodtbup.Get("QCDbkg")
+	DataQCDmodtbdown = Datamodtbdown.Get("QCDbkg")
+
+	'''
+	if options.signalinject=='True':
+		SignalIF = ROOT.TFile("rootfiles/TBanalyzerweightedsignalright2000_Trigger_nominal_none_PSET_"+cuts+".root")
+		SignalIH = SignalIF.Get("QCDbkg")
+		SignalIH2d = SignalIF.Get("QCDbkg2D")
+		DataQCD.Add(SignalIH)
+		DataQCDUp.Add(SignalIH)
+		DataQCDDown.Add(SignalIH)
+		DataQCD2d.Add(SignalIH2d)
+		DataQCDmodmup.Add(SignalIH)
+		DataQCDmodmdown.Add(SignalIH)
+		DataQCDmodtbup.Add(SignalIH)
+		DataQCDmodtbdown.Add(SignalIH)
+	'''
+
 	#TTmcQCD2d = TTmc.Get("QCDbkg2D")
 	#DataFS.Add(TTmc.Get("Mtb"))
 
@@ -151,6 +187,8 @@ for coup in ['right']:
 	DataQCD2d.Add(TTmcQCD2d,-1)
 	DataQCDmodmup.Add(TTmcQCD,-1)
 	DataQCDmodmdown.Add(TTmcQCD,-1)
+	DataQCDmodtbup.Add(TTmcQCD,-1)
+	DataQCDmodtbdown.Add(TTmcQCD,-1)
 
 
 	DataQCD.Add(STmcQCD,-1)
@@ -160,12 +198,19 @@ for coup in ['right']:
 	DataQCDmodmup.Add(STmcQCD,-1)
 	DataQCDmodmdown.Add(STmcQCD,-1)
 
+	DataQCDmodtbup.Add(STmcQCD,-1)
+	DataQCDmodtbdown.Add(STmcQCD,-1)
+
+
 	Zero(DataQCD)
 	Zero(DataQCDUp)
 	Zero(DataQCDDown)
 	Zero(DataQCD2d)
 	Zero(DataQCDmodmup)
 	Zero(DataQCDmodmdown)
+	Zero(DataQCDmodtbup)
+	Zero(DataQCDmodtbdown)
+
 	#for f in starray:
 	#	DataQCD.Add(f.Get("QCDbkg"),-1)
 	#	DataQCDUp.Add(f.Get("QCDbkg"),-1)
@@ -186,6 +231,8 @@ for coup in ['right']:
 	DataQCD.Rebin(rebin)
 	DataQCDmodmup.Rebin(rebin)
 	DataQCDmodmdown.Rebin(rebin)
+	DataQCDmodtbup.Rebin(rebin)
+	DataQCDmodtbdown.Rebin(rebin)
 
 
 	DataQCDUp.Rebin(rebin)
@@ -240,14 +287,23 @@ for coup in ['right']:
 		DataQCDE2Down.SetBinContent(ibin,max(0.0,DataQCD.GetBinContent(ibin)-QCDfit2))
 	
 
-
-
+	if options.signalinject=='True':
+		SignalIF = ROOT.TFile("rootfiles/TBanalyzerweightedsignalright2000_Trigger_nominal_none_PSET_"+cuts+".root")
+		SignalIH = SignalIF.Get("Mtb")
+		SignalIH.Rebin(rebin)
+		SignalIH.Scale(20)
+		DataFS=copy.copy(DataQCD)
+		DataFS.Add(TTmcFS)
+		DataFS.Add(STmcFS)
+		DataFS.Add(SignalIH)
 	DataFS.SetName("mtb_allhad__DATA")
 	DataQCD.SetName("mtb_allhad__qcd")
 	DataQCDUp.SetName("mtb_allhad__qcd__Fit__plus")
 	DataQCDDown.SetName("mtb_allhad__qcd__Fit__minus")
 	DataQCDmodmup.SetName("mtb_allhad__qcd__modm__plus")
 	DataQCDmodmdown.SetName("mtb_allhad__qcd__modm__minus")
+	DataQCDmodtbup.SetName("mtb_allhad__qcd__modtb__plus")
+	DataQCDmodtbdown.SetName("mtb_allhad__qcd__modtb__minus")
 	DataQCDE1Up.SetName("mtb_allhad__qcd__TwoD__plus")
 	DataQCDE1Down.SetName("mtb_allhad__qcd__TwoD__minus")
 	DataQCDE2Up.SetName("mtb_allhad__qcd__Alt__plus")
@@ -302,6 +358,8 @@ for coup in ['right']:
 	DataQCDE2Down.SetTitle("mtb_allhad__qcd__Alt__minus")
 	DataQCDmodmup.SetTitle("mtb_allhad__qcd__modm__plus")
 	DataQCDmodmdown.SetTitle("mtb_allhad__qcd__modm__minus")
+	DataQCDmodtbup.SetTitle("mtb_allhad__qcd__modtb__plus")
+	DataQCDmodtbdown.SetTitle("mtb_allhad__qcd__modtb__minus")
 
 
 
@@ -352,6 +410,8 @@ for coup in ['right']:
 	DataQCDE2Down.Write("mtb_allhad__qcd__Alt__minus")
 	DataQCDmodmup.Write("mtb_allhad__qcd__modm__plus")
 	DataQCDmodmdown.Write("mtb_allhad__qcd__modm__minus")
+	DataQCDmodtbup.Write("mtb_allhad__qcd__modtb__plus")
+	DataQCDmodtbdown.Write("mtb_allhad__qcd__modtb__minus")
 	#DataQCDBEH.Write("mtb_allhad__qcd__bkg__plus")
 	#DataQCDBEL.Write("mtb_allhad__qcd__bkg__minus")
 
